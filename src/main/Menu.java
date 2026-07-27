@@ -19,7 +19,6 @@ public class Menu {
 
     private final static User user = new User();
 
-    private static File file = new File("data.csv");
 
     static{
         validMonths.addAll(Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY",
@@ -29,52 +28,76 @@ public class Menu {
     }
 
     public static void mainMenu(){
-        System.out.println("--------------Household Energy Tracker--------------");
-        for (int i = 0; i < menuOptions.size(); i++){ // list out all menu options
-            System.out.println(i+1 + ". " + menuOptions.get(i));
-        }
-        int option;
-        while (true){ // check if the option the user chooses even exist
-            try{
-                Scanner scanner = new Scanner(System.in);
-                System.out.print("Option: ");
-                option = scanner.nextInt();
-                break;
-            }catch (InputMismatchException e){
-                System.out.println("Invalid Option");
+        boolean isRunning = true;
+        while (isRunning){
+            System.out.println("--------------Household Energy Tracker--------------");
+            for (int i = 0; i < menuOptions.size(); i++){ // list out all menu options
+                System.out.println(i+1 + ". " + menuOptions.get(i));
             }
-        }
-        switch (option){
-            case 1:
-                consumptionInputMenu();
-                break;
-            case 2:
-                System.out.println("Summary");
-                break;
-            case 3:
-                System.out.println("Save");
-                saveInfo();
-                break;
-            case 4:
-                System.out.println("Load");
-                break;
-            case 5:
-                System.out.println("Quit");
-                break;
-            default:
-                System.out.println("Invalid Option");
-                break;
-        }
+            int option;
+            while (true){ // check if the option the user chooses even exist
+                try{
+                    Scanner scanner = new Scanner(System.in);
+                    System.out.print("Option: ");
+                    option = scanner.nextInt();
+                    break;
+                }catch (InputMismatchException e){
+                    System.out.println("Invalid Option");
+                }
+            }
+            switch (option){
+                case 1:
+                    consumptionInputMenu();
+                    break;
+                case 2:
+                    System.out.println("Summary");
+                    break;
+                case 3:
+                    System.out.println("Save");
+                    saveInfo();
+                    break;
+                case 4:
+                    System.out.println("Load");
+                    break;
+                case 5:
+                    System.out.println("Quit");
+                    break;
+                default:
+                    System.out.println("Invalid Option");
+                    break;
+            }
 
+        }
     }
 
     private static void saveInfo(){
+        Scanner scanner = new Scanner(System.in);
+        String filename;
+        boolean validFile = false;
         System.out.println("--------------Save Data--------------");
-        try{
-            Writer writer = new Writer();
-            writer.saveInfo(file, user);
-        }catch (Exception e){
-            System.out.println("* ERROR: An unexpectd error occurred while handling the file *");
+        while (!validFile) {
+            System.out.println("Enter the name of the File you want to save to: ");
+            filename = scanner.nextLine().trim();
+            if (filename.isEmpty()) {
+                System.out.println("\n* The name of the File cannot be empty. Please try again *");
+            }
+            if (!filename.toLowerCase().endsWith(".csv")) {
+                System.out.println("* Error: File needs to end with .csv *");
+            }
+            File file = new File(filename);
+            try {
+                if (file.createNewFile()){
+                    System.out.println("* Successfully Created: " + file.getName() + " *");
+                }
+                if (file.exists()){
+                    System.out.println("* Updating existing File: " + file.getName() + " *");
+                }
+                Writer writer = new Writer();
+                writer.saveInfo(file, user);
+                validFile = true;
+            } catch (Exception e) {
+                System.out.println("* ERROR: An unexpectd error occurred while handling the file *");
+            }
         }
     }
 
@@ -93,11 +116,11 @@ public class Menu {
                 break;
             }
         }
-        System.out.println(month);
+        //System.out.println(month);
         // Electricity Input
         while (true){
             try{
-                System.out.println("Electricity Used (kW): ");
+                System.out.print("Electricity Used (kW): ");
                 Scanner scanner = new Scanner(System.in);
                 electricity = scanner.nextDouble();
                 if (electricity >= 0){
@@ -108,11 +131,11 @@ public class Menu {
                 System.out.println("Please enter a valid amount");
             }
         }
-        System.out.println(electricity);
+        //System.out.println(electricity);
         // Natural Gas Input
         while (true){
             try{
-                System.out.println("Natural Gas Used (GJ): ");
+                System.out.print("Natural Gas Used (GJ): ");
                 Scanner scanner = new Scanner(System.in);
                 naturalGas = scanner.nextDouble();
                 if (naturalGas >= 0){
@@ -123,7 +146,7 @@ public class Menu {
                 System.out.println("Please enter a valid amount");
             }
         }
-        System.out.println(naturalGas);
+        //System.out.println(naturalGas);
     }
 
 }
