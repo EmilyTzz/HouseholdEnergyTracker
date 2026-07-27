@@ -1,16 +1,25 @@
 package main;
 
-import java.lang.reflect.Array;
+import file.Writer;
+import object.User;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.logging.FileHandler;
 
 public class Menu {
 
     private static ArrayList<String> validMonths = new ArrayList<>(); // stores all the valid months
 
     private static ArrayList<String> menuOptions = new ArrayList<>(); // stores all the main menu options
+
+    private final static User user = new User();
+
+    private static File file = new File("data.csv");
 
     static{
         validMonths.addAll(Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY",
@@ -44,6 +53,7 @@ public class Menu {
                 break;
             case 3:
                 System.out.println("Save");
+                saveInfo();
                 break;
             case 4:
                 System.out.println("Load");
@@ -58,7 +68,17 @@ public class Menu {
 
     }
 
-    public static void consumptionInputMenu(){
+    private static void saveInfo(){
+        System.out.println("--------------Save Data--------------");
+        try{
+            Writer writer = new Writer();
+            writer.saveInfo(file, user);
+        }catch (Exception e){
+            System.out.println("* ERROR: An unexpectd error occurred while handling the file *");
+        }
+    }
+
+    private static void consumptionInputMenu(){
         System.out.println("--------------Your Energy Consumption This Month--------------");
         String month;
         double electricity;
@@ -69,6 +89,7 @@ public class Menu {
             Scanner scanner = new Scanner(System.in);
             month = scanner.next().toUpperCase();
             if (validMonths.contains(month)) {
+                user.addMonth(month);
                 break;
             }
         }
@@ -80,6 +101,7 @@ public class Menu {
                 Scanner scanner = new Scanner(System.in);
                 electricity = scanner.nextDouble();
                 if (electricity >= 0){
+                    user.addElectricityUsage(electricity);
                     break;
                 }
             }catch (InputMismatchException e){
@@ -94,6 +116,7 @@ public class Menu {
                 Scanner scanner = new Scanner(System.in);
                 naturalGas = scanner.nextDouble();
                 if (naturalGas >= 0){
+                    user.addNaturalGasUsage(naturalGas);
                     break;
                 }
             }catch (InputMismatchException e){
