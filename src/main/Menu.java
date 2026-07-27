@@ -21,8 +21,41 @@ public class Menu {
 
     public static void mainMenu(){
         System.out.println("--------------Household Energy Tracker--------------");
+        for (int i = 0; i < menuOptions.size(); i++){ // list out all menu options
+            System.out.println(i+1 + ". " + menuOptions.get(i));
+        }
+        int option;
+        while (true){ // check if the option the user chooses even exist
+            try{
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Option: ");
+                option = scanner.nextInt();
+                break;
+            }catch (InputMismatchException e){
+                System.out.println("Invalid Option");
+            }
+        }
+        switch (option){
+            case 1:
+                consumptionInputMenu();
+                break;
+            case 2:
+                System.out.println("Summary");
+                break;
+            case 3:
+                System.out.println("Save");
+                break;
+            case 4:
+                System.out.println("Load");
+                break;
+            case 5:
+                System.out.println("Quit");
+                break;
+            default:
+                System.out.println("Invalid Option");
+                break;
+        }
 
-        consumptionInputMenu();
     }
 
     public static void consumptionInputMenu(){
