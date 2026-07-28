@@ -2,6 +2,7 @@ package main;
 
 import file.Reader;
 import file.Writer;
+import object.Cost;
 import object.User;
 
 import java.io.File;
@@ -54,11 +55,12 @@ public class Menu {
                     System.out.println("Summary");
                     break;
                 case 3:
-                    System.out.println("Save");
+                    //System.out.println("Save");
                     saveInfo();
                     break;
                 case 4:
-                    System.out.println("Load");
+                    //System.out.println("Load");
+                    loadInfo();
                     break;
                 case 5:
                     System.out.println("Quit");
@@ -147,7 +149,7 @@ public class Menu {
         // Electricity Input
         while (true){
             try{
-                System.out.print("Electricity Used (kW): ");
+                System.out.print("Electricity Used (kWh): ");
                 Scanner scanner = new Scanner(System.in);
                 electricity = scanner.nextDouble();
                 if (electricity >= 0){
@@ -174,6 +176,8 @@ public class Menu {
             }
         }
         //System.out.println(naturalGas);
+        System.out.println("\nEstimated Electricity Cost: $" + Cost.getElectricityCost(electricity));
+        System.out.println("Estimated Natural Gas Cost: $" + Cost.getNaturalGasCost(naturalGas) + "\n");
     }
 
 }
