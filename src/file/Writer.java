@@ -10,15 +10,16 @@ import java.io.PrintWriter;
 public class Writer {
 
     public void saveInfo(File file, User user){
-        try{
-            PrintWriter writer = new PrintWriter(new FileWriter(file));
+        try (PrintWriter writer = new PrintWriter(new FileWriter(file))){
             writer.println("month,electricity used,natural gas used");
+            user.sortInfoAccordingToMonths();
             for (int i = 0; i < user.getMonths().size(); i ++){
-                writer.printf("%s,%f,%s\n", user.getMonths().get(i), user.getElectricityUsed().get(i), user.getNaturalGasUsed());
+                writer.printf("%s,%f,%s\n", user.getMonths().get(i), user.getElectricityUsed().get(i), user.getNaturalGasUsed().get(i));
             }
-            System.out.println("\n* Data Successfully Saved to " + file + " *");
+            System.out.println("\n* Data Successfully Saved to " + file + " *\n");
         }catch (IOException e){
             System.out.println("ERROR");
         }
     }
+
 }

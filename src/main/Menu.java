@@ -1,5 +1,6 @@
 package main;
 
+import file.Reader;
 import file.Writer;
 import object.User;
 
@@ -17,7 +18,7 @@ public class Menu {
 
     private static ArrayList<String> menuOptions = new ArrayList<>(); // stores all the main menu options
 
-    private final static User user = new User();
+    private static User user = new User();
 
 
     static{
@@ -92,6 +93,33 @@ public class Menu {
             } catch (Exception e) {
                 System.out.println("* ERROR: An unexpected error occurred while handling the file *");
             }
+        }
+    }
+
+    private static void loadInfo(){
+        Scanner scanner = new Scanner(System.in);
+        String filename;
+        boolean validFile = false;
+        System.out.println("--------------Load Data--------------");
+        while (!validFile) {
+            System.out.println("Enter the name of the File you want to load from: ");
+            filename = scanner.nextLine().trim();
+
+            if (filename.isEmpty()){
+                System.out.println("\n* ERROR: File name cannot be empty. Please try again. *");
+                continue;
+            }
+            if (!filename.toLowerCase().endsWith(".csv")){
+                System.out.println("\n* ERROR: File name must end with '.csv'. Please try again. *\"");
+            }
+            File file = new File(filename);
+            if (!file.exists()) {
+                System.out.println("\n* ERROR: That file does not exist. Please check the name and try again. *");
+                continue;
+            }
+            Reader reader = new Reader();
+            user = new User();
+            reader.loadInfo(file, user);
         }
     }
 
