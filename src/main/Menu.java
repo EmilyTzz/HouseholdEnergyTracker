@@ -20,6 +20,8 @@ public class Menu {
 
     private static ArrayList<String> menuOptions = new ArrayList<>(); // stores all the main menu options
 
+    private static ArrayList<String> summaryOptions = new ArrayList<>(); // stores all the summary options
+
     private static User user = new User();
 
 
@@ -28,6 +30,7 @@ public class Menu {
                 "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"));
         menuOptions.addAll(Arrays.asList("Enter This Month's Energy Consumption", "View Consumption Summary",
                 "Save", "Load", "Quit"));
+        summaryOptions.addAll(Arrays.asList("Monthly Overview", "Statistics", "View Graphs", "Back"));
     }
 
     public static void mainMenu(){
@@ -53,7 +56,8 @@ public class Menu {
                     consumptionInputMenu();
                     break;
                 case 2:
-                    System.out.println("Summary");
+                    //System.out.println("Summary");
+                    summaryMenu();
                     break;
                 case 3:
                     //System.out.println("Save");
@@ -64,13 +68,61 @@ public class Menu {
                     loadInfo();
                     break;
                 case 5:
-                    System.out.println("Quit");
+                    isRunning = false;
                     break;
                 default:
                     System.out.println("Invalid Option");
                     break;
             }
 
+        }
+    }
+
+    private static void summaryMenu(){
+        boolean isRunning = true;
+        while (isRunning){
+            System.out.println("--------------Summary--------------");
+            for (int i = 0; i < summaryOptions.size(); i ++){
+                System.out.println(i+1 + ". " + summaryOptions.get(i));
+            }
+            int option;
+            while (true){ // check if the option the user chooses even exist
+                try{
+                    Scanner scanner = new Scanner(System.in);
+                    System.out.print("Option: ");
+                    option = scanner.nextInt();
+                    break;
+                }catch (InputMismatchException e){
+                    System.out.println("Invalid Option");
+                }
+            }
+            switch (option) {
+                case 1:
+                    overviewMenu();
+                    break;
+                case 2:
+                    System.out.println("");
+                    break;
+                case 3:
+                    System.out.println("");
+                    break;
+                case 4:
+                    isRunning = false;
+                    mainMenu();
+                    break;
+                default:
+                    System.out.println("Invalid Option");
+                    break;
+            }
+        }
+    }
+
+    private static void overviewMenu(){
+        user.sortInfoAccordingToMonths();
+        System.out.println("\n--------------Save Data--------------");
+        for (int i = 0; i < user.getMonths().size(); i ++){
+            System.out.println(user.getMonths().get(i) + ":");
+            estimations(user.getElectricityUsed().get(i), user.getNaturalGasUsed().get(i));
         }
     }
 
@@ -177,8 +229,12 @@ public class Menu {
             }
         }
         //System.out.println(naturalGas);
+        estimations(electricity, naturalGas);
+    }
+
+    private static void estimations(double electricity, double naturalGas){
         System.out.println("\nEstimated Electricity Cost: $" + Cost.getElectricityCost(electricity));
-        System.out.println("Estimated CO2 emission: " + CarbonConvertor.getElectricityCarbonFootprint(electricity) + "kg\n");
+        System.out.println("Estimated CO2 emission: " + CarbonConvertor.getElectricityCarbonFootprint(electricity) + "kg");
         System.out.println("Estimated Natural Gas Cost: $" + Cost.getNaturalGasCost(naturalGas));
         System.out.println("Estimated CO2 emission: " + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas) + "kg\n");
     }
