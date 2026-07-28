@@ -13,7 +13,7 @@ import java.util.logging.FileHandler;
 
 public class Menu {
 
-    private static ArrayList<String> validMonths = new ArrayList<>(); // stores all the valid months
+    public static ArrayList<String> validMonths = new ArrayList<>(); // stores all the valid months
 
     private static ArrayList<String> menuOptions = new ArrayList<>(); // stores all the main menu options
 
@@ -81,22 +81,16 @@ public class Menu {
             if (filename.isEmpty()) {
                 System.out.println("\n* The name of the File cannot be empty. Please try again *");
             }
-            if (!filename.toLowerCase().endsWith(".csv")) {
+            if (!(filename.toLowerCase().endsWith(".csv"))) {
                 System.out.println("* Error: File needs to end with .csv *");
             }
             File file = new File(filename);
             try {
-                if (file.createNewFile()){
-                    System.out.println("* Successfully Created: " + file.getName() + " *");
-                }
-                if (file.exists()){
-                    System.out.println("* Updating existing File: " + file.getName() + " *");
-                }
                 Writer writer = new Writer();
                 writer.saveInfo(file, user);
                 validFile = true;
             } catch (Exception e) {
-                System.out.println("* ERROR: An unexpectd error occurred while handling the file *");
+                System.out.println("* ERROR: An unexpected error occurred while handling the file *");
             }
         }
     }
@@ -112,8 +106,13 @@ public class Menu {
             Scanner scanner = new Scanner(System.in);
             month = scanner.next().toUpperCase();
             if (validMonths.contains(month)) {
-                user.addMonth(month);
-                break;
+                if (user.getMonths().contains(month)){ // makes sure there are no duplicate months
+                    System.out.println("Error: You Have Already Entered this Month's bills");
+                }
+                else{
+                    user.addMonth(month);
+                    break;
+                }
             }
         }
         //System.out.println(month);
