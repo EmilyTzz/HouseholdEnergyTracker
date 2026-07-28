@@ -2,6 +2,7 @@ package main;
 
 import file.Reader;
 import file.Writer;
+import object.CarbonConvertor;
 import object.Cost;
 import object.User;
 
@@ -177,7 +178,9 @@ public class Menu {
         }
         //System.out.println(naturalGas);
         System.out.println("\nEstimated Electricity Cost: $" + Cost.getElectricityCost(electricity));
-        System.out.println("Estimated Natural Gas Cost: $" + Cost.getNaturalGasCost(naturalGas) + "\n");
+        System.out.println("Estimated CO2 emission: " + CarbonConvertor.getElectricityCarbonFootprint(electricity) + "kg\n");
+        System.out.println("Estimated Natural Gas Cost: $" + Cost.getNaturalGasCost(naturalGas));
+        System.out.println("Estimated CO2 emission: " + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas) + "kg\n");
     }
 
 }
