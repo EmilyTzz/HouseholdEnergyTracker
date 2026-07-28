@@ -123,6 +123,7 @@ public class Menu {
         for (int i = 0; i < user.getMonths().size(); i ++){
             System.out.println(user.getMonths().get(i) + ":");
             estimations(user.getElectricityUsed().get(i), user.getNaturalGasUsed().get(i));
+            System.out.println();
         }
     }
 
@@ -230,13 +231,18 @@ public class Menu {
         }
         //System.out.println(naturalGas);
         estimations(electricity, naturalGas);
+        double totalEmission = (CarbonConvertor.getElectricityCarbonFootprint(electricity) + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
+        System.out.println("💡 That is the same amount of energy required to power " + CarbonConvertor.getEquivalentOfCO2Emission(totalEmission) + " homes for a day!\n");
     }
 
     private static void estimations(double electricity, double naturalGas){
         System.out.println("\nEstimated Electricity Cost: $" + Cost.getElectricityCost(electricity));
-        System.out.println("Estimated CO2 emission: " + CarbonConvertor.getElectricityCarbonFootprint(electricity) + "kg");
+        System.out.println("Estimated CO2 Emission from Electricity used: " + CarbonConvertor.getElectricityCarbonFootprint(electricity) + "kg");
         System.out.println("Estimated Natural Gas Cost: $" + Cost.getNaturalGasCost(naturalGas));
-        System.out.println("Estimated CO2 emission: " + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas) + "kg\n");
+        System.out.println("Estimated CO2 Emission from Natural Gas used: " + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas) + "kg");
+        System.out.println("Total cost: $" + (Cost.getElectricityCost(electricity) + Cost.getNaturalGasCost(naturalGas)));
+        double totalEmission = (CarbonConvertor.getElectricityCarbonFootprint(electricity) + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
+        System.out.println("Total CO2 Emission: " + totalEmission + "kg");
     }
 
 }
