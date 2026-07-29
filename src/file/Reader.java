@@ -1,12 +1,12 @@
 package file;
 
-import object.User;
+import object.Usage;
 
 import java.io.*;
 
 public class Reader {
 
-    public void loadInfo(File file, User user){
+    public void loadInfo(File file, Usage usage){
         try{
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
@@ -21,9 +21,9 @@ public class Reader {
                 String month = data[0];
                 double electricity = Double.parseDouble(data[1]);
                 double naturalGas = Double.parseDouble(data[2]);
-                user.addMonth(month);
-                user.addElectricityUsage(electricity);
-                user.addNaturalGasUsage(naturalGas);
+                usage.addMonth(month);
+                usage.addElectricityUsage(electricity);
+                usage.addNaturalGasUsage(naturalGas);
             }
 
         }catch (FileNotFoundException e) {

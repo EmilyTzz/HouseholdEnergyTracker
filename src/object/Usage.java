@@ -5,7 +5,7 @@ import main.Menu;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class Usage {
 
     private static List<String> months = new ArrayList<>();
 
@@ -13,7 +13,7 @@ public class User {
 
     private static List<Double> naturalGasUsed = new ArrayList<>();
 
-    public User() {
+    public Usage() {
         this.months = months;
         this.electricityUsed = electricityUsed;
         this.naturalGasUsed = naturalGasUsed;
@@ -47,7 +47,7 @@ public class User {
         List<String> sortedMonths = new ArrayList<>();
         List<Double> sortedElectricityUsed = new ArrayList<>();
         List<Double> sortedNaturalGasUsed = new ArrayList<>();
-        for (int i = 0; i < Menu.validMonths.size(); i++){
+        for (int i = 0; i < Menu.validMonths.size(); i++){ // makes sure the months are in order
             if (months.contains(Menu.validMonths.get(i))){
                 sorterHelper(sortedMonths, sortedElectricityUsed, sortedNaturalGasUsed, Menu.validMonths.get(i));
             }

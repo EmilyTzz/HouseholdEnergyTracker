@@ -4,15 +4,13 @@ import file.Reader;
 import file.Writer;
 import object.CarbonConvertor;
 import object.Cost;
-import object.User;
+import object.Usage;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.logging.FileHandler;
 
 public class Menu {
 
@@ -22,15 +20,15 @@ public class Menu {
 
     private static ArrayList<String> summaryOptions = new ArrayList<>(); // stores all the summary options
 
-    private static User user = new User();
+    private static Usage usage = new Usage();
 
 
     static{
         validMonths.addAll(Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY",
                 "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"));
-        menuOptions.addAll(Arrays.asList("Enter This Month's Energy Consumption", "View Consumption Summary",
+        menuOptions.addAll(Arrays.asList("Enter This Month's Usage", "View Usage Summary",
                 "Save", "Load", "Quit"));
-        summaryOptions.addAll(Arrays.asList("Monthly Overview", "Statistics", "View Graphs", "Back"));
+        summaryOptions.addAll(Arrays.asList("Monthly Overview", "View Statistics", "View Graphs", "Back"));
     }
 
     public static void mainMenu(){
@@ -118,11 +116,11 @@ public class Menu {
     }
 
     private static void overviewMenu(){
-        user.sortInfoAccordingToMonths();
+        usage.sortInfoAccordingToMonths();
         System.out.println("\n--------------Save Data--------------");
-        for (int i = 0; i < user.getMonths().size(); i ++){
-            System.out.println(user.getMonths().get(i) + ":");
-            estimations(user.getElectricityUsed().get(i), user.getNaturalGasUsed().get(i));
+        for (int i = 0; i < usage.getMonths().size(); i ++){
+            System.out.println(usage.getMonths().get(i) + ":");
+            estimations(usage.getElectricityUsed().get(i), usage.getNaturalGasUsed().get(i));
             System.out.println();
         }
     }
@@ -144,7 +142,7 @@ public class Menu {
             File file = new File(filename);
             try {
                 Writer writer = new Writer();
-                writer.saveInfo(file, user);
+                writer.saveInfo(file, usage);
                 validFile = true;
             } catch (Exception e) {
                 System.out.println("* ERROR: An unexpected error occurred while handling the file *");
@@ -174,8 +172,8 @@ public class Menu {
                 continue;
             }
             Reader reader = new Reader();
-            user = new User();
-            reader.loadInfo(file, user);
+            usage = new Usage();
+            reader.loadInfo(file, usage);
         }
     }
 
@@ -190,11 +188,11 @@ public class Menu {
             Scanner scanner = new Scanner(System.in);
             month = scanner.next().toUpperCase();
             if (validMonths.contains(month)) {
-                if (user.getMonths().contains(month)){ // makes sure there are no duplicate months
+                if (usage.getMonths().contains(month)){ // makes sure there are no duplicate months
                     System.out.println("Error: You Have Already Entered this Month's bills");
                 }
                 else{
-                    user.addMonth(month);
+                    usage.addMonth(month);
                     break;
                 }
             }
@@ -207,7 +205,7 @@ public class Menu {
                 Scanner scanner = new Scanner(System.in);
                 electricity = scanner.nextDouble();
                 if (electricity >= 0){
-                    user.addElectricityUsage(electricity);
+                    usage.addElectricityUsage(electricity);
                     break;
                 }
             }catch (InputMismatchException e){
@@ -222,7 +220,7 @@ public class Menu {
                 Scanner scanner = new Scanner(System.in);
                 naturalGas = scanner.nextDouble();
                 if (naturalGas >= 0){
-                    user.addNaturalGasUsage(naturalGas);
+                    usage.addNaturalGasUsage(naturalGas);
                     break;
                 }
             }catch (InputMismatchException e){
