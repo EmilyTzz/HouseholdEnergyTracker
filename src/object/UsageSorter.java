@@ -3,6 +3,7 @@ package object;
 import main.Menu;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class UsageSorter {
@@ -41,6 +42,37 @@ public class UsageSorter {
                 sortedNaturalGasUsed.add(naturalGasUsed.get(i));
             }
         }
+    }
+
+    public void sortFromHighestToLowestTotalCost(){
+        List<String> sortedMonths = new ArrayList<>();
+        List<Double> sortedElectricityUsed = new ArrayList<>();
+        List<Double> sortedNaturalGasUsed = new ArrayList<>();
+        while (months.size() != 0){
+            int indexOfMonthWithHighestTotalCost = sortFromHighestToLowestTotalCostHelper();
+            sortedMonths.add(months.get(indexOfMonthWithHighestTotalCost));
+            sortedElectricityUsed.add(electricityUsed.get(indexOfMonthWithHighestTotalCost));
+            sortedNaturalGasUsed.add(naturalGasUsed.get(indexOfMonthWithHighestTotalCost));
+            months.remove(months.get(indexOfMonthWithHighestTotalCost));
+            electricityUsed.remove(electricityUsed.get(indexOfMonthWithHighestTotalCost));
+            naturalGasUsed.remove(naturalGasUsed.get(indexOfMonthWithHighestTotalCost));
+        }
+        months = sortedMonths;
+        electricityUsed = sortedElectricityUsed;
+        naturalGasUsed = sortedNaturalGasUsed;
+    }
+
+    private int sortFromHighestToLowestTotalCostHelper(){
+        int indexOfMonthWithHighestTotalCost = 0;
+        if (months.size() > 1){
+            for (int i = 0; i < months.size()-1; i++){
+                if (Cost.getTotalCost(electricityUsed.get(indexOfMonthWithHighestTotalCost), naturalGasUsed.get(indexOfMonthWithHighestTotalCost))<Cost.getTotalCost(electricityUsed.get(i), naturalGasUsed.get(i))){
+                    indexOfMonthWithHighestTotalCost = i;
+                }
+
+            }
+        }
+        return indexOfMonthWithHighestTotalCost;
     }
 
     public List<String> getSortedMonths() {

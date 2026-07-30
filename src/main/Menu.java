@@ -21,6 +21,8 @@ public class Menu {
 
     private static ArrayList<String> summaryOptions = new ArrayList<>(); // stores all the summary options
 
+    private static ArrayList<String> sortOptions = new ArrayList<>(); // stores all the sort options
+
     private static Usage usage = new Usage();
 
 
@@ -30,6 +32,7 @@ public class Menu {
         menuOptions.addAll(Arrays.asList("Enter This Month's Usage", "View Usage Summary",
                 "Save", "Load", "Quit"));
         summaryOptions.addAll(Arrays.asList("Monthly Overview", "View Statistics", "View Graphs", "Back"));
+        sortOptions.addAll(Arrays.asList("Highest to Lowest Cost", "Lowest to Highest Cost", "Quit"));
     }
 
     public static void mainMenu(){
@@ -121,11 +124,51 @@ public class Menu {
         usageSorter.sortInfoAccordingToMonths();
         System.out.println("\n--------------Overview--------------");
         for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
+            System.out.println("\n----------------------------\n");
             System.out.println(usageSorter.getSortedMonths().get(i) + ":");
             estimations(usageSorter.getSortedElectricityUsed().get(i), usageSorter.getSortedNaturalGasUsed().get(i));
             System.out.println();
         }
+        boolean isRunning = true;
+        while (isRunning){
+            System.out.println("Sort Options:");
+            for (int i = 0; i < sortOptions.size(); i ++){
+                System.out.println(i+1 + ". " + sortOptions.get(i));
+            }
+            int option;
+            while (true){ // check if the option the user chooses even exist
+                try{
+                    Scanner scanner = new Scanner(System.in);
+                    System.out.print("Option: ");
+                    option = scanner.nextInt();
+                    break;
+                }catch (InputMismatchException e){
+                    System.out.println("Invalid Option");
+                }
+            }
+            switch (option) {
+                case 1:
+                    usageSorter.sortFromHighestToLowestTotalCost();
+                    for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
+                        System.out.println("\n----------------------------\n");
+                        System.out.println(usageSorter.getSortedMonths().get(i) + ":");
+                        estimations(usageSorter.getSortedElectricityUsed().get(i), usageSorter.getSortedNaturalGasUsed().get(i));
+                        System.out.println();
+                    }
+                    break;
+                case 2:
+                    System.out.println("");
+                    break;
+                case 3:
+                    isRunning = false;
+                    break;
+                default:
+                    System.out.println("Invalid Option");
+                    break;
+            }
+        }
     }
+
 
     private static void saveInfo(){
         Scanner scanner = new Scanner(System.in);
@@ -238,10 +281,10 @@ public class Menu {
 
     private static void estimations(double electricity, double naturalGas){
         System.out.println("\nEstimated Electricity Cost: $" + Cost.getElectricityCost(electricity));
-        System.out.println("Estimated CO2 Emission from Electricity used: " + CarbonConvertor.getElectricityCarbonFootprint(electricity) + "kg");
+        System.out.println("Estimated CO2 Emission from Electricity used: " + CarbonConvertor.getElectricityCarbonFootprint(electricity) + "kg\n");
         System.out.println("Estimated Natural Gas Cost: $" + Cost.getNaturalGasCost(naturalGas));
-        System.out.println("Estimated CO2 Emission from Natural Gas used: " + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas) + "kg");
-        System.out.println("Total cost: $" + (Cost.getElectricityCost(electricity) + Cost.getNaturalGasCost(naturalGas)));
+        System.out.println("Estimated CO2 Emission from Natural Gas used: " + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas) + "kg\n");
+        System.out.println("Total cost: $" + (Cost.getTotalCost(electricity, naturalGas)));
         double totalEmission = (CarbonConvertor.getElectricityCarbonFootprint(electricity) + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
         System.out.println("Total CO2 Emission: " + totalEmission + "kg");
     }
