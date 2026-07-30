@@ -20,15 +20,15 @@ public class Usage {
     }
 
     public List<String> getMonths() {
-        return months;
+        return new ArrayList<>(months);
     }
 
     public List<Double> getElectricityUsed() {
-        return electricityUsed;
+        return new ArrayList<>(electricityUsed);
     }
 
     public List<Double> getNaturalGasUsed() {
-        return naturalGasUsed;
+        return new ArrayList<>(naturalGasUsed);
     }
 
     public void addMonth(String month) {
@@ -43,27 +43,6 @@ public class Usage {
         naturalGasUsed.add(naturalGas);
     }
 
-    public void sortInfoAccordingToMonths(){
-        List<String> sortedMonths = new ArrayList<>();
-        List<Double> sortedElectricityUsed = new ArrayList<>();
-        List<Double> sortedNaturalGasUsed = new ArrayList<>();
-        for (int i = 0; i < Menu.validMonths.size(); i++){ // makes sure the months are in order
-            if (months.contains(Menu.validMonths.get(i))){
-                sorterHelper(sortedMonths, sortedElectricityUsed, sortedNaturalGasUsed, Menu.validMonths.get(i));
-            }
-        }
-        months = sortedMonths;
-        electricityUsed = sortedElectricityUsed;
-        naturalGasUsed = sortedNaturalGasUsed;
-    }
 
-    private void sorterHelper(List<String> sortedMonths, List<Double> sortedElectricityUsed, List<Double> sortedNaturalGasUsed, String month){
-        for (int i = 0; i < months.size(); i ++){
-            if (months.get(i).equals(month)){
-                sortedMonths.add(months.get(i));
-                sortedElectricityUsed.add(electricityUsed.get(i));
-                sortedNaturalGasUsed.add(naturalGasUsed.get(i));
-            }
-        }
-    }
+
 }

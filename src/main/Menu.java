@@ -5,6 +5,7 @@ import file.Writer;
 import object.CarbonConvertor;
 import object.Cost;
 import object.Usage;
+import object.UsageSorter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -116,11 +117,12 @@ public class Menu {
     }
 
     private static void overviewMenu(){
-        usage.sortInfoAccordingToMonths();
-        System.out.println("\n--------------Save Data--------------");
-        for (int i = 0; i < usage.getMonths().size(); i ++){
-            System.out.println(usage.getMonths().get(i) + ":");
-            estimations(usage.getElectricityUsed().get(i), usage.getNaturalGasUsed().get(i));
+        UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
+        usageSorter.sortInfoAccordingToMonths();
+        System.out.println("\n--------------Overview--------------");
+        for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
+            System.out.println(usageSorter.getSortedMonths().get(i) + ":");
+            estimations(usageSorter.getSortedElectricityUsed().get(i), usageSorter.getSortedNaturalGasUsed().get(i));
             System.out.println();
         }
     }
@@ -142,7 +144,8 @@ public class Menu {
             File file = new File(filename);
             try {
                 Writer writer = new Writer();
-                writer.saveInfo(file, usage);
+                UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
+                writer.saveInfo(file, usageSorter);
                 validFile = true;
             } catch (Exception e) {
                 System.out.println("* ERROR: An unexpected error occurred while handling the file *");
