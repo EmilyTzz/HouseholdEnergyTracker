@@ -157,7 +157,13 @@ public class Menu {
                     }
                     break;
                 case 2:
-                    System.out.println("");
+                    usageSorter.sortFromLowestToHighestTotalCost();
+                    for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
+                        System.out.println("\n----------------------------\n");
+                        System.out.println(usageSorter.getSortedMonths().get(i) + ":");
+                        estimations(usageSorter.getSortedElectricityUsed().get(i), usageSorter.getSortedNaturalGasUsed().get(i));
+                        System.out.println();
+                    }
                     break;
                 case 3:
                     isRunning = false;

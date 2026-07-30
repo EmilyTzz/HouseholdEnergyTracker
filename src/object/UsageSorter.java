@@ -3,6 +3,7 @@ package object;
 import main.Menu;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,6 +43,14 @@ public class UsageSorter {
                 sortedNaturalGasUsed.add(naturalGasUsed.get(i));
             }
         }
+    }
+
+    public void sortFromLowestToHighestTotalCost(){
+        sortFromHighestToLowestTotalCost();
+        Collections.reverse(months);
+        Collections.reverse(electricityUsed);
+        Collections.reverse(naturalGasUsed);
+
     }
 
     public void sortFromHighestToLowestTotalCost(){
