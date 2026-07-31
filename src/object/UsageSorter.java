@@ -45,26 +45,41 @@ public class UsageSorter {
         }
     }
 
+
     public void sortFromLowestToHighestTotalCost(){
-        sortFromHighestToLowestTotalCost();
+        sortFromHighestToLowest(Menu.TOTAL_COST);
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
 
     }
 
-    public void sortFromHighestToLowestTotalCost(){
+    public void sortFromLowestToHighestElectricityUsage(){
+        sortFromHighestToLowest(Menu.ELECTRICITY_COST);
+        Collections.reverse(months);
+        Collections.reverse(electricityUsed);
+        Collections.reverse(naturalGasUsed);
+
+    }
+
+    public void sortFromHighestToLowest(String energyData){
         List<String> sortedMonths = new ArrayList<>();
         List<Double> sortedElectricityUsed = new ArrayList<>();
         List<Double> sortedNaturalGasUsed = new ArrayList<>();
         while (months.size() != 0){
-            int indexOfMonthWithHighestTotalCost = sortFromHighestToLowestTotalCostHelper();
-            sortedMonths.add(months.get(indexOfMonthWithHighestTotalCost));
-            sortedElectricityUsed.add(electricityUsed.get(indexOfMonthWithHighestTotalCost));
-            sortedNaturalGasUsed.add(naturalGasUsed.get(indexOfMonthWithHighestTotalCost));
-            months.remove(months.get(indexOfMonthWithHighestTotalCost));
-            electricityUsed.remove(electricityUsed.get(indexOfMonthWithHighestTotalCost));
-            naturalGasUsed.remove(naturalGasUsed.get(indexOfMonthWithHighestTotalCost));
+            int indexOfMonthWithHighestEnergyData = 0;
+            if (energyData.equals(Menu.TOTAL_COST)) {
+                indexOfMonthWithHighestEnergyData = sortFromHighestToLowestTotalCostHelper();
+            }
+            else if (energyData.equals(Menu.ELECTRICITY_COST)){
+                indexOfMonthWithHighestEnergyData = sortFromHighestToLowestElectricityHelper();
+            }
+            sortedMonths.add(months.get(indexOfMonthWithHighestEnergyData));
+            sortedElectricityUsed.add(electricityUsed.get(indexOfMonthWithHighestEnergyData));
+            sortedNaturalGasUsed.add(naturalGasUsed.get(indexOfMonthWithHighestEnergyData));
+            months.remove(months.get(indexOfMonthWithHighestEnergyData));
+            electricityUsed.remove(electricityUsed.get(indexOfMonthWithHighestEnergyData));
+            naturalGasUsed.remove(naturalGasUsed.get(indexOfMonthWithHighestEnergyData));
         }
         months = sortedMonths;
         electricityUsed = sortedElectricityUsed;
@@ -82,6 +97,19 @@ public class UsageSorter {
             }
         }
         return indexOfMonthWithHighestTotalCost;
+    }
+
+    private int sortFromHighestToLowestElectricityHelper(){
+        int indexOfMonthWithHighestElectricity = 0;
+        if (months.size() > 1){
+            for (int i = 0; i < months.size(); i++){
+                if (electricityUsed.get(indexOfMonthWithHighestElectricity)<electricityUsed.get(i)){
+                    indexOfMonthWithHighestElectricity = i;
+                }
+
+            }
+        }
+        return indexOfMonthWithHighestElectricity;
     }
 
     public List<String> getSortedMonths() {

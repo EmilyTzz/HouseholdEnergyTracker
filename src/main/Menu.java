@@ -15,6 +15,13 @@ import java.util.Scanner;
 
 public class Menu {
 
+    public static final String TOTAL_COST = "Total Cost";
+
+    public static final String ELECTRICITY_COST = "Electricity Cost";
+
+    public static final String NATURAL_GAS_USAGE = "Natural Gas Usage";
+
+
     public static ArrayList<String> validMonths = new ArrayList<>(); // stores all the valid months
 
     private static ArrayList<String> menuOptions = new ArrayList<>(); // stores all the main menu options
@@ -32,7 +39,8 @@ public class Menu {
         menuOptions.addAll(Arrays.asList("Enter This Month's Usage", "View Usage Summary",
                 "Save", "Load", "Quit"));
         summaryOptions.addAll(Arrays.asList("Monthly Overview", "View Statistics", "View Graphs", "Back"));
-        sortOptions.addAll(Arrays.asList("Highest to Lowest Cost", "Lowest to Highest Cost", "Quit"));
+        sortOptions.addAll(Arrays.asList("Highest to Lowest Total Cost", "Lowest to Highest Total Cost", "Highest to Lowest Electricity Cost",
+                "Lowest to Highest Electricity Cost", "Quit"));
     }
 
     public static void mainMenu(){
@@ -148,30 +156,34 @@ public class Menu {
             }
             switch (option) {
                 case 1:
-                    usageSorter.sortFromHighestToLowestTotalCost();
-                    for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
-                        System.out.println("\n----------------------------\n");
-                        System.out.println(usageSorter.getSortedMonths().get(i) + ":");
-                        estimations(usageSorter.getSortedElectricityUsed().get(i), usageSorter.getSortedNaturalGasUsed().get(i));
-                        System.out.println();
-                    }
+                    usageSorter.sortFromHighestToLowest(TOTAL_COST);
+                    sortedDataDisplayHelper(usageSorter);
                     break;
                 case 2:
                     usageSorter.sortFromLowestToHighestTotalCost();
-                    for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
-                        System.out.println("\n----------------------------\n");
-                        System.out.println(usageSorter.getSortedMonths().get(i) + ":");
-                        estimations(usageSorter.getSortedElectricityUsed().get(i), usageSorter.getSortedNaturalGasUsed().get(i));
-                        System.out.println();
-                    }
+                    sortedDataDisplayHelper(usageSorter);
                     break;
                 case 3:
-                    isRunning = false;
+                    usageSorter.sortFromHighestToLowest(ELECTRICITY_COST);
+                    sortedDataDisplayHelper(usageSorter);
+                    break;
+                case 4:
+                    usageSorter.sortFromLowestToHighestElectricityUsage();
+                    sortedDataDisplayHelper(usageSorter);
                     break;
                 default:
                     System.out.println("Invalid Option");
                     break;
             }
+        }
+    }
+
+    private static void sortedDataDisplayHelper(UsageSorter usageSorter){
+        for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
+            System.out.println("\n----------------------------\n");
+            System.out.println(usageSorter.getSortedMonths().get(i) + ":");
+            estimations(usageSorter.getSortedElectricityUsed().get(i), usageSorter.getSortedNaturalGasUsed().get(i));
+            System.out.println();
         }
     }
 
