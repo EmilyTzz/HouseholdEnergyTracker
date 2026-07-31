@@ -74,7 +74,7 @@ public class UsageSorter {
     private int sortFromHighestToLowestTotalCostHelper(){
         int indexOfMonthWithHighestTotalCost = 0;
         if (months.size() > 1){
-            for (int i = 0; i < months.size()-1; i++){
+            for (int i = 0; i < months.size(); i++){
                 if (Cost.getTotalCost(electricityUsed.get(indexOfMonthWithHighestTotalCost), naturalGasUsed.get(indexOfMonthWithHighestTotalCost))<Cost.getTotalCost(electricityUsed.get(i), naturalGasUsed.get(i))){
                     indexOfMonthWithHighestTotalCost = i;
                 }
