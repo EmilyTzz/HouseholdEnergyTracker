@@ -54,8 +54,16 @@ public class UsageSorter {
 
     }
 
-    public void sortFromLowestToHighestElectricityUsage(){
+    public void sortFromLowestToHighestElectricityCost(){
         sortFromHighestToLowest(Menu.ELECTRICITY_COST);
+        Collections.reverse(months);
+        Collections.reverse(electricityUsed);
+        Collections.reverse(naturalGasUsed);
+
+    }
+
+    public void sortFromLowestToHighestNaturalGasCost(){
+        sortFromHighestToLowest(Menu.NATURAL_GAS_COST);
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
@@ -73,6 +81,9 @@ public class UsageSorter {
             }
             else if (energyData.equals(Menu.ELECTRICITY_COST)){
                 indexOfMonthWithHighestEnergyData = sortFromHighestToLowestElectricityHelper();
+            }
+            else if (energyData.equals(Menu.NATURAL_GAS_COST)){
+                indexOfMonthWithHighestEnergyData = sortFromHighestToLowestNaturalGasHelper();
             }
             sortedMonths.add(months.get(indexOfMonthWithHighestEnergyData));
             sortedElectricityUsed.add(electricityUsed.get(indexOfMonthWithHighestEnergyData));
@@ -110,6 +121,19 @@ public class UsageSorter {
             }
         }
         return indexOfMonthWithHighestElectricity;
+    }
+
+    private int sortFromHighestToLowestNaturalGasHelper(){
+        int indexOfMonthWithHighestNaturalGas = 0;
+        if (months.size() > 1){
+            for (int i = 0; i < months.size(); i++){
+                if (naturalGasUsed.get(indexOfMonthWithHighestNaturalGas)<naturalGasUsed.get(i)){
+                    indexOfMonthWithHighestNaturalGas = i;
+                }
+
+            }
+        }
+        return indexOfMonthWithHighestNaturalGas;
     }
 
     public List<String> getSortedMonths() {

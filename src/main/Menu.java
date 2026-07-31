@@ -19,7 +19,7 @@ public class Menu {
 
     public static final String ELECTRICITY_COST = "Electricity Cost";
 
-    public static final String NATURAL_GAS_USAGE = "Natural Gas Usage";
+    public static final String NATURAL_GAS_COST = "Natural Gas Cost";
 
 
     public static ArrayList<String> validMonths = new ArrayList<>(); // stores all the valid months
@@ -40,7 +40,7 @@ public class Menu {
                 "Save", "Load", "Quit"));
         summaryOptions.addAll(Arrays.asList("Monthly Overview", "View Statistics", "View Graphs", "Back"));
         sortOptions.addAll(Arrays.asList("Highest to Lowest Total Cost", "Lowest to Highest Total Cost", "Highest to Lowest Electricity Cost",
-                "Lowest to Highest Electricity Cost", "Quit"));
+                "Lowest to Highest Electricity Cost", "Highest to Lowest Natural Gas Cost", "Lowest to Highest Natural Gas Cost", "Quit"));
     }
 
     public static void mainMenu(){
@@ -168,7 +168,15 @@ public class Menu {
                     sortedDataDisplayHelper(usageSorter);
                     break;
                 case 4:
-                    usageSorter.sortFromLowestToHighestElectricityUsage();
+                    usageSorter.sortFromLowestToHighestElectricityCost();
+                    sortedDataDisplayHelper(usageSorter);
+                    break;
+                case 5:
+                    usageSorter.sortFromHighestToLowest(NATURAL_GAS_COST);
+                    sortedDataDisplayHelper(usageSorter);
+                    break;
+                case 6:
+                    usageSorter.sortFromLowestToHighestNaturalGasCost();
                     sortedDataDisplayHelper(usageSorter);
                     break;
                 default:
