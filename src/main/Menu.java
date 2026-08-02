@@ -131,11 +131,11 @@ public class Menu {
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
         usageSorter.sortInfoAccordingToMonths();
         System.out.println("\n--------------Overview--------------");
-        for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
-            System.out.println("\n----------------------------\n");
-            System.out.println(usageSorter.getSortedMonths().get(i) + ":");
-            estimations(usageSorter.getSortedElectricityUsed().get(i), usageSorter.getSortedNaturalGasUsed().get(i));
-            System.out.println();
+        if (usage.getMonths().isEmpty()){
+            System.out.println("No Data Here Yet...");
+        }
+        else{
+            sortedDataDisplayHelper(usageSorter);
         }
         boolean isRunning = true;
         while (isRunning){
@@ -302,7 +302,27 @@ public class Menu {
         //System.out.println(naturalGas);
         estimations(electricity, naturalGas);
         double totalEmission = (CarbonConvertor.getElectricityCarbonFootprint(electricity) + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
-        System.out.println("💡 That is the same amount of energy required to power " + CarbonConvertor.getEquivalentOfCO2Emission(totalEmission) + " homes for a day!\n");
+        System.out.println("💡 That is the same amount of energy required to power " + CarbonConvertor.getEquivalentOfCO2Emission(totalEmission) + " homes for a day!");
+        System.out.println("...");
+        compareCostFromLastMonth(month);
+    }
+
+    private static void compareCostFromLastMonth(String monthEntered){
+        UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
+        usageSorter.sortInfoAccordingToMonths();
+        if (!usageSorter.getSortedMonths().getFirst().equals(monthEntered)){
+            int indexOfMonthBefore = usageSorter.getSortedMonths().indexOf(monthEntered)-1;
+            double costDiff = Cost.getPercentageDiffInCostFromLastMonth(monthEntered, usageSorter.getSortedMonths().get(indexOfMonthBefore), usageSorter);
+            if (costDiff < 0){
+                System.out.println("The costs for this month decreased by " + costDiff*(-1) + "% compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore)+ "\n");
+            }
+            else if (costDiff > 0){
+                System.out.println("The costs for this month increased by " + costDiff + "% compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore)+ "\n");
+            }
+            else{
+                System.out.println("The cost for this month has not changed compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore) + "\n");
+            }
+        }
     }
 
     private static void estimations(double electricity, double naturalGas){
