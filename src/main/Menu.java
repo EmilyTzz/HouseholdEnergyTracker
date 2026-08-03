@@ -351,7 +351,7 @@ public class Menu {
         System.out.println("Estimated CO2 Emission from Natural Gas used: " + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas) + "kg\n");
         System.out.println("Total cost: $" + (Cost.getTotalCost(electricity, naturalGas)));
         double totalEmission = (CarbonConvertor.getElectricityCarbonFootprint(electricity) + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
-        System.out.println("Total CO2 Emission: " + totalEmission + "kg");
+        System.out.println("Total CO2 Emission: " + totalEmission + " kg");
     }
 
 }
