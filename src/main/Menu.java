@@ -305,6 +305,7 @@ public class Menu {
         System.out.println("💡 That is the same amount of energy required to power " + CarbonConvertor.getEquivalentOfCO2Emission(totalEmission) + " homes for a day!");
         System.out.println("...");
         compareCostFromLastMonth(month);
+        compareCarbonEmissionFromLastMonth(month);
     }
 
     private static void compareCostFromLastMonth(String monthEntered){
@@ -321,6 +322,24 @@ public class Menu {
             }
             else{
                 System.out.println("The cost for this month has not changed compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore) + "\n");
+            }
+        }
+    }
+
+    private static void compareCarbonEmissionFromLastMonth(String monthEntered){
+        UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
+        usageSorter.sortInfoAccordingToMonths();
+        if (!usageSorter.getSortedMonths().getFirst().equals(monthEntered)){
+            int indexOfMonthBefore = usageSorter.getSortedMonths().indexOf(monthEntered)-1;
+            double carbonDiff = CarbonConvertor.getPercentageDiffInCarbonFromLastMonth(monthEntered, usageSorter.getSortedMonths().get(indexOfMonthBefore), usageSorter);
+            if (carbonDiff < 0){
+                System.out.println("The carbon emission for this month decreased by " + carbonDiff*(-1) + "% compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore)+ "\n");
+            }
+            else if (carbonDiff > 0){
+                System.out.println("The carbon emission for this month increased by " + carbonDiff + "% compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore)+ "\n");
+            }
+            else{
+                System.out.println("The carbon emission for this month has not changed compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore) + "\n");
             }
         }
     }
