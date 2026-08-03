@@ -230,7 +230,6 @@ public class Menu {
         while (!validFile) {
             System.out.println("Enter the name of the File you want to load from: ");
             filename = scanner.nextLine().trim();
-
             if (filename.isEmpty()){
                 System.out.println("\n* ERROR: File name cannot be empty. Please try again. *");
                 continue;
@@ -246,6 +245,7 @@ public class Menu {
             Reader reader = new Reader();
             usage = new Usage();
             reader.loadInfo(file, usage);
+            validFile = true;
         }
     }
 
@@ -269,7 +269,6 @@ public class Menu {
                 }
             }
         }
-        //System.out.println(month);
         // Electricity Input
         while (true){
             try{
@@ -284,7 +283,6 @@ public class Menu {
                 System.out.println("Please enter a valid amount");
             }
         }
-        //System.out.println(electricity);
         // Natural Gas Input
         while (true){
             try{
@@ -299,10 +297,9 @@ public class Menu {
                 System.out.println("Please enter a valid amount");
             }
         }
-        //System.out.println(naturalGas);
         estimations(electricity, naturalGas);
         double totalEmission = (CarbonConvertor.getElectricityCarbonFootprint(electricity) + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
-        System.out.println("💡 That is the same amount of energy required to power " + CarbonConvertor.getEquivalentOfCO2Emission(totalEmission) + " homes for a day!");
+        System.out.println("\n💡 That is the same amount of energy required to power " + CarbonConvertor.getEquivalentOfCO2Emission(totalEmission) + " homes for a day!");
         System.out.println("...");
         compareCostFromLastMonth(month);
         compareCarbonEmissionFromLastMonth(month);
