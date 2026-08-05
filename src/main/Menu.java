@@ -31,6 +31,8 @@ public class Menu {
 
     private static Usage usage = new Usage();
 
+    private static Cost cost = new Cost();
+
 
     static{
         validMonths.addAll(Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY",
@@ -216,7 +218,7 @@ public class Menu {
             try {
                 Writer writer = new Writer();
                 UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
-                writer.saveInfo(file, usageSorter);
+                writer.saveInfo(file, usageSorter, cost);
                 validFile = true;
             } catch (Exception e) {
                 System.out.println("* ERROR: An unexpected error occurred while handling the file *");
@@ -246,16 +248,16 @@ public class Menu {
             }
             Reader reader = new Reader();
             usage = new Usage();
-            reader.loadInfo(file, usage);
+            reader.loadInfo(file, usage, cost);
             validFile = true;
         }
     }
 
     private static void consumptionInputMenu(){
         System.out.println("--------------Your Energy Consumption This Month--------------");
-        if (Cost.getCostPerKwH() == 0 && Cost.getCostPerGJ() == 0){
-            Cost.setCostPerKwH();
-            Cost.setCostPerGJ();
+        if (cost.getCostPerKwH() == 0 && cost.getCostPerGJ() == 0){
+            cost.setCostPerKwH(setCostPerKwHHelper());
+            cost.setCostPerGJ(setCostPerGJHelper());
         }
         String month;
         double electricity;
@@ -312,6 +314,36 @@ public class Menu {
 
     }
 
+    public static double setCostPerKwHHelper(){
+        double costPerKwH = 0;
+        while (true){
+            try{
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Price per KwH: ");
+                costPerKwH = scanner.nextDouble();
+                break;
+            }catch (InputMismatchException e){
+                System.out.println("Please enter a valid amount");
+            }
+        }
+        return costPerKwH;
+    }
+
+    public static double setCostPerGJHelper(){
+        double costPerGJ = 0;
+        while (true){
+            try{
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Price per GJ: ");
+                costPerGJ = scanner.nextDouble();
+                break;
+            }catch (InputMismatchException e){
+                System.out.println("Please enter a valid amount");
+            }
+        }
+        return costPerGJ;
+    }
+
     private static void compareCostFromLastMonth(String monthEntered){
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
         usageSorter.sortInfoAccordingToMonths();
@@ -349,11 +381,11 @@ public class Menu {
     }
 
     private static void estimations(double electricity, double naturalGas){
-        System.out.println("\nEstimated Electricity Cost: $" + Cost.getElectricityCost(electricity));
+        System.out.println("\nEstimated Electricity Cost: $" + cost.getElectricityCost(electricity));
         System.out.println("Estimated CO2 Emission from Electricity used: " + CarbonConvertor.getElectricityCarbonFootprint(electricity) + "kg\n");
-        System.out.println("Estimated Natural Gas Cost: $" + Cost.getNaturalGasCost(naturalGas));
+        System.out.println("Estimated Natural Gas Cost: $" + cost.getNaturalGasCost(naturalGas));
         System.out.println("Estimated CO2 Emission from Natural Gas used: " + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas) + "kg\n");
-        System.out.println("Total cost: $" + (Cost.getTotalCost(electricity, naturalGas)));
+        System.out.println("Total cost: $" + (cost.getTotalCost(electricity, naturalGas)));
         double totalEmission = (CarbonConvertor.getElectricityCarbonFootprint(electricity) + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
         System.out.println("Total CO2 Emission: " + totalEmission + " kg");
     }

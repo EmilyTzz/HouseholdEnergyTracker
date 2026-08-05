@@ -23,30 +23,12 @@ public class Cost {
         return costPerGJ;
     }
 
-    public static void setCostPerKwH(){
-        while (true){
-            try{
-                Scanner scanner = new Scanner(System.in);
-                System.out.print("Price per KwH: ");
-                costPerKwH = scanner.nextDouble();
-                break;
-            }catch (InputMismatchException e){
-                System.out.println("Please enter a valid amount");
-            }
-        }
+    public static void setCostPerKwH(double price){
+        costPerGJ = price;
     }
 
-    public static void setCostPerGJ(){
-        while (true){
-            try{
-                Scanner scanner = new Scanner(System.in);
-                System.out.print("Price per GJ: ");
-                costPerGJ = scanner.nextDouble();
-                break;
-            }catch (InputMismatchException e){
-                System.out.println("Please enter a valid amount");
-            }
-        }
+    public static void setCostPerGJ(double price){
+        costPerGJ = price;
     }
 
     public static double getElectricityCost(double electricity){
