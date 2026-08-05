@@ -1,5 +1,6 @@
 package file;
 
+import object.Cost;
 import object.Usage;
 import object.UsageSorter;
 
@@ -10,8 +11,9 @@ import java.io.PrintWriter;
 
 public class Writer {
 
-    public void saveInfo(File file, UsageSorter usageSorter){
+    public void saveInfo(File file, UsageSorter usageSorter, Cost cost){
         try (PrintWriter writer = new PrintWriter(new FileWriter(file))){
+            writer.printf(Cost.getCostPerKwH() + "," + Cost.getCostPerGJ());
             writer.println("month,electricity used,natural gas used");
             usageSorter.sortInfoAccordingToMonths();
             for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){

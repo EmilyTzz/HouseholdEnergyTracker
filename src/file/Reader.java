@@ -1,16 +1,26 @@
 package file;
 
+import object.Cost;
 import object.Usage;
 
 import java.io.*;
 
 public class Reader {
 
-    public void loadInfo(File file, Usage usage){
+    public void loadInfo(File file, Usage usage, Cost cost){
         try{
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
+            boolean isFirstLine = true;
             while ((line = br.readLine()) != null){
+                if (isFirstLine){
+                    String[] data = line.split(",");
+                    double pricePerKwH = Double.parseDouble(data[0]);
+                    double pricePerGJ = Double.parseDouble(data[1]);
+                    cost.setCostPerKwH(pricePerKwH);
+                    cost.setCostPerGJ(pricePerGJ);
+                    isFirstLine = false;
+                }
                 if (line.trim().isEmpty() || line.toLowerCase().startsWith("month")){
                     continue;
                 }
