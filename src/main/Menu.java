@@ -21,7 +21,6 @@ public class Menu {
 
     public static final String NATURAL_GAS_COST = "Natural Gas Cost";
 
-
     public static ArrayList<String> validMonths = new ArrayList<>(); // stores all the valid months
 
     private static ArrayList<String> menuOptions = new ArrayList<>(); // stores all the main menu options
@@ -254,6 +253,10 @@ public class Menu {
 
     private static void consumptionInputMenu(){
         System.out.println("--------------Your Energy Consumption This Month--------------");
+        if (Cost.getCostPerKwH() == 0 && Cost.getCostPerGJ() == 0){
+            Cost.setCostPerKwH();
+            Cost.setCostPerGJ();
+        }
         String month;
         double electricity;
         double naturalGas;
@@ -306,6 +309,7 @@ public class Menu {
         System.out.println("...");
         compareCostFromLastMonth(month);
         compareCarbonEmissionFromLastMonth(month);
+
     }
 
     private static void compareCostFromLastMonth(String monthEntered){
