@@ -24,5 +24,13 @@ public class Cost {
         return RoundingHelper.roundingHelper(((costForCurrMonth - costForLastMonth)/costForLastMonth)*100);
     }
 
+    public static double getMonthlyCostPercentage(String month, Usage usage){
+        double totalCostOfAllMonths = 0;
+        for (int i = 0; i < usage.getMonths().size(); i ++){
+            totalCostOfAllMonths += getTotalCost(usage.getElectricityUsed().get(i), usage.getNaturalGasUsed().get(i));
+        }
+        int indexOfCurrMonth = usage.getMonths().indexOf(month);
+        return RoundingHelper.roundingHelper(((getTotalCost(usage.getElectricityUsed().get(indexOfCurrMonth), usage.getNaturalGasUsed().get(indexOfCurrMonth)))/totalCostOfAllMonths)*100);
+    }
 
 }

@@ -118,7 +118,6 @@ public class Menu {
                     break;
                 case 4:
                     isRunning = false;
-                    mainMenu();
                     break;
                 default:
                     System.out.println("Invalid Option");
@@ -133,6 +132,7 @@ public class Menu {
         System.out.println("\n--------------Overview--------------");
         if (usage.getMonths().isEmpty()){
             System.out.println("No Data Here Yet...");
+            return; // back to summary menu
         }
         else{
             sortedDataDisplayHelper(usageSorter);
@@ -178,6 +178,9 @@ public class Menu {
                 case 6:
                     usageSorter.sortFromLowestToHighestNaturalGasCost();
                     sortedDataDisplayHelper(usageSorter);
+                    break;
+                case 7:
+                    isRunning = false;
                     break;
                 default:
                     System.out.println("Invalid Option");
