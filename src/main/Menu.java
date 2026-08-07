@@ -37,7 +37,7 @@ public class Menu {
     static{
         validMonths.addAll(Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY",
                 "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"));
-        menuOptions.addAll(Arrays.asList("Enter This Month's Usage", "View Usage Summary",
+        menuOptions.addAll(Arrays.asList("Enter This Month's Usage", "View Usage Summary", "Edit Price/kwH or Price/GJ",
                 "Save", "Load", "Quit"));
         summaryOptions.addAll(Arrays.asList("Monthly Overview", "View Statistics", "View Graphs", "Back"));
         sortOptions.addAll(Arrays.asList("Highest to Lowest Total Cost", "Lowest to Highest Total Cost", "Highest to Lowest Electricity Cost",
@@ -71,14 +71,19 @@ public class Menu {
                     summaryMenu();
                     break;
                 case 3:
+                    System.out.println("--------------Set Costs--------------");
+                    cost.setCostPerKwH(setCostPerKwHHelper());
+                    cost.setCostPerGJ(setCostPerGJHelper());
+                    break;
+                case 4:
                     //System.out.println("Save");
                     saveInfo();
                     break;
-                case 4:
+                case 5:
                     //System.out.println("Load");
                     loadInfo();
                     break;
-                case 5:
+                case 6:
                     isRunning = false;
                     break;
                 default:
