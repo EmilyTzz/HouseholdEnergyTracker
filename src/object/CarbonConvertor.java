@@ -25,4 +25,13 @@ public class CarbonConvertor {
         double carbonForLastMonth = getTotalCarbonEmission(usageSorter.getSortedElectricityUsed().get(indexOfLastMonth), usageSorter.getSortedNaturalGasUsed().get(indexOfLastMonth));
         return RoundingHelper.roundingHelper(((carbonForCurrMonth - carbonForLastMonth)/carbonForLastMonth)*100);
     }
+
+    public static double getMonthlyEmissionPercentage(String month, Usage usage){
+        double totalCarbonOfAllMonths = 0;
+        for (int i = 0; i < usage.getMonths().size(); i ++){
+            totalCarbonOfAllMonths += getTotalCarbonEmission(usage.getElectricityUsed().get(i), usage.getNaturalGasUsed().get(i));
+        }
+        int indexOfCurrMonth = usage.getMonths().indexOf(month);
+        return RoundingHelper.roundingHelper(((getTotalCarbonEmission(usage.getElectricityUsed().get(indexOfCurrMonth), usage.getNaturalGasUsed().get(indexOfCurrMonth)))/totalCarbonOfAllMonths)*100);
+    }
 }
