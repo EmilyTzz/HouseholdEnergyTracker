@@ -1,5 +1,7 @@
 package object;
 
+import java.util.List;
+
 public class CarbonConvertor {
 
     public static double getElectricityCarbonFootprint(double electricity){
@@ -33,5 +35,13 @@ public class CarbonConvertor {
         }
         int indexOfCurrMonth = usage.getMonths().indexOf(month);
         return RoundingHelper.roundingHelper(((getTotalCarbonEmission(usage.getElectricityUsed().get(indexOfCurrMonth), usage.getNaturalGasUsed().get(indexOfCurrMonth)))/totalCarbonOfAllMonths)*100);
+    }
+
+    public static double getAverageEmission(List<Double> electricityUsed, List<Double> naturalGasUsed){
+        double totalEmission = 0;
+        for (int i = 0; i < electricityUsed.size(); i ++){
+            totalEmission += getTotalCarbonEmission(electricityUsed.get(i), naturalGasUsed.get(i));
+        }
+        return RoundingHelper.roundingHelper(totalEmission/electricityUsed.size());
     }
 }

@@ -2,6 +2,7 @@ package object;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Cost {
@@ -58,6 +59,14 @@ public class Cost {
         }
         int indexOfCurrMonth = usage.getMonths().indexOf(month);
         return RoundingHelper.roundingHelper(((getTotalCost(usage.getElectricityUsed().get(indexOfCurrMonth), usage.getNaturalGasUsed().get(indexOfCurrMonth)))/totalCostOfAllMonths)*100);
+    }
+
+    public static double getAverageCost(List<Double> electricityUsed, List<Double> naturalGasUsed){
+        double totalCost = 0;
+        for (int i = 0; i < electricityUsed.size(); i ++){
+            totalCost += getTotalCost(electricityUsed.get(i), naturalGasUsed.get(i));
+        }
+        return RoundingHelper.roundingHelper(totalCost/electricityUsed.size());
     }
 
 }
