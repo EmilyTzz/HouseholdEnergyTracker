@@ -44,21 +44,21 @@ public class Cost {
         return RoundingHelper.roundingHelper((electricity*costPerKwH)+(naturalGas*costPerGJ));
     }
 
-    public static double getPercentageDiffInCostFromLastMonth(String currMonth, String lastMonth, UsageSorter usageSorter){
-        int indexOfCurrMonth = usageSorter.getSortedMonths().indexOf(currMonth);
-        int indexOfLastMonth = usageSorter.getSortedMonths().indexOf(lastMonth);
-        double costForCurrMonth = getTotalCost(usageSorter.getSortedElectricityUsed().get(indexOfCurrMonth), usageSorter.getSortedNaturalGasUsed().get(indexOfCurrMonth));
-        double costForLastMonth = getTotalCost(usageSorter.getSortedElectricityUsed().get(indexOfLastMonth), usageSorter.getSortedNaturalGasUsed().get(indexOfLastMonth));
+    public static double getPercentageDiffInCostFromLastMonth(String currMonth, String lastMonth, List<String> months, List<Double> electricityUsed, List<Double> naturalGasUsed){
+        int indexOfCurrMonth = months.indexOf(currMonth);
+        int indexOfLastMonth = months.indexOf(lastMonth);
+        double costForCurrMonth = getTotalCost(electricityUsed.get(indexOfCurrMonth), naturalGasUsed.get(indexOfCurrMonth));
+        double costForLastMonth = getTotalCost(electricityUsed.get(indexOfLastMonth), naturalGasUsed.get(indexOfLastMonth));
         return RoundingHelper.roundingHelper(((costForCurrMonth - costForLastMonth)/costForLastMonth)*100);
     }
 
-    public static double getMonthlyCostPercentage(String month, Usage usage){
+    public static double getMonthlyCostPercentage(String month, List<String> months, List<Double> electricityUsed, List<Double> naturalGasUsed){
         double totalCostOfAllMonths = 0;
-        for (int i = 0; i < usage.getMonths().size(); i ++){
-            totalCostOfAllMonths += getTotalCost(usage.getElectricityUsed().get(i), usage.getNaturalGasUsed().get(i));
+        for (int i = 0; i < electricityUsed.size(); i ++){
+            totalCostOfAllMonths += getTotalCost(electricityUsed.get(i), naturalGasUsed.get(i));
         }
-        int indexOfCurrMonth = usage.getMonths().indexOf(month);
-        return RoundingHelper.roundingHelper(((getTotalCost(usage.getElectricityUsed().get(indexOfCurrMonth), usage.getNaturalGasUsed().get(indexOfCurrMonth)))/totalCostOfAllMonths)*100);
+        int indexOfCurrMonth = months.indexOf(month);
+        return RoundingHelper.roundingHelper(((getTotalCost(electricityUsed.get(indexOfCurrMonth), naturalGasUsed.get(indexOfCurrMonth)))/totalCostOfAllMonths)*100);
     }
 
     public static double getAverageCost(List<Double> electricityUsed, List<Double> naturalGasUsed){

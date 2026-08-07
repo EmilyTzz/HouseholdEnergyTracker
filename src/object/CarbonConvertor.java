@@ -20,22 +20,24 @@ public class CarbonConvertor {
         return RoundingHelper.roundingHelper((electricity*0.335)+(naturalGas*50));
     }
 
-    public static double getPercentageDiffInCarbonFromLastMonth(String currMonth, String lastMonth, UsageSorter usageSorter){
-        int indexOfCurrMonth = usageSorter.getSortedMonths().indexOf(currMonth);
-        int indexOfLastMonth = usageSorter.getSortedMonths().indexOf(lastMonth);
-        double carbonForCurrMonth = getTotalCarbonEmission(usageSorter.getSortedElectricityUsed().get(indexOfCurrMonth), usageSorter.getSortedNaturalGasUsed().get(indexOfCurrMonth));
-        double carbonForLastMonth = getTotalCarbonEmission(usageSorter.getSortedElectricityUsed().get(indexOfLastMonth), usageSorter.getSortedNaturalGasUsed().get(indexOfLastMonth));
+    public static double getPercentageDiffInCarbonFromLastMonth(String currMonth, String lastMonth, List<String> months, List<Double> electricityUsed, List<Double> naturalGasUsed){
+        int indexOfCurrMonth = months.indexOf(currMonth);
+        int indexOfLastMonth = months.indexOf(lastMonth);
+        double carbonForCurrMonth = getTotalCarbonEmission(electricityUsed.get(indexOfCurrMonth), naturalGasUsed.get(indexOfCurrMonth));
+        double carbonForLastMonth = getTotalCarbonEmission(electricityUsed.get(indexOfLastMonth), naturalGasUsed.get(indexOfLastMonth));
         return RoundingHelper.roundingHelper(((carbonForCurrMonth - carbonForLastMonth)/carbonForLastMonth)*100);
     }
 
-    public static double getMonthlyEmissionPercentage(String month, Usage usage){
+
+    public static double getMonthlyEmissionPercentage(String month, List<String> months, List<Double> electricityUsed, List<Double> naturalGasUsed){
         double totalCarbonOfAllMonths = 0;
-        for (int i = 0; i < usage.getMonths().size(); i ++){
-            totalCarbonOfAllMonths += getTotalCarbonEmission(usage.getElectricityUsed().get(i), usage.getNaturalGasUsed().get(i));
+        for (int i = 0; i < electricityUsed.size(); i ++){
+            totalCarbonOfAllMonths += getTotalCarbonEmission(electricityUsed.get(i), naturalGasUsed.get(i));
         }
-        int indexOfCurrMonth = usage.getMonths().indexOf(month);
-        return RoundingHelper.roundingHelper(((getTotalCarbonEmission(usage.getElectricityUsed().get(indexOfCurrMonth), usage.getNaturalGasUsed().get(indexOfCurrMonth)))/totalCarbonOfAllMonths)*100);
+        int indexOfCurrMonth = months.indexOf(month);
+        return RoundingHelper.roundingHelper(((getTotalCarbonEmission(electricityUsed.get(indexOfCurrMonth), naturalGasUsed.get(indexOfCurrMonth)))/totalCarbonOfAllMonths)*100);
     }
+
 
     public static double getAverageEmission(List<Double> electricityUsed, List<Double> naturalGasUsed){
         double totalEmission = 0;

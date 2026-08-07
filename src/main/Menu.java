@@ -354,7 +354,7 @@ public class Menu {
         usageSorter.sortInfoAccordingToMonths();
         if (!usageSorter.getSortedMonths().getFirst().equals(monthEntered)){
             int indexOfMonthBefore = usageSorter.getSortedMonths().indexOf(monthEntered)-1;
-            double costDiff = Cost.getPercentageDiffInCostFromLastMonth(monthEntered, usageSorter.getSortedMonths().get(indexOfMonthBefore), usageSorter);
+            double costDiff = Cost.getPercentageDiffInCostFromLastMonth(monthEntered, usageSorter.getSortedMonths().get(indexOfMonthBefore), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed());
             if (costDiff < 0){
                 System.out.println("The costs for this month decreased by " + costDiff*(-1) + "% compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore)+ "\n");
             }
@@ -372,7 +372,7 @@ public class Menu {
         usageSorter.sortInfoAccordingToMonths();
         if (!usageSorter.getSortedMonths().getFirst().equals(monthEntered)){
             int indexOfMonthBefore = usageSorter.getSortedMonths().indexOf(monthEntered)-1;
-            double carbonDiff = CarbonConvertor.getPercentageDiffInCarbonFromLastMonth(monthEntered, usageSorter.getSortedMonths().get(indexOfMonthBefore), usageSorter);
+            double carbonDiff = CarbonConvertor.getPercentageDiffInCarbonFromLastMonth(monthEntered, usageSorter.getSortedMonths().get(indexOfMonthBefore), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed());
             if (carbonDiff < 0){
                 System.out.println("The carbon emission for this month decreased by " + carbonDiff*(-1) + "% compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore)+ "\n");
             }
