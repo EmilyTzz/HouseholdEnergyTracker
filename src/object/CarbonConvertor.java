@@ -4,23 +4,23 @@ import java.util.List;
 
 public class CarbonConvertor {
 
-    public static double getElectricityCarbonFootprint(double electricity){
+    public double getElectricityCarbonFootprint(double electricity){
         return RoundingHelper.roundingHelper(electricity*0.335); // estimated kg of carbon 1 kwh of electricity emits
     }
 
-    public static double getNaturalGasCarbonFootprint(double naturalGas){
+    public double getNaturalGasCarbonFootprint(double naturalGas){
         return RoundingHelper.roundingHelper(naturalGas*50); // estimated kg of carbon 1 gj of natural gas emits
     }
 
-    public static double getEquivalentOfCO2Emission(double emission){
+    public double getEquivalentOfCO2Emission(double emission){
         return Math.round(emission/12.39); // An average household uses 12.39 kg of CO2 per day
     }
 
-    public static double getTotalCarbonEmission(double electricity, double naturalGas){
+    public double getTotalCarbonEmission(double electricity, double naturalGas){
         return RoundingHelper.roundingHelper((electricity*0.335)+(naturalGas*50));
     }
 
-    public static double getPercentageDiffInCarbonFromLastMonth(String currMonth, String lastMonth, List<String> months, List<Double> electricityUsed, List<Double> naturalGasUsed){
+    public double getPercentageDiffInCarbonFromLastMonth(String currMonth, String lastMonth, List<String> months, List<Double> electricityUsed, List<Double> naturalGasUsed){
         int indexOfCurrMonth = months.indexOf(currMonth);
         int indexOfLastMonth = months.indexOf(lastMonth);
         double carbonForCurrMonth = getTotalCarbonEmission(electricityUsed.get(indexOfCurrMonth), naturalGasUsed.get(indexOfCurrMonth));
@@ -29,7 +29,7 @@ public class CarbonConvertor {
     }
 
 
-    public static double getMonthlyEmissionPercentage(String month, List<String> months, List<Double> electricityUsed, List<Double> naturalGasUsed){
+    public double getMonthlyEmissionPercentage(String month, List<String> months, List<Double> electricityUsed, List<Double> naturalGasUsed){
         double totalCarbonOfAllMonths = 0;
         for (int i = 0; i < electricityUsed.size(); i ++){
             totalCarbonOfAllMonths += getTotalCarbonEmission(electricityUsed.get(i), naturalGasUsed.get(i));
@@ -39,7 +39,7 @@ public class CarbonConvertor {
     }
 
 
-    public static double getAverageEmission(List<Double> electricityUsed, List<Double> naturalGasUsed){
+    public double getAverageEmission(List<Double> electricityUsed, List<Double> naturalGasUsed){
         double totalEmission = 0;
         for (int i = 0; i < electricityUsed.size(); i ++){
             totalEmission += getTotalCarbonEmission(electricityUsed.get(i), naturalGasUsed.get(i));

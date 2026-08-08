@@ -46,38 +46,38 @@ public class UsageSorter {
     }
 
 
-    public void sortFromLowestToHighestTotalCost(){
-        sortFromHighestToLowest(Menu.TOTAL_COST);
+    public void sortFromLowestToHighestTotalCost(Cost cost){
+        sortFromHighestToLowest(Menu.TOTAL_COST, cost);
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
 
     }
 
-    public void sortFromLowestToHighestElectricityCost(){
-        sortFromHighestToLowest(Menu.ELECTRICITY_COST);
+    public void sortFromLowestToHighestElectricityCost(Cost cost){
+        sortFromHighestToLowest(Menu.ELECTRICITY_COST, cost);
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
 
     }
 
-    public void sortFromLowestToHighestNaturalGasCost(){
-        sortFromHighestToLowest(Menu.NATURAL_GAS_COST);
+    public void sortFromLowestToHighestNaturalGasCost(Cost cost){
+        sortFromHighestToLowest(Menu.NATURAL_GAS_COST, cost);
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
 
     }
 
-    public void sortFromHighestToLowest(String energyData){
+    public void sortFromHighestToLowest(String energyData, Cost cost){
         List<String> sortedMonths = new ArrayList<>();
         List<Double> sortedElectricityUsed = new ArrayList<>();
         List<Double> sortedNaturalGasUsed = new ArrayList<>();
         while (months.size() != 0){
             int indexOfMonthWithHighestEnergyData = 0;
             if (energyData.equals(Menu.TOTAL_COST)) {
-                indexOfMonthWithHighestEnergyData = sortFromHighestToLowestTotalCostHelper();
+                indexOfMonthWithHighestEnergyData = sortFromHighestToLowestTotalCostHelper(cost);
             }
             else if (energyData.equals(Menu.ELECTRICITY_COST)){
                 indexOfMonthWithHighestEnergyData = sortFromHighestToLowestElectricityHelper();
@@ -97,11 +97,11 @@ public class UsageSorter {
         naturalGasUsed = sortedNaturalGasUsed;
     }
 
-    private int sortFromHighestToLowestTotalCostHelper(){
+    private int sortFromHighestToLowestTotalCostHelper(Cost cost){
         int indexOfMonthWithHighestTotalCost = 0;
         if (months.size() > 1){
             for (int i = 0; i < months.size(); i++){
-                if (Cost.getTotalCost(electricityUsed.get(indexOfMonthWithHighestTotalCost), naturalGasUsed.get(indexOfMonthWithHighestTotalCost))<Cost.getTotalCost(electricityUsed.get(i), naturalGasUsed.get(i))){
+                if (cost.getTotalCost(electricityUsed.get(indexOfMonthWithHighestTotalCost), naturalGasUsed.get(indexOfMonthWithHighestTotalCost))<cost.getTotalCost(electricityUsed.get(i), naturalGasUsed.get(i))){
                     indexOfMonthWithHighestTotalCost = i;
                 }
 

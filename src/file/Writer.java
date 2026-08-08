@@ -13,7 +13,7 @@ public class Writer {
 
     public void saveInfo(File file, UsageSorter usageSorter, Cost cost){
         try (PrintWriter writer = new PrintWriter(new FileWriter(file))){
-            writer.printf(Cost.getCostPerKwH() + "," + Cost.getCostPerGJ());
+            writer.printf(cost.getCostPerKwH() + "," + cost.getCostPerGJ());
             writer.println("month,electricity used,natural gas used");
             usageSorter.sortInfoAccordingToMonths();
             for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){

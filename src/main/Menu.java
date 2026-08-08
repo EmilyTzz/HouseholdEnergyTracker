@@ -134,21 +134,21 @@ public class Menu {
 
     private static void viewStatistics(){
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
-        usageSorter.sortFromHighestToLowest(TOTAL_COST);
+        usageSorter.sortFromHighestToLowest(TOTAL_COST, cost);
         System.out.println("\n--------------Statistics--------------");
         System.out.println("Average Usage Cost : $" + cost.getAverageCost(usage.getElectricityUsed(), usage.getNaturalGasUsed()));
         System.out.println("Average Usage Emissions : " + carbonConvertor.getAverageEmission(usage.getElectricityUsed(), usage.getNaturalGasUsed()) + " kg");
-        System.out.println("Cost Percentage of Each Month");
+        System.out.println("\nCost Percentage of Each Month");
         for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
             System.out.println(usageSorter.getSortedMonths().get(i) + ": " + cost.getMonthlyCostPercentage(usageSorter.getSortedMonths().get(i), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed()) + " %");
         }
-        System.out.println("Emission Percentage of Each Month");
+        System.out.println("\nEmission Percentage of Each Month");
         for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
             System.out.println(usageSorter.getSortedMonths().get(i) + ": " + carbonConvertor.getMonthlyEmissionPercentage(usageSorter.getSortedMonths().get(i), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed()) + " %");
         }
         boolean isRunning = true;
         while (isRunning){
-            System.out.println("Sort Options:");
+            System.out.println("\nSort Options:");
             for (int i = 0; i < sortOptions.size(); i ++){
                 System.out.println(i+1 + ". " + sortOptions.get(i));
             }
@@ -165,27 +165,27 @@ public class Menu {
             }
             switch (option) {
                 case 1:
-                    usageSorter.sortFromHighestToLowest(TOTAL_COST);
+                    usageSorter.sortFromHighestToLowest(TOTAL_COST, cost);
                     sortedDataDisplayHelper(usageSorter);
                     break;
                 case 2:
-                    usageSorter.sortFromLowestToHighestTotalCost();
+                    usageSorter.sortFromLowestToHighestTotalCost(cost);
                     sortedDataDisplayHelper(usageSorter);
                     break;
                 case 3:
-                    usageSorter.sortFromHighestToLowest(ELECTRICITY_COST);
+                    usageSorter.sortFromHighestToLowest(ELECTRICITY_COST, cost);
                     sortedDataDisplayHelper(usageSorter);
                     break;
                 case 4:
-                    usageSorter.sortFromLowestToHighestElectricityCost();
+                    usageSorter.sortFromLowestToHighestElectricityCost(cost);
                     sortedDataDisplayHelper(usageSorter);
                     break;
                 case 5:
-                    usageSorter.sortFromHighestToLowest(NATURAL_GAS_COST);
+                    usageSorter.sortFromHighestToLowest(NATURAL_GAS_COST, cost);
                     sortedDataDisplayHelper(usageSorter);
                     break;
                 case 6:
-                    usageSorter.sortFromLowestToHighestNaturalGasCost();
+                    usageSorter.sortFromLowestToHighestNaturalGasCost(cost);
                     sortedDataDisplayHelper(usageSorter);
                     break;
                 case 7:
@@ -328,8 +328,8 @@ public class Menu {
             }
         }
         estimations(electricity, naturalGas);
-        double totalEmission = (CarbonConvertor.getElectricityCarbonFootprint(electricity) + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
-        System.out.println("\n💡 That is the same amount of energy required to power " + CarbonConvertor.getEquivalentOfCO2Emission(totalEmission) + " homes for a day!");
+        double totalEmission = (carbonConvertor.getElectricityCarbonFootprint(electricity) + carbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
+        System.out.println("\n💡 That is the same amount of energy required to power " + carbonConvertor.getEquivalentOfCO2Emission(totalEmission) + " homes for a day!");
         System.out.println("...");
         compareCostFromLastMonth(month);
         compareCarbonEmissionFromLastMonth(month);
@@ -371,7 +371,7 @@ public class Menu {
         usageSorter.sortInfoAccordingToMonths();
         if (!usageSorter.getSortedMonths().getFirst().equals(monthEntered)){
             int indexOfMonthBefore = usageSorter.getSortedMonths().indexOf(monthEntered)-1;
-            double costDiff = Cost.getPercentageDiffInCostFromLastMonth(monthEntered, usageSorter.getSortedMonths().get(indexOfMonthBefore), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed());
+            double costDiff = cost.getPercentageDiffInCostFromLastMonth(monthEntered, usageSorter.getSortedMonths().get(indexOfMonthBefore), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed());
             if (costDiff < 0){
                 System.out.println("The costs for this month decreased by " + costDiff*(-1) + "% compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore)+ "\n");
             }
@@ -389,7 +389,7 @@ public class Menu {
         usageSorter.sortInfoAccordingToMonths();
         if (!usageSorter.getSortedMonths().getFirst().equals(monthEntered)){
             int indexOfMonthBefore = usageSorter.getSortedMonths().indexOf(monthEntered)-1;
-            double carbonDiff = CarbonConvertor.getPercentageDiffInCarbonFromLastMonth(monthEntered, usageSorter.getSortedMonths().get(indexOfMonthBefore), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed());
+            double carbonDiff = carbonConvertor.getPercentageDiffInCarbonFromLastMonth(monthEntered, usageSorter.getSortedMonths().get(indexOfMonthBefore), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed());
             if (carbonDiff < 0){
                 System.out.println("The carbon emission for this month decreased by " + carbonDiff*(-1) + "% compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore)+ "\n");
             }
@@ -404,11 +404,11 @@ public class Menu {
 
     private static void estimations(double electricity, double naturalGas){
         System.out.println("\nEstimated Electricity Cost: $" + cost.getElectricityCost(electricity));
-        System.out.println("Estimated CO2 Emission from Electricity used: " + CarbonConvertor.getElectricityCarbonFootprint(electricity) + "kg\n");
+        System.out.println("Estimated CO2 Emission from Electricity used: " + carbonConvertor.getElectricityCarbonFootprint(electricity) + "kg\n");
         System.out.println("Estimated Natural Gas Cost: $" + cost.getNaturalGasCost(naturalGas));
-        System.out.println("Estimated CO2 Emission from Natural Gas used: " + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas) + "kg\n");
+        System.out.println("Estimated CO2 Emission from Natural Gas used: " + carbonConvertor.getNaturalGasCarbonFootprint(naturalGas) + "kg\n");
         System.out.println("Total cost: $" + (cost.getTotalCost(electricity, naturalGas)));
-        double totalEmission = (CarbonConvertor.getElectricityCarbonFootprint(electricity) + CarbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
+        double totalEmission = (carbonConvertor.getElectricityCarbonFootprint(electricity) + carbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
         System.out.println("Total CO2 Emission: " + totalEmission + " kg");
     }
 
