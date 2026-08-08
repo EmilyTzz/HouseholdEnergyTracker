@@ -31,7 +31,9 @@ public class Menu {
 
     private static Usage usage = new Usage();
 
-    private static Cost cost = new Cost();
+    private final static Cost cost = new Cost();
+
+    private final static CarbonConvertor carbonConvertor = new CarbonConvertor();
 
 
     static{
@@ -76,11 +78,9 @@ public class Menu {
                     cost.setCostPerGJ(setCostPerGJHelper());
                     break;
                 case 4:
-                    //System.out.println("Save");
                     saveInfo();
                     break;
                 case 5:
-                    //System.out.println("Load");
                     loadInfo();
                     break;
                 case 6:
@@ -117,7 +117,7 @@ public class Menu {
                     overviewMenu();
                     break;
                 case 2:
-                    System.out.println("");
+                    viewStatistics();
                     break;
                 case 3:
                     System.out.println("");
@@ -132,16 +132,19 @@ public class Menu {
         }
     }
 
-    private static void overviewMenu(){
+    private static void viewStatistics(){
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
-        usageSorter.sortInfoAccordingToMonths();
-        System.out.println("\n--------------Overview--------------");
-        if (usage.getMonths().isEmpty()){
-            System.out.println("No Data Here Yet...");
-            return; // back to summary menu
+        usageSorter.sortFromHighestToLowest(TOTAL_COST);
+        System.out.println("\n--------------Statistics--------------");
+        System.out.println("Average Usage Cost : $" + cost.getAverageCost(usage.getElectricityUsed(), usage.getNaturalGasUsed()));
+        System.out.println("Average Usage Emissions : " + carbonConvertor.getAverageEmission(usage.getElectricityUsed(), usage.getNaturalGasUsed()) + " kg");
+        System.out.println("Cost Percentage of Each Month");
+        for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
+            System.out.println(usageSorter.getSortedMonths().get(i) + ": " + cost.getMonthlyCostPercentage(usageSorter.getSortedMonths().get(i), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed()) + " %");
         }
-        else{
-            sortedDataDisplayHelper(usageSorter);
+        System.out.println("Emission Percentage of Each Month");
+        for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
+            System.out.println(usageSorter.getSortedMonths().get(i) + ": " + carbonConvertor.getMonthlyEmissionPercentage(usageSorter.getSortedMonths().get(i), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed()) + " %");
         }
         boolean isRunning = true;
         while (isRunning){
@@ -193,6 +196,20 @@ public class Menu {
                     break;
             }
         }
+    }
+
+    private static void overviewMenu(){
+        UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
+        usageSorter.sortInfoAccordingToMonths();
+        System.out.println("\n--------------Overview--------------");
+        if (usage.getMonths().isEmpty()){
+            System.out.println("No Data Here Yet...");
+            return; // back to summary menu
+        }
+        else{
+            sortedDataDisplayHelper(usageSorter);
+        }
+
     }
 
     private static void sortedDataDisplayHelper(UsageSorter usageSorter){
