@@ -51,7 +51,8 @@ public class Menu {
                 "Save", "Load", "Quit"));
         summaryOptions.addAll(Arrays.asList("Monthly Overview", "View Statistics", "View Graphs", "Back"));
         sortOptions.addAll(Arrays.asList("Highest to Lowest Total Cost", "Lowest to Highest Total Cost", "Highest to Lowest Electricity Cost",
-                "Lowest to Highest Electricity Cost", "Highest to Lowest Natural Gas Cost", "Lowest to Highest Natural Gas Cost", "Quit"));
+                "Lowest to Highest Electricity Cost", "Highest to Lowest Natural Gas Cost", "Lowest to Highest Natural Gas Cost", "Highest to Lowest Emission Percentage",
+                "Lowest to Highest Emission Percentages" , "Quit"));
     }
 
     // Main Menu
@@ -372,6 +373,14 @@ public class Menu {
                     sortedDataDisplayHelper(usageSorter);
                     break;
                 case 7:
+                    usageSorter.sortFromHighestToLowest(TOTAL_EMISSION, null, carbonConvertor);
+                    sortedDataDisplayHelper(usageSorter);
+                    break;
+                case 8:
+                    usageSorter.sortFromLowestToHighestTotalEmission(carbonConvertor);
+                    sortedDataDisplayHelper(usageSorter);
+                    break;
+                case 9:
                     isRunning = false;
                     break;
                 default:

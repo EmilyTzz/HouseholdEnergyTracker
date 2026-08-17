@@ -53,7 +53,14 @@ public class UsageSorter {
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
+    }
 
+    // Reverses the highest to lowest monthly emission order
+    public void sortFromLowestToHighestTotalEmission(CarbonConvertor carbonConvertor){
+        sortFromHighestToLowest(Menu.TOTAL_EMISSION, null, carbonConvertor);
+        Collections.reverse(months);
+        Collections.reverse(electricityUsed);
+        Collections.reverse(naturalGasUsed);
     }
 
     // Reverses the highest to lowest monthly electricity costs order
@@ -62,7 +69,6 @@ public class UsageSorter {
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
-
     }
 
     // Reverses the highest to lowest monthly natural gas costs order
@@ -71,7 +77,6 @@ public class UsageSorter {
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
-
     }
 
     // sort from highest to lowest total cost or electricity cost or natural gas cost or total emission %
@@ -79,7 +84,7 @@ public class UsageSorter {
         List<String> sortedMonths = new ArrayList<>();
         List<Double> sortedElectricityUsed = new ArrayList<>();
         List<Double> sortedNaturalGasUsed = new ArrayList<>();
-        while (months.size() != 0){
+        while (!months.isEmpty()){
             int indexOfMonthWithHighestEnergyData = 0;
             if (energyData.equals(Menu.TOTAL_COST)) {
                 indexOfMonthWithHighestEnergyData = sortFromHighestToLowestTotalCostHelper(cost);
@@ -133,7 +138,7 @@ public class UsageSorter {
         return indexOfMonthWithHighestEmission;
     }
 
-    // Helper that finds the month with the highest electricty cost to add to the new list one by one
+    // Helper that finds the month with the highest electricity cost to add to the new list one by one
     private int sortFromHighestToLowestElectricityHelper(){
         int indexOfMonthWithHighestElectricity = 0;
         if (months.size() > 1){
