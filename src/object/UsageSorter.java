@@ -21,6 +21,7 @@ public class UsageSorter {
         this.naturalGasUsed = naturalGasUsed;
     }
 
+    // Sorts months in the traditional January - December order
     public void sortInfoAccordingToMonths(){
         List<String> sortedMonths = new ArrayList<>();
         List<Double> sortedElectricityUsed = new ArrayList<>();
@@ -35,6 +36,7 @@ public class UsageSorter {
         naturalGasUsed = sortedNaturalGasUsed;
     }
 
+    // Adds the month and its electricity and natural gas usage to the same order
     private void sorterHelper(List<String> sortedMonths, List<Double> sortedElectricityUsed, List<Double> sortedNaturalGasUsed, String month){
         for (int i = 0; i < months.size(); i ++){
             if (months.get(i).equals(month)){
@@ -45,32 +47,35 @@ public class UsageSorter {
         }
     }
 
-
+    // Reverses the highest to lowest monthly costs order
     public void sortFromLowestToHighestTotalCost(Cost cost){
-        sortFromHighestToLowest(Menu.TOTAL_COST, cost);
+        sortFromHighestToLowest(Menu.TOTAL_COST, cost, null);
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
 
     }
 
+    // Reverses the highest to lowest monthly electricity costs order
     public void sortFromLowestToHighestElectricityCost(Cost cost){
-        sortFromHighestToLowest(Menu.ELECTRICITY_COST, cost);
+        sortFromHighestToLowest(Menu.ELECTRICITY_COST, cost, null);
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
 
     }
 
+    // Reverses the highest to lowest monthly natural gas costs order
     public void sortFromLowestToHighestNaturalGasCost(Cost cost){
-        sortFromHighestToLowest(Menu.NATURAL_GAS_COST, cost);
+        sortFromHighestToLowest(Menu.NATURAL_GAS_COST, cost, null);
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
 
     }
 
-    public void sortFromHighestToLowest(String energyData, Cost cost){
+    // sort from highest to lowest total cost or electricity cost or natural gas cost or total emission %
+    public void sortFromHighestToLowest(String energyData, Cost cost, CarbonConvertor carbonConvertor){
         List<String> sortedMonths = new ArrayList<>();
         List<Double> sortedElectricityUsed = new ArrayList<>();
         List<Double> sortedNaturalGasUsed = new ArrayList<>();
@@ -78,6 +83,9 @@ public class UsageSorter {
             int indexOfMonthWithHighestEnergyData = 0;
             if (energyData.equals(Menu.TOTAL_COST)) {
                 indexOfMonthWithHighestEnergyData = sortFromHighestToLowestTotalCostHelper(cost);
+            }
+            else if (energyData.equals(Menu.TOTAL_EMISSION)){
+                indexOfMonthWithHighestEnergyData = sortFromHighestToLowestTotalEmissionHelper(carbonConvertor);
             }
             else if (energyData.equals(Menu.ELECTRICITY_COST)){
                 indexOfMonthWithHighestEnergyData = sortFromHighestToLowestElectricityHelper();
@@ -97,6 +105,7 @@ public class UsageSorter {
         naturalGasUsed = sortedNaturalGasUsed;
     }
 
+    // Helper that finds the month with the highest total cost to add to the new list one by one
     private int sortFromHighestToLowestTotalCostHelper(Cost cost){
         int indexOfMonthWithHighestTotalCost = 0;
         if (months.size() > 1){
@@ -110,6 +119,21 @@ public class UsageSorter {
         return indexOfMonthWithHighestTotalCost;
     }
 
+    // Helper that finds the month with the highest emission to add to the new list one by one
+    private int sortFromHighestToLowestTotalEmissionHelper(CarbonConvertor carbonConvertor){
+        int indexOfMonthWithHighestEmission = 0;
+        if (months.size() > 1){
+            for (int i = 0; i < months.size(); i++){
+                if (carbonConvertor.getTotalCarbonEmission(electricityUsed.get(indexOfMonthWithHighestEmission), naturalGasUsed.get(indexOfMonthWithHighestEmission)) < carbonConvertor.getTotalCarbonEmission(electricityUsed.get(i), naturalGasUsed.get(i))){
+                    indexOfMonthWithHighestEmission = i;
+                }
+
+            }
+        }
+        return indexOfMonthWithHighestEmission;
+    }
+
+    // Helper that finds the month with the highest electricty cost to add to the new list one by one
     private int sortFromHighestToLowestElectricityHelper(){
         int indexOfMonthWithHighestElectricity = 0;
         if (months.size() > 1){
@@ -123,6 +147,7 @@ public class UsageSorter {
         return indexOfMonthWithHighestElectricity;
     }
 
+    // Helper that finds the month with the highest natural gas cost to add to the new list one by one
     private int sortFromHighestToLowestNaturalGasHelper(){
         int indexOfMonthWithHighestNaturalGas = 0;
         if (months.size() > 1){
