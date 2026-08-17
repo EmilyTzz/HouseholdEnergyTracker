@@ -1,24 +1,28 @@
 package file;
 
+import main.Menu;
 import object.Cost;
 import object.Usage;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class Reader {
 
-    public void loadInfo(File file, Usage usage, Cost cost){
+    public void loadInfo(File file, Usage usage, Cost cost, String keepPriceOrNot){
         try{
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
             boolean isFirstLine = true;
             while ((line = br.readLine()) != null){
                 if (isFirstLine){
-                    String[] data = line.split(",");
-                    double pricePerKwH = Double.parseDouble(data[0]);
-                    double pricePerGJ = Double.parseDouble(data[1]);
-                    cost.setCostPerKwH(pricePerKwH);
-                    cost.setCostPerGJ(pricePerGJ);
+                    if (keepPriceOrNot.equals(Menu.DONT_KEEP_CURRENT_PRICES)){
+                        String[] data = line.split(",");
+                        double pricePerKwH = Double.parseDouble(data[0]);
+                        double pricePerGJ = Double.parseDouble(data[1]);
+                        cost.setCostPerKwH(pricePerKwH);
+                        cost.setCostPerGJ(pricePerGJ);
+                    }
                     isFirstLine = false;
                 }
                 if (line.trim().isEmpty() || line.toLowerCase().startsWith("month")){

@@ -20,14 +20,18 @@ public class Menu {
     public static final String ELECTRICITY_COST = "Electricity Cost";
 
     public static final String NATURAL_GAS_COST = "Natural Gas Cost";
+    
+    public static final String KEEP_CURRENT_PRICES = "Y";
+    
+    public static final String DONT_KEEP_CURRENT_PRICES = "N";
 
     public static ArrayList<String> validMonths = new ArrayList<>(); // stores all the valid months
 
-    private static ArrayList<String> menuOptions = new ArrayList<>(); // stores all the main menu options
+    private static final ArrayList<String> menuOptions = new ArrayList<>(); // stores all the main menu options
 
-    private static ArrayList<String> summaryOptions = new ArrayList<>(); // stores all the summary options
+    private static final ArrayList<String> summaryOptions = new ArrayList<>(); // stores all the summary options
 
-    private static ArrayList<String> sortOptions = new ArrayList<>(); // stores all the sort options
+    private static final ArrayList<String> sortOptions = new ArrayList<>(); // stores all the sort options
 
     private static Usage usage = new Usage();
 
@@ -120,7 +124,7 @@ public class Menu {
                     viewStatistics();
                     break;
                 case 3:
-                    System.out.println("");
+                    //System.out.println("");
                     break;
                 case 4:
                     isRunning = false;
@@ -204,7 +208,6 @@ public class Menu {
         System.out.println("\n--------------Overview--------------");
         if (usage.getMonths().isEmpty()){
             System.out.println("No Data Here Yet...");
-            return; // back to summary menu
         }
         else{
             sortedDataDisplayHelper(usageSorter);
@@ -252,6 +255,7 @@ public class Menu {
         Scanner scanner = new Scanner(System.in);
         String filename;
         boolean validFile = false;
+        boolean validAnswer = false;
         System.out.println("--------------Load Data--------------");
         while (!validFile) {
             System.out.println("Enter the name of the File you want to load from: ");
@@ -268,9 +272,23 @@ public class Menu {
                 System.out.println("\n* ERROR: That file does not exist. Please check the name and try again. *");
                 continue;
             }
+            String answer = "";
+            scanner = new Scanner(System.in);
+            while (!validAnswer){
+                System.out.println("\n*Do you want to still use the current electricity/natural gas price? (Y/N)");
+                answer = scanner.nextLine().toUpperCase();
+                if (answer.equals("Y")){
+                    answer = "Y";
+                    validAnswer = true;
+                }
+                else if (answer.equals("N")){
+                    answer = "N";
+                    validAnswer = true;
+                }
+            }
             Reader reader = new Reader();
             usage = new Usage();
-            reader.loadInfo(file, usage, cost);
+            reader.loadInfo(file, usage, cost, answer);
             validFile = true;
         }
     }
@@ -337,7 +355,7 @@ public class Menu {
     }
 
     public static double setCostPerKwHHelper(){
-        double costPerKwH = 0;
+        double costPerKwH;
         while (true){
             try{
                 Scanner scanner = new Scanner(System.in);
@@ -352,7 +370,7 @@ public class Menu {
     }
 
     public static double setCostPerGJHelper(){
-        double costPerGJ = 0;
+        double costPerGJ;
         while (true){
             try{
                 Scanner scanner = new Scanner(System.in);
