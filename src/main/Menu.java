@@ -258,7 +258,7 @@ public class Menu {
         boolean validAnswer = false;
         System.out.println("--------------Load Data--------------");
         while (!validFile) {
-            System.out.println("Enter the name of the File you want to load from: ");
+            System.out.print("Enter the name of the File you want to load from: ");
             filename = scanner.nextLine().trim();
             if (filename.isEmpty()){
                 System.out.println("\n* ERROR: File name cannot be empty. Please try again. *");
@@ -275,7 +275,9 @@ public class Menu {
             String answer = "";
             scanner = new Scanner(System.in);
             while (!validAnswer){
-                System.out.println("\n*Do you want to still use the current electricity/natural gas price? (Y/N)");
+                System.out.println();
+                viewElectricityAndNaturalGasPrices();
+                System.out.print("* Do you want to still use these current electricity/natural gas price? (Y/N): ");
                 answer = scanner.nextLine().toUpperCase();
                 if (answer.equals("Y")){
                     answer = "Y";
@@ -295,6 +297,9 @@ public class Menu {
 
     private static void consumptionInputMenu(){
         System.out.println("--------------Your Energy Consumption This Month--------------");
+        if (cost.getCostPerKwH() != 0 && cost.getCostPerGJ() != 0){
+            viewElectricityAndNaturalGasPrices();
+        }
         if (cost.getCostPerKwH() == 0 && cost.getCostPerGJ() == 0){
             cost.setCostPerKwH(setCostPerKwHHelper());
             cost.setCostPerGJ(setCostPerGJHelper());
@@ -428,6 +433,11 @@ public class Menu {
         System.out.println("Total cost: $" + (cost.getTotalCost(electricity, naturalGas)));
         double totalEmission = (carbonConvertor.getElectricityCarbonFootprint(electricity) + carbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
         System.out.println("Total CO2 Emission: " + totalEmission + " kg");
+    }
+
+    private static void viewElectricityAndNaturalGasPrices(){
+        System.out.println("Current Price/KwH: $" + cost.getCostPerKwH());
+        System.out.println("Current Price/GJ: $" + cost.getCostPerGJ());
     }
 
 }

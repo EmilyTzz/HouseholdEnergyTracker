@@ -39,7 +39,7 @@ public class Reader {
                 usage.addElectricityUsage(electricity);
                 usage.addNaturalGasUsage(naturalGas);
             }
-
+            System.out.println("\n*Successfully load data from " + file + "*\n");
         }catch (FileNotFoundException e) {
             System.out.println("* Error: File was not found *");
         }catch (IOException e){
