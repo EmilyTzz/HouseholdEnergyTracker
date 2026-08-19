@@ -5,7 +5,6 @@ import object.Cost;
 import object.Usage;
 
 import java.io.*;
-import java.util.Scanner;
 
 public class Reader {
 

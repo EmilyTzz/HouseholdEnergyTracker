@@ -1,9 +1,5 @@
 package object;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
 public class Cost {
 

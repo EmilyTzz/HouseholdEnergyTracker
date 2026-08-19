@@ -1,7 +1,6 @@
 package file;
 
 import object.Cost;
-import object.Usage;
 import object.UsageSorter;
 
 import java.io.File;
