@@ -2,10 +2,7 @@ package main;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import object.CarbonConvertor;
 import object.Cost;
@@ -89,6 +86,9 @@ public class MainController {
     private Tab viewOverview;
 
     @FXML
+    private TextArea monthlyUSageSummaryText;
+
+    @FXML
     public void initialize() {
         TabPane tabPane = new TabPane();
         enterMonthlyUsageTab.setClosable(false); // Don't allow user to close the tab
@@ -142,6 +142,19 @@ public class MainController {
         usage.addNaturalGasUsage(Double.parseDouble(naturalGasEntered.getText()));
         rightStatusUpdate.setText("");
         leftStatusUpdate.setText("Successfully Added Usage Data For " + monthEntered.getText());
+        estimations(Double.parseDouble(electricityEntered.getText()), Double.parseDouble(naturalGasEntered.getText()));
+    }
+
+    private void estimations(double electricity, double naturalGas){
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nEstimated Electricity Cost: $" + cost.getElectricityCost(electricity));
+        sb.append("\nEstimated CO2 Emission from Electricity used: " + carbonConvertor.getElectricityCarbonFootprint(electricity) + "kg\n");
+        sb.append("Estimated Natural Gas Cost: $" + cost.getNaturalGasCost(naturalGas));
+        sb.append("\nEstimated CO2 Emission from Natural Gas used: " + carbonConvertor.getNaturalGasCarbonFootprint(naturalGas) + "kg\n");
+        sb.append("Total cost: $" + (cost.getTotalCost(electricity, naturalGas)));
+        double totalEmission = (carbonConvertor.getElectricityCarbonFootprint(electricity) + carbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
+        sb.append("\nTotal CO2 Emission: " + totalEmission + " kg");
+        monthlyUSageSummaryText.setText(sb.toString());
     }
 
     @FXML
