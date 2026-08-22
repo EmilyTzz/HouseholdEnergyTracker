@@ -3,6 +3,8 @@ package main;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 public class MainController {
 
@@ -10,10 +12,32 @@ public class MainController {
     private Tab editPricesTab;
 
     @FXML
+    private TextField electricityEntered;
+
+    @FXML
+    private TextField electrictyPriceEntered;
+
+    @FXML
     private Tab enterMonthlyUsageTab;
 
     @FXML
-    private Tab viewOverview = new Tab("View Overview");;
+    private Text leftStatusUpdate;
+
+    @FXML
+    private TextField monthEntered;
+
+    @FXML
+    private TextField naturalGasEntered;
+
+    @FXML
+    private TextField naturalGasPriceEntered;
+
+    @FXML
+    private Text rightStatusUpdate;
+
+    @FXML
+    private Tab viewOverview;
+
 
     @FXML
     public void initialize() {
