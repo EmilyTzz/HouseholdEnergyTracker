@@ -100,48 +100,49 @@ public class MainController {
     }
 
     @FXML
-    void onMonthEnteredClicked(ActionEvent event) {
-        while (true){
-            if (validMonths.contains(monthEntered.getText())) {
-                if (usage.getMonths().contains(monthEntered.getText())){ // makes sure there are no duplicate months
-                    rightStatusUpdate.setText("Error: You Have Already Entered this Month's bills");
-                }
-                else{
-                    usage.addMonth(monthEntered.getText());
-                    break;
-                }
-            }
+    void onEnterMonthlyUsageClicked(ActionEvent event) {
+        String month = monthEntered.getText().toUpperCase();
+        if (!validMonths.contains(month)) {
+            rightStatusUpdate.setText("Error: This Month Does Not Exist");
+            return;
         }
-    }
-
-    @FXML
-    void onElectrictyUsedClicked(ActionEvent event) {
-        while (true){
-            try{
-                if (Integer.parseInt(electricityEntered.getText()) >= 0){
-                    usage.addElectricityUsage(Integer.parseInt(electricityEntered.getText()));
-                    break;
-                }
-            }catch (InputMismatchException e){
-                rightStatusUpdate.setText("Please enter a valid amount");
-            }
+        if (usage.getMonths().contains(month)){ // makes sure there are no duplicate months
+            rightStatusUpdate.setText("Error: You Have Already Entered this Month's bills");
+            return;
         }
-    }
 
-    @FXML
-    void onNaturalGasClicked(ActionEvent event) {
-        while (true){
-            try{
-                if (Integer.parseInt(naturalGasEntered.getText()) >= 0){
-                    usage.addNaturalGasUsage(Integer.parseInt(naturalGasEntered.getText()));
-                    break;
-                }
-            }catch (InputMismatchException e){
-                rightStatusUpdate.setText("Please enter a valid amount");
+        try{
+            if (electricityEntered.getText().isBlank()) {
+                rightStatusUpdate.setText("Error: Electricity Amount cannot be Empty");
+                return;
             }
+            if (Double.parseDouble(electricityEntered.getText()) < 0){
+                rightStatusUpdate.setText("Error: Electricity Amount cannot be Negative");
+                return;
+            }
+        }catch (NumberFormatException e){
+            rightStatusUpdate.setText("Error: Please enter a valid Electricity amount");
+            return;
         }
+        try{
+            if (naturalGasEntered.getText().isBlank()) {
+                rightStatusUpdate.setText("Error: Natural Gas Amount cannot be Empty");
+                return;
+            }
+            if (Double.parseDouble(naturalGasEntered.getText()) < 0){
+                rightStatusUpdate.setText("Error: Natural Gas Amount cannot be Negative");
+                return;
+            }
+        }catch (NumberFormatException e){
+            rightStatusUpdate.setText("Error: Please enter a valid Natural Gas amount");
+            return;
+        }
+        usage.addMonth(monthEntered.getText());
+        usage.addElectricityUsage(Double.parseDouble(electricityEntered.getText()));
+        usage.addNaturalGasUsage(Double.parseDouble(naturalGasEntered.getText()));
+        rightStatusUpdate.setText("");
+        leftStatusUpdate.setText("Successfully Added Usage Data For " + monthEntered.getText());
     }
-
 
 
 }
