@@ -71,7 +71,13 @@ public class MainController {
     private Text leftStatusUpdate;
 
     @FXML
+    private Text leftStatusUpdate2;
+
+    @FXML
     private TextField monthEntered;
+
+    @FXML
+    private TextArea monthlyUSageSummaryText;
 
     @FXML
     private TextField naturalGasEntered;
@@ -80,27 +86,42 @@ public class MainController {
     private TextField naturalGasPriceEntered;
 
     @FXML
+    private Text pricePerGJ;
+
+    @FXML
+    private Text pricePerKwH;
+
+    @FXML
     private Text rightStatusUpdate;
+
+    @FXML
+    private Text rightStatusUpdate2;
+
+    @FXML
+    private TabPane tabPane;
 
     @FXML
     private Tab viewOverview;
 
     @FXML
-    private TextArea monthlyUSageSummaryText;
-
-    @FXML
     public void initialize() {
-        TabPane tabPane = new TabPane();
         enterMonthlyUsageTab.setClosable(false); // Don't allow user to close the tab
-        tabPane.getTabs().add(enterMonthlyUsageTab); // Add tab to the tabPane
+        //tabPane.getTabs().add(enterMonthlyUsageTab); // Add tab to the tabPane
         editPricesTab.setClosable(false);
-        tabPane.getTabs().add(editPricesTab);
+        //tabPane.getTabs().add(editPricesTab);
         viewOverview.setClosable(false);
-        tabPane.getTabs().add(viewOverview);
+        //tabPane.getTabs().add(viewOverview);
+        pricePerKwH.setText(Double.toString(cost.getCostPerKwH()));
+        pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
     }
 
     @FXML
     void onEnterMonthlyUsageClicked(ActionEvent event) {
+        if (cost.getCostPerKwH() == 0 && cost.getCostPerGJ() == 0){
+            tabPane.getSelectionModel().select(1); // switch to the edit prices tab
+            rightStatusUpdate2.setText("Error: Please fill in your Electricity and Natural Gas Prices");
+            return;
+        }
         String month = monthEntered.getText().toUpperCase();
         if (!validMonths.contains(month)) {
             rightStatusUpdate.setText("Error: This Month Does Not Exist");
@@ -163,36 +184,39 @@ public class MainController {
         double naturalGasPrice;
         try{
             if (electrictyPriceEntered.getText().isBlank()){
-                rightStatusUpdate.setText("Error: Electricity Price cannot be Empty");
+                rightStatusUpdate2.setText("Error: Electricity Price cannot be Empty");
                 return;
             }
             electricityPrice = Double.parseDouble(electrictyPriceEntered.getText());
             if (electricityPrice < 0) {
-                rightStatusUpdate.setText("Error: Electricity Price cannot be Negative");
+                rightStatusUpdate2.setText("Error: Electricity Price cannot be Negative");
                 return;
             }
         }catch (NumberFormatException e){
-            rightStatusUpdate.setText("Error: Please enter a valid Electricity Price");
+            rightStatusUpdate2.setText("Error: Please enter a valid Electricity Price");
             return;
         }
         try{
             if (naturalGasPriceEntered.getText().isBlank()){
-                rightStatusUpdate.setText("Error: Natural Gas Price cannot be Empty");
+                rightStatusUpdate2.setText("Error: Natural Gas Price cannot be Empty");
                 return;
             }
-            naturalGasPrice = Double.parseDouble(electrictyPriceEntered.getText());
+            naturalGasPrice = Double.parseDouble(naturalGasPriceEntered.getText());
             if (naturalGasPrice < 0) {
-                rightStatusUpdate.setText("Error: Natural Gas Price cannot be Negative");
+                rightStatusUpdate2.setText("Error: Natural Gas Price cannot be Negative");
                 return;
             }
         }catch (NumberFormatException e){
-            rightStatusUpdate.setText("Error: Please enter a valid Natural Gas Price");
+            rightStatusUpdate2.setText("Error: Please enter a valid Natural Gas Price");
             return;
         }
         cost.setCostPerKwH(electricityPrice);
         cost.setCostPerGJ(naturalGasPrice);
-        rightStatusUpdate.setText("");
-        leftStatusUpdate.setText("Successfully Added Prices");
+        rightStatusUpdate2.setText("");
+        leftStatusUpdate2.setText("Successfully Added Prices");
+        pricePerKwH.setText(Double.toString(cost.getCostPerKwH()));
+        pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
+
     }
 
 
