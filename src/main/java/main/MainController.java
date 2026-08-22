@@ -144,6 +144,45 @@ public class MainController {
         leftStatusUpdate.setText("Successfully Added Usage Data For " + monthEntered.getText());
     }
 
+    @FXML
+    void onEnterNewPricesClicked(ActionEvent event) {
+        double electricityPrice;
+        double naturalGasPrice;
+        try{
+            if (electrictyPriceEntered.getText().isBlank()){
+                rightStatusUpdate.setText("Error: Electricity Price cannot be Empty");
+                return;
+            }
+            electricityPrice = Double.parseDouble(electrictyPriceEntered.getText());
+            if (electricityPrice < 0) {
+                rightStatusUpdate.setText("Error: Electricity Price cannot be Negative");
+                return;
+            }
+        }catch (NumberFormatException e){
+            rightStatusUpdate.setText("Error: Please enter a valid Electricity Price");
+            return;
+        }
+        try{
+            if (naturalGasPriceEntered.getText().isBlank()){
+                rightStatusUpdate.setText("Error: Natural Gas Price cannot be Empty");
+                return;
+            }
+            naturalGasPrice = Double.parseDouble(electrictyPriceEntered.getText());
+            if (naturalGasPrice < 0) {
+                rightStatusUpdate.setText("Error: Natural Gas Price cannot be Negative");
+                return;
+            }
+        }catch (NumberFormatException e){
+            rightStatusUpdate.setText("Error: Please enter a valid Natural Gas Price");
+            return;
+        }
+        cost.setCostPerKwH(electricityPrice);
+        cost.setCostPerGJ(naturalGasPrice);
+        rightStatusUpdate.setText("");
+        leftStatusUpdate.setText("Successfully Added Prices");
+    }
+
+
 
 }
 
