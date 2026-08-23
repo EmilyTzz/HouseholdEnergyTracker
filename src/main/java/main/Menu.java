@@ -24,9 +24,9 @@ public class Menu {
     public static final String NATURAL_GAS_COST = "Natural Gas Cost";
 
     public static final String TOTAL_EMISSION = "Total Emission";
-    
+
     public static final String KEEP_CURRENT_PRICES = "Y";
-    
+
     public static final String DONT_KEEP_CURRENT_PRICES = "N";
 
     public static ArrayList<String> validMonths = new ArrayList<>(); // stores all the valid months
