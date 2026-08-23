@@ -8,10 +8,7 @@ import object.CarbonConvertor;
 import object.Cost;
 import object.Usage;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class MainController {
 
@@ -52,7 +49,7 @@ public class MainController {
         summaryOptions.addAll(Arrays.asList("Monthly Overview", "View Statistics", "View Graphs", "Back"));
         sortOptions.addAll(Arrays.asList("Highest to Lowest Total Cost", "Lowest to Highest Total Cost", "Highest to Lowest Electricity Cost",
                 "Lowest to Highest Electricity Cost", "Highest to Lowest Natural Gas Cost", "Lowest to Highest Natural Gas Cost", "Highest to Lowest Emission Percentage",
-                "Lowest to Highest Emission Percentages" , "Quit"));
+                "Lowest to Highest Emission Percentages"));
     }
 
     @FXML
@@ -104,15 +101,19 @@ public class MainController {
     private Tab viewOverview;
 
     @FXML
+    private ComboBox<String> sortOptionsComboBox;
+
+
+    @FXML
     public void initialize() {
         enterMonthlyUsageTab.setClosable(false); // Don't allow user to close the tab
-        //tabPane.getTabs().add(enterMonthlyUsageTab); // Add tab to the tabPane
         editPricesTab.setClosable(false);
-        //tabPane.getTabs().add(editPricesTab);
         viewOverview.setClosable(false);
-        //tabPane.getTabs().add(viewOverview);
-        pricePerKwH.setText(Double.toString(cost.getCostPerKwH()));
+        pricePerKwH.setText(Double.toString(cost.getCostPerKwH())); // Shows the starting prices
         pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
+        for (int i = 0; i < sortOptions.size(); i++){
+            sortOptionsComboBox.getItems().add(sortOptions.get(i));
+        }
     }
 
     @FXML
@@ -219,6 +220,47 @@ public class MainController {
 
     }
 
+
+    @FXML
+    void onFileClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onLoadClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onQuitClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onSaveAsClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onSaveClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onSortOptionsClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onUsageOverviewClicked(ActionEvent event) {
+
+    }
+
+
+    @FXML
+    void onAboutClicked(ActionEvent event) {
+
+    }
 
 
 }
