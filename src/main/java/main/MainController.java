@@ -1,12 +1,16 @@
 package main;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import object.CarbonConvertor;
 import object.Cost;
 import object.Usage;
+import object.UsageSorter;
 
 import java.util.*;
 
@@ -103,6 +107,12 @@ public class MainController {
     @FXML
     private ComboBox<String> sortOptionsComboBox;
 
+    @FXML
+    private PieChart totalCostPieChart;
+
+    @FXML
+    private PieChart totalEmissionPieChart;
+
 
     @FXML
     public void initialize() {
@@ -114,6 +124,9 @@ public class MainController {
         for (int i = 0; i < sortOptions.size(); i++){
             sortOptionsComboBox.getItems().add(sortOptions.get(i));
         }
+
+        totalCostPieChart.setOpacity(0);
+        totalEmissionPieChart.setOpacity(0);
     }
 
     @FXML
@@ -159,11 +172,11 @@ public class MainController {
             rightStatusUpdate.setText("Error: Please enter a valid Natural Gas amount");
             return;
         }
-        usage.addMonth(monthEntered.getText());
+        usage.addMonth(monthEntered.getText().toUpperCase());
         usage.addElectricityUsage(Double.parseDouble(electricityEntered.getText()));
         usage.addNaturalGasUsage(Double.parseDouble(naturalGasEntered.getText()));
         rightStatusUpdate.setText("");
-        leftStatusUpdate.setText("Successfully Added Usage Data For " + monthEntered.getText());
+        leftStatusUpdate.setText("Successfully Added Usage Data For " + monthEntered.getText().toUpperCase());
         estimations(Double.parseDouble(electricityEntered.getText()), Double.parseDouble(naturalGasEntered.getText()));
     }
 
@@ -253,7 +266,27 @@ public class MainController {
 
     @FXML
     void onUsageOverviewClicked(ActionEvent event) {
+        totalCostPieChart.setOpacity(1);
+        totalEmissionPieChart.setOpacity(1);
+        totalCostPieChart.setTitle("Energy Costs % of All The Months");
+        totalEmissionPieChart.setTitle("Emission % of All The Months");
+        addToPieChartHelper(totalCostPieChart, TOTAL_COST);
+        addToPieChartHelper(totalEmissionPieChart, TOTAL_EMISSION);
+    }
 
+    private void addToPieChartHelper(PieChart pieChart, String type){
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        if (type.equals(TOTAL_COST)){
+            for (int i = 0; i < usage.getMonths().size(); i ++){ // Add data to the list
+                pieChartData.add(new PieChart.Data(usage.getMonths().get(i), cost.getMonthlyCostPercentage(usage.getMonths().get(i), usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed())));
+            }
+        }
+        else if (type.equals(TOTAL_EMISSION)) {
+            for (int i = 0; i < usage.getMonths().size(); i++) { // Add data to the list
+                pieChartData.add(new PieChart.Data(usage.getMonths().get(i), carbonConvertor.getMonthlyEmissionPercentage(usage.getMonths().get(i), usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed())));
+            }
+        }
+        pieChart.setData(pieChartData);
     }
 
 
