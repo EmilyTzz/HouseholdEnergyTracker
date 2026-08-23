@@ -8,7 +8,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -17,7 +17,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -149,14 +151,34 @@
                      <children>
                         <AnchorPane layoutY="55.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="291.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
                            <children>
-                              <ScrollBar AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                              <AnchorPane prefHeight="347.0" prefWidth="587.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+                              <AnchorPane prefHeight="347.0" prefWidth="587.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <PieChart fx:id="totalCostPieChart" prefHeight="205.0" prefWidth="232.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                                    <PieChart fx:id="totalEmissionPieChart" layoutX="251.0" prefHeight="205.0" prefWidth="232.0" AnchorPane.leftAnchor="251.0" AnchorPane.topAnchor="10.0" />
+                                    <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" prefHeight="200.0" prefWidth="200.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="248.0" prefWidth="598.0">
+                                             <children>
+                                                <HBox layoutX="14.0" layoutY="14.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <children>
+                                                      <VBox prefHeight="269.0" prefWidth="291.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <PieChart fx:id="totalCostPieChart" prefHeight="281.0" prefWidth="289.0" VBox.vgrow="ALWAYS" />
+                                                            <TextArea fx:id="textAreaTotalCost" prefHeight="178.0" prefWidth="289.0" VBox.vgrow="ALWAYS" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="271.0" prefWidth="298.0" HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <PieChart fx:id="totalEmissionPieChart" prefHeight="281.0" prefWidth="289.0" VBox.vgrow="ALWAYS" />
+                                                            <TextArea fx:id="textAreaEmission" prefHeight="178.0" prefWidth="289.0" VBox.vgrow="ALWAYS" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </ScrollPane>
                                  </children>
                               </AnchorPane>
-                              <ScrollBar layoutX="579.0" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                         <Group layoutX="165.0" layoutY="40.0" />
