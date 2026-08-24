@@ -194,12 +194,12 @@ public class MainController {
 
     private void monthlySummarySelectionHelper(){
         monthlySummaryComboBox.setOnAction(event -> {
+            String month = monthlySummaryComboBox.getSelectionModel().getSelectedItem();
             monthChosenOnComboBox.setText("");
             monthlySummaryTextArea.setText("");
             makeOverviewDisplayInvisible();
             makeSortedDisplayInvisible();
             makeMonthlySummaryVisible();
-            String month = monthlySummaryComboBox.getSelectionModel().getSelectedItem().toString();
             monthChosenOnComboBox.setText(month);
             int indexOfCurrMonth = usage.getMonths().indexOf(month);
             monthlySummaryTextArea.setText(estimations(usage.getElectricityUsed().get(indexOfCurrMonth), usage.getNaturalGasUsed().get(indexOfCurrMonth)));
@@ -338,9 +338,9 @@ public class MainController {
         rightStatusUpdate.setText("");
         leftStatusUpdate.setText("Successfully Added Usage Data For " + monthEntered.getText().toUpperCase());
         monthlyUSageSummaryText.setText(estimations(Double.parseDouble(electricityEntered.getText()), Double.parseDouble(naturalGasEntered.getText())));
-        monthlySummaryComboBox.getItems().clear();
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
-        monthlySummaryComboBox.getItems().addAll(usageSorter.getSortedMonths());
+        monthlySummaryComboBox.getSelectionModel().selectFirst();
+        monthlySummaryComboBox.getItems().setAll(usageSorter.getSortedMonths());
     }
 
     private String sortedDataDisplayHelper(UsageSorter usageSorter){
