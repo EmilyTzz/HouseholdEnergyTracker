@@ -4,7 +4,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import object.CarbonConvertor;
@@ -125,6 +127,9 @@ public class MainController {
     @FXML
     private TextArea sortedDataDisplay;
 
+    @FXML
+    private BarChart<String, Number> dataBarChart;
+
 
     @FXML
     public void initialize() {
@@ -155,10 +160,12 @@ public class MainController {
 
     private void makeSortedDisplayInvisible(){
         sortedDataDisplay.setOpacity(0);
+        dataBarChart.setOpacity(0);
     }
 
     private void makeSortedDisplayVisible(){
         sortedDataDisplay.setOpacity(1);
+        dataBarChart.setOpacity(1);
     }
 
     private void sortSelectionHelper(){
@@ -171,37 +178,55 @@ public class MainController {
                 case "Highest to Lowest Total Cost":
                     usageSorter.sortFromHighestToLowest(TOTAL_COST, cost, null);
                     sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    barChartDisplayHelper("Highest to Lowest Total Cost", usageSorter.getSortedMonths(), usageSorter.getSortedTotalCost());
                     break;
                 case "Lowest to Highest Total Cost":
                     usageSorter.sortFromLowestToHighestTotalCost(cost);
                     sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    barChartDisplayHelper("Lowest to Highest Total Cost", usageSorter.getSortedMonths(), usageSorter.getSortedTotalCost());
                     break;
                 case "Highest to Lowest Electricity Cost":
                     usageSorter.sortFromHighestToLowest(ELECTRICITY_COST, cost, null);
                     sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    barChartDisplayHelper("Highest to Lowest Electricity Cost", usageSorter.getSortedMonths(), usageSorter.getSortedElectricityCost());
                     break;
                 case "Lowest to Highest Electricity Cost":
                     usageSorter.sortFromLowestToHighestElectricityCost(cost);
                     sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    barChartDisplayHelper("Lowest to Highest Electricity Cost", usageSorter.getSortedMonths(), usageSorter.getSortedElectricityCost());
                     break;
                 case "Highest to Lowest Natural Gas Cost":
                     usageSorter.sortFromHighestToLowest(NATURAL_GAS_COST, cost, null);
                     sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    barChartDisplayHelper("Highest to Lowest Natural Gas Cost", usageSorter.getSortedMonths(), usageSorter.getSortedNaturalGasCost());
                     break;
                 case "Lowest to Highest Natural Gas Cost":
                     usageSorter.sortFromLowestToHighestNaturalGasCost(cost);
                     sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    barChartDisplayHelper("Lowest to Highest Natural Gas Cost", usageSorter.getSortedMonths(), usageSorter.getSortedNaturalGasCost());
                     break;
                 case "Highest to Lowest Emission Percentage":
                     usageSorter.sortFromHighestToLowest(TOTAL_EMISSION, null, carbonConvertor);
                     sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    barChartDisplayHelper("Highest to Lowest Emission Percentage", usageSorter.getSortedMonths(), usageSorter.getSortedEmission());
                     break;
                 case "Lowest to Highest Emission Percentages":
                     usageSorter.sortFromLowestToHighestTotalEmission(carbonConvertor);
                     sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    barChartDisplayHelper("Lowest to Highest Emission Percentages", usageSorter.getSortedMonths(), usageSorter.getSortedEmission());
                     break;
             }
         });
+    }
+
+    private void barChartDisplayHelper(String sortOption, List<String> months, List<Double> variablesBeingCompared){
+        dataBarChart.getData().clear();
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName(sortOption);
+        for (int i = 0; i < months.size(); i ++){
+            series.getData().add(new XYChart.Data<>(months.get(i), variablesBeingCompared.get(i)));
+        }
+        dataBarChart.getData().add(series);
     }
 
     @FXML
