@@ -58,6 +58,10 @@ public class MainController {
                 "Lowest to Highest Emission Percentages"));
     }
 
+
+    @FXML
+    private ComboBox<String> monthlySummaryComboBox;
+
     @FXML
     private Tab editPricesTab;
 
@@ -130,18 +134,28 @@ public class MainController {
     @FXML
     private BarChart<String, Number> dataBarChart;
 
+    @FXML
+    private TextArea monthlySummaryTextArea;
+
+    @FXML
+    private Text monthChosenOnComboBox;
+
 
     @FXML
     public void initialize() {
+        UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
         enterMonthlyUsageTab.setClosable(false); // Don't allow user to close the tab
         editPricesTab.setClosable(false);
         viewOverview.setClosable(false);
         pricePerKwH.setText(Double.toString(cost.getCostPerKwH())); // Shows the starting prices
         pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
         sortOptionsComboBox.getItems().addAll(sortOptions);
+        monthlySummaryComboBox.getItems().addAll(usageSorter.getSortedMonths());
         sortSelectionHelper();
         makeOverviewDisplayInvisible();
         makeSortedDisplayInvisible();
+        makeMonthlySummaryInvisible();
+        monthlySummarySelectionHelper();
     }
 
     private void makeOverviewDisplayInvisible(){
@@ -168,10 +182,56 @@ public class MainController {
         dataBarChart.setOpacity(1);
     }
 
+    private void makeMonthlySummaryInvisible(){
+        monthlySummaryTextArea.setOpacity(0);
+        monthChosenOnComboBox.setOpacity(0);
+    }
+
+    private void makeMonthlySummaryVisible(){
+        monthlySummaryTextArea.setOpacity(1);
+        monthChosenOnComboBox.setOpacity(1);
+    }
+
+    private void monthlySummarySelectionHelper(){
+        monthlySummaryComboBox.setOnAction(event -> {
+            monthChosenOnComboBox.setText("");
+            monthlySummaryTextArea.setText("");
+            makeOverviewDisplayInvisible();
+            makeSortedDisplayInvisible();
+            makeMonthlySummaryVisible();
+            String month = monthlySummaryComboBox.getSelectionModel().getSelectedItem().toString();
+            monthChosenOnComboBox.setText(month);
+            int indexOfCurrMonth = usage.getMonths().indexOf(month);
+            monthlySummaryTextArea.setText(estimations(usage.getElectricityUsed().get(indexOfCurrMonth), usage.getNaturalGasUsed().get(indexOfCurrMonth)));
+            monthlySummaryTextArea.appendText(compareCarbonEmissionFromLastMonth(month));
+        });
+    }
+
+    private String compareCarbonEmissionFromLastMonth(String monthEntered){
+        UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
+        usageSorter.sortInfoAccordingToMonths();
+        StringBuilder sb = new StringBuilder();
+        if (!usageSorter.getSortedMonths().getFirst().equals(monthEntered)){
+            int indexOfMonthBefore = usageSorter.getSortedMonths().indexOf(monthEntered)-1;
+            double carbonDiff = carbonConvertor.getPercentageDiffInCarbonFromLastMonth(monthEntered, usageSorter.getSortedMonths().get(indexOfMonthBefore), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed());
+            if (carbonDiff < 0){
+                sb.append("\nThe carbon emission for this month decreased by " + carbonDiff*(-1) + "% compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore)+ "\n");
+            }
+            else if (carbonDiff > 0){
+                sb.append("\nThe carbon emission for this month increased by " + carbonDiff + "% compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore)+ "\n");
+            }
+            else{
+                sb.append("\nThe carbon emission for this month has not changed compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore) + "\n");
+            }
+        }
+        return sb.toString();
+    }
+
     private void sortSelectionHelper(){
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
         sortOptionsComboBox.setOnAction(event -> {
             makeOverviewDisplayInvisible();
+            makeMonthlySummaryInvisible();
             makeSortedDisplayVisible();
             String sortOption = sortOptionsComboBox.getSelectionModel().getSelectedItem().toString();
             switch (sortOption) {
@@ -277,7 +337,10 @@ public class MainController {
         usage.addNaturalGasUsage(Double.parseDouble(naturalGasEntered.getText()));
         rightStatusUpdate.setText("");
         leftStatusUpdate.setText("Successfully Added Usage Data For " + monthEntered.getText().toUpperCase());
-        estimations(Double.parseDouble(electricityEntered.getText()), Double.parseDouble(naturalGasEntered.getText()));
+        monthlyUSageSummaryText.setText(estimations(Double.parseDouble(electricityEntered.getText()), Double.parseDouble(naturalGasEntered.getText())));
+        monthlySummaryComboBox.getItems().clear();
+        UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
+        monthlySummaryComboBox.getItems().addAll(usageSorter.getSortedMonths());
     }
 
     private String sortedDataDisplayHelper(UsageSorter usageSorter){
@@ -371,15 +434,12 @@ public class MainController {
 
     }
 
-    @FXML
-    void onSortOptionsClicked(ActionEvent event) {
-
-    }
 
     @FXML
-    void onUsageOverviewClicked(ActionEvent event) {
+    void onUsageStatisticsClicked(ActionEvent event) {
         makeSortedDisplayInvisible();
         makeOverviewDisplayVisible();
+        makeMonthlySummaryInvisible();
         totalCostPieChart.setTitle("Energy Costs % of All The Months");
         totalEmissionPieChart.setTitle("Emission % of All The Months");
         addToPieChartHelper(totalCostPieChart, TOTAL_COST);
