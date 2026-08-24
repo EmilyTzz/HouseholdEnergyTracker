@@ -14,10 +14,22 @@ public class UsageSorter {
 
     public static List<Double> naturalGasUsed;
 
+    public static List<Double> sortedTotalCost;
+
+    public static List<Double> sortedElectricityCost;
+
+    public static List<Double> sortedEmission;
+
+    public static List<Double> sortedNaturalGasCost;
+
     public UsageSorter(List<String> months, List<Double> electricityUsed, List<Double> naturalGasUsed){
         this.months = months;
         this.electricityUsed = electricityUsed;
         this.naturalGasUsed = naturalGasUsed;
+        this.sortedTotalCost = new ArrayList<>();
+        this.sortedElectricityCost = new ArrayList<>();
+        this.sortedNaturalGasCost = new ArrayList<>();
+        this.sortedEmission = new ArrayList<>();
     }
 
     // Sorts months in the traditional January - December order
@@ -52,6 +64,7 @@ public class UsageSorter {
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
+        Collections.reverse(sortedTotalCost);
     }
 
     // Reverses the highest to lowest monthly emission order
@@ -60,6 +73,7 @@ public class UsageSorter {
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
+        Collections.reverse(sortedEmission);
     }
 
     // Reverses the highest to lowest monthly electricity costs order
@@ -68,6 +82,7 @@ public class UsageSorter {
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
+        Collections.reverse(sortedElectricityCost);
     }
 
     // Reverses the highest to lowest monthly natural gas costs order
@@ -76,6 +91,7 @@ public class UsageSorter {
         Collections.reverse(months);
         Collections.reverse(electricityUsed);
         Collections.reverse(naturalGasUsed);
+        Collections.reverse(sortedNaturalGasCost);
     }
 
     // sort from highest to lowest total cost or electricity cost or natural gas cost or total emission %
@@ -83,20 +99,29 @@ public class UsageSorter {
         List<String> sortedMonths = new ArrayList<>();
         List<Double> sortedElectricityUsed = new ArrayList<>();
         List<Double> sortedNaturalGasUsed = new ArrayList<>();
+        sortedTotalCost.clear();
+        sortedElectricityCost.clear();
+        sortedNaturalGasCost.clear();
+        sortedEmission.clear();
         while (!months.isEmpty()){
             int indexOfMonthWithHighestEnergyData = 0;
             if (energyData.equals(Menu.TOTAL_COST)) {
                 indexOfMonthWithHighestEnergyData = sortFromHighestToLowestTotalCostHelper(cost);
+                sortedTotalCost.add(cost.getTotalCost(electricityUsed.get(indexOfMonthWithHighestEnergyData), naturalGasUsed.get(indexOfMonthWithHighestEnergyData)));
             }
             else if (energyData.equals(Menu.TOTAL_EMISSION)){
                 indexOfMonthWithHighestEnergyData = sortFromHighestToLowestTotalEmissionHelper(carbonConvertor);
+                sortedEmission.add(carbonConvertor.getTotalCarbonEmission(electricityUsed.get(indexOfMonthWithHighestEnergyData), naturalGasUsed.get(indexOfMonthWithHighestEnergyData)));
             }
             else if (energyData.equals(Menu.ELECTRICITY_COST)){
                 indexOfMonthWithHighestEnergyData = sortFromHighestToLowestElectricityHelper();
+                sortedElectricityCost.add(cost.getElectricityCost(electricityUsed.get(indexOfMonthWithHighestEnergyData)));
             }
             else if (energyData.equals(Menu.NATURAL_GAS_COST)){
                 indexOfMonthWithHighestEnergyData = sortFromHighestToLowestNaturalGasHelper();
+                sortedNaturalGasCost.add(cost.getNaturalGasCost(naturalGasUsed.get(indexOfMonthWithHighestEnergyData)));
             }
+
             sortedMonths.add(months.get(indexOfMonthWithHighestEnergyData));
             sortedElectricityUsed.add(electricityUsed.get(indexOfMonthWithHighestEnergyData));
             sortedNaturalGasUsed.add(naturalGasUsed.get(indexOfMonthWithHighestEnergyData));
@@ -177,4 +202,17 @@ public class UsageSorter {
         return new ArrayList<>(naturalGasUsed);
     }
 
+    public List<Double> getSortedTotalCost(){return new ArrayList<>(sortedTotalCost);}
+
+    public List<Double> getSortedEmission() {
+        return sortedEmission;
+    }
+
+    public List<Double> getSortedElectricityCost() {
+        return sortedElectricityCost;
+    }
+
+    public List<Double> getSortedNaturalGasCost() {
+        return sortedNaturalGasCost;
+    }
 }
