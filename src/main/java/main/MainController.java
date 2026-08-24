@@ -122,6 +122,9 @@ public class MainController {
     @FXML
     private PieChart totalEmissionPieChart;
 
+    @FXML
+    private TextArea sortedDataDisplay;
+
 
     @FXML
     public void initialize() {
@@ -130,14 +133,75 @@ public class MainController {
         viewOverview.setClosable(false);
         pricePerKwH.setText(Double.toString(cost.getCostPerKwH())); // Shows the starting prices
         pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
-        for (int i = 0; i < sortOptions.size(); i++){
-            sortOptionsComboBox.getItems().add(sortOptions.get(i));
-        }
+        sortOptionsComboBox.getItems().addAll(sortOptions);
+        sortSelectionHelper();
+        makeOverviewDisplayInvisible();
+        makeSortedDisplayInvisible();
+    }
 
+    private void makeOverviewDisplayInvisible(){
         totalCostPieChart.setOpacity(0);
         totalEmissionPieChart.setOpacity(0);
         textAreaEmission.setOpacity(0);
         textAreaTotalCost.setOpacity(0);
+    }
+
+    private void makeOverviewDisplayVisible(){
+        totalCostPieChart.setOpacity(1);
+        totalEmissionPieChart.setOpacity(1);
+        textAreaEmission.setOpacity(1);
+        textAreaTotalCost.setOpacity(1);
+    }
+
+    private void makeSortedDisplayInvisible(){
+        sortedDataDisplay.setOpacity(0);
+    }
+
+    private void makeSortedDisplayVisible(){
+        sortedDataDisplay.setOpacity(1);
+    }
+
+    private void sortSelectionHelper(){
+        UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
+        sortOptionsComboBox.setOnAction(event -> {
+            makeOverviewDisplayInvisible();
+            makeSortedDisplayVisible();
+            String sortOption = sortOptionsComboBox.getSelectionModel().getSelectedItem().toString();
+            switch (sortOption) {
+                case "Highest to Lowest Total Cost":
+                    usageSorter.sortFromHighestToLowest(TOTAL_COST, cost, null);
+                    sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    break;
+                case "Lowest to Highest Total Cost":
+                    usageSorter.sortFromLowestToHighestTotalCost(cost);
+                    sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    break;
+                case "Highest to Lowest Electricity Cost":
+                    usageSorter.sortFromHighestToLowest(ELECTRICITY_COST, cost, null);
+                    sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    break;
+                case "Lowest to Highest Electricity Cost":
+                    usageSorter.sortFromLowestToHighestElectricityCost(cost);
+                    sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    break;
+                case "Highest to Lowest Natural Gas Cost":
+                    usageSorter.sortFromHighestToLowest(NATURAL_GAS_COST, cost, null);
+                    sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    break;
+                case "Lowest to Highest Natural Gas Cost":
+                    usageSorter.sortFromLowestToHighestNaturalGasCost(cost);
+                    sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    break;
+                case "Highest to Lowest Emission Percentage":
+                    usageSorter.sortFromHighestToLowest(TOTAL_EMISSION, null, carbonConvertor);
+                    sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    break;
+                case "Lowest to Highest Emission Percentages":
+                    usageSorter.sortFromLowestToHighestTotalEmission(carbonConvertor);
+                    sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    break;
+            }
+        });
     }
 
     @FXML
@@ -191,17 +255,29 @@ public class MainController {
         estimations(Double.parseDouble(electricityEntered.getText()), Double.parseDouble(naturalGasEntered.getText()));
     }
 
-    private void estimations(double electricity, double naturalGas){
+    private String sortedDataDisplayHelper(UsageSorter usageSorter){
         StringBuilder sb = new StringBuilder();
-        sb.append("\nEstimated Electricity Cost: $" + cost.getElectricityCost(electricity));
-        sb.append("\nEstimated CO2 Emission from Electricity used: " + carbonConvertor.getElectricityCarbonFootprint(electricity) + "kg\n");
-        sb.append("Estimated Natural Gas Cost: $" + cost.getNaturalGasCost(naturalGas));
-        sb.append("\nEstimated CO2 Emission from Natural Gas used: " + carbonConvertor.getNaturalGasCarbonFootprint(naturalGas) + "kg\n");
-        sb.append("Total cost: $" + (cost.getTotalCost(electricity, naturalGas)));
-        double totalEmission = (carbonConvertor.getElectricityCarbonFootprint(electricity) + carbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
-        sb.append("\nTotal CO2 Emission: " + totalEmission + " kg");
-        monthlyUSageSummaryText.setText(sb.toString());
+        for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
+            sb.append("\n----------------------------\n");
+            sb.append(usageSorter.getSortedMonths().get(i) + ":\n");
+            sb.append(estimations(usageSorter.getSortedElectricityUsed().get(i), usageSorter.getSortedNaturalGasUsed().get(i)));
+            sb.append("\n");
+        }
+        return sb.toString();
     }
+
+    private String estimations(double electricity, double naturalGas){
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nEstimated Electricity Cost: $" + cost.getElectricityCost(electricity) + "\n");
+        sb.append("Estimated CO2 Emission from Electricity used: " + carbonConvertor.getElectricityCarbonFootprint(electricity) + "kg\n");
+        sb.append("Estimated Natural Gas Cost: $" + cost.getNaturalGasCost(naturalGas) + "\n");
+        sb.append("Estimated CO2 Emission from Natural Gas used: " + carbonConvertor.getNaturalGasCarbonFootprint(naturalGas) + "kg\n");
+        sb.append("Total cost: $" + (cost.getTotalCost(electricity, naturalGas))+ "\n");
+        double totalEmission = (carbonConvertor.getElectricityCarbonFootprint(electricity) + carbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
+        sb.append("Total CO2 Emission: " + totalEmission + " kg\n");
+        return sb.toString();
+    }
+
 
     @FXML
     void onEnterNewPricesClicked(ActionEvent event) {
@@ -277,10 +353,8 @@ public class MainController {
 
     @FXML
     void onUsageOverviewClicked(ActionEvent event) {
-        totalCostPieChart.setOpacity(1);
-        totalEmissionPieChart.setOpacity(1);
-        textAreaTotalCost.setOpacity(1);
-        textAreaEmission.setOpacity(1);
+        makeSortedDisplayInvisible();
+        makeOverviewDisplayVisible();
         totalCostPieChart.setTitle("Energy Costs % of All The Months");
         totalEmissionPieChart.setTitle("Emission % of All The Months");
         addToPieChartHelper(totalCostPieChart, TOTAL_COST);
@@ -307,6 +381,7 @@ public class MainController {
     private String costSummaryHelper(){
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
         StringBuilder sb = new StringBuilder();
+        sb.append("Average Usage Cost : $" + cost.getAverageCost(usage.getElectricityUsed(), usage.getNaturalGasUsed()) + "\n");
         usageSorter.sortFromHighestToLowest(TOTAL_COST, cost, null); // months with highest to lowest costs
         for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
             sb.append(usageSorter.getSortedMonths().get(i) + ": " + cost.getMonthlyCostPercentage(usageSorter.getSortedMonths().get(i), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed()) + " %\n");
@@ -317,6 +392,7 @@ public class MainController {
     private String emissionSummaryHelper() {
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
         StringBuilder sb = new StringBuilder();
+        sb.append("Average Usage Emissions : " + carbonConvertor.getAverageEmission(usage.getElectricityUsed(), usage.getNaturalGasUsed()) + " kg\n");
         usageSorter.sortFromHighestToLowest(TOTAL_EMISSION, cost, carbonConvertor); // months with highest to lowest emission
         for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
             sb.append(usageSorter.getSortedMonths().get(i) + ": " + carbonConvertor.getMonthlyEmissionPercentage(usageSorter.getSortedMonths().get(i), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed()) + " %\n");
