@@ -440,7 +440,14 @@ public class MainController {
 
     @FXML
     void onQuitClicked(ActionEvent event) {
-
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Quit Application");
+        alert.setHeaderText("Are you sure you want to Quit?");
+        alert.setContentText("Unsaved Changes will be lost");
+        Optional<ButtonType> answer = alert.showAndWait();
+        if (answer.isPresent() && answer.get() == ButtonType.OK){
+            System.exit(1);
+        }
     }
 
     @FXML
