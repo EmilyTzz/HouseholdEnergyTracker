@@ -10,6 +10,9 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -140,6 +143,18 @@ public class MainController {
     @FXML
     private ComboBox<String> monthComboBox;
 
+    @FXML
+    private HBox sortDisplayHbox;
+
+    @FXML
+    private VBox monthSummaryVbox;
+
+    @FXML
+    private HBox usageStatsHbox;
+
+    @FXML
+    private StackPane displayStackPane;
+
 
     @FXML
     public void initialize() {
@@ -159,53 +174,17 @@ public class MainController {
         sortSelectionHelper();
         monthlySummarySelectionHelper();
         // Set visibility of different selections in the Overview Tabs
-        makeOverviewDisplayInvisible();
-        makeSortedDisplayInvisible();
-        makeMonthlySummaryInvisible();
+        displayStackPane.getChildren().clear();
     }
 
-    private void makeOverviewDisplayInvisible(){
-        totalCostPieChart.setOpacity(0);
-        totalEmissionPieChart.setOpacity(0);
-        textAreaEmission.setOpacity(0);
-        textAreaTotalCost.setOpacity(0);
-    }
-
-    private void makeOverviewDisplayVisible(){
-        totalCostPieChart.setOpacity(1);
-        totalEmissionPieChart.setOpacity(1);
-        textAreaEmission.setOpacity(1);
-        textAreaTotalCost.setOpacity(1);
-    }
-
-    private void makeSortedDisplayInvisible(){
-        sortedDataDisplay.setOpacity(0);
-        dataBarChart.setOpacity(0);
-    }
-
-    private void makeSortedDisplayVisible(){
-        sortedDataDisplay.setOpacity(1);
-        dataBarChart.setOpacity(1);
-    }
-
-    private void makeMonthlySummaryInvisible(){
-        monthlySummaryTextArea.setOpacity(0);
-        monthChosenOnComboBox.setOpacity(0);
-    }
-
-    private void makeMonthlySummaryVisible(){
-        monthlySummaryTextArea.setOpacity(1);
-        monthChosenOnComboBox.setOpacity(1);
-    }
 
     private void monthlySummarySelectionHelper(){
         monthlySummaryComboBox.setOnAction(event -> {
             String month = monthlySummaryComboBox.getSelectionModel().getSelectedItem();
             monthChosenOnComboBox.setText("");
             monthlySummaryTextArea.setText("");
-            makeOverviewDisplayInvisible();
-            makeSortedDisplayInvisible();
-            makeMonthlySummaryVisible();
+            displayStackPane.getChildren().clear();
+            displayStackPane.getChildren().add(monthSummaryVbox);
             monthChosenOnComboBox.setText(month);
             int indexOfCurrMonth = usage.getMonths().indexOf(month);
             monthlySummaryTextArea.setText(estimations(usage.getElectricityUsed().get(indexOfCurrMonth), usage.getNaturalGasUsed().get(indexOfCurrMonth)));
@@ -236,10 +215,9 @@ public class MainController {
     private void sortSelectionHelper(){
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
         sortOptionsComboBox.setOnAction(event -> {
-            makeOverviewDisplayInvisible();
-            makeMonthlySummaryInvisible();
-            makeSortedDisplayVisible();
-            String sortOption = sortOptionsComboBox.getSelectionModel().getSelectedItem().toString();
+            displayStackPane.getChildren().clear();
+            displayStackPane.getChildren().add(sortDisplayHbox);
+            String sortOption = sortOptionsComboBox.getSelectionModel().getSelectedItem();
             switch (sortOption) {
                 case "Highest to Lowest Total Cost":
                     usageSorter.sortFromHighestToLowest(TOTAL_COST, cost, null);
@@ -440,6 +418,7 @@ public class MainController {
                 UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
                 monthlySummaryComboBox.getSelectionModel().selectFirst();
                 monthlySummaryComboBox.getItems().setAll(usageSorter.getSortedMonths());
+                //monthlyUSageSummaryText.setText(sortedDataDisplayHelper(usageSorter));
             }
             else{
                 showError(msg);
@@ -491,9 +470,8 @@ public class MainController {
 
     @FXML
     void onUsageStatisticsClicked(ActionEvent event) {
-        makeSortedDisplayInvisible();
-        makeOverviewDisplayVisible();
-        makeMonthlySummaryInvisible();
+        displayStackPane.getChildren().clear();
+        displayStackPane.getChildren().add(usageStatsHbox);
         totalCostPieChart.setTitle("Energy Costs % of All The Months");
         totalEmissionPieChart.setTitle("Emission % of All The Months");
         addToPieChartHelper(totalCostPieChart, TOTAL_COST);
