@@ -34,10 +34,6 @@ public class MainController {
 
     public static final String TOTAL_EMISSION = "Total Emission";
 
-    public static final String KEEP_CURRENT_PRICES = "Y";
-
-    public static final String DONT_KEEP_CURRENT_PRICES = "N";
-
     public static ArrayList<String> validMonths = new ArrayList<>(); // stores all the valid months
 
     private static final ArrayList<String> menuOptions = new ArrayList<>(); // stores all the main menu options
@@ -427,7 +423,7 @@ public class MainController {
         if (file != null){
             Reader reader = new Reader();
             usage = new Usage();
-            reader.loadInfo(file, usage, cost, "N");
+            reader.loadInfo(file, usage, cost);
             if (reader.validFile){
                 leftStatusUpdate.setText("Successfully Loaded " + file);
                 pricePerKwH.setText(Double.toString(cost.getCostPerKwH()));

@@ -10,7 +10,7 @@ public class Reader {
 
     public boolean validFile = false;
 
-    public void loadInfo(File file, Usage usage, Cost cost, String keepPriceOrNot){
+    public void loadInfo(File file, Usage usage, Cost cost){
         try{
             BufferedReader br = new BufferedReader(new FileReader(file));
             validFile = false;
@@ -18,13 +18,11 @@ public class Reader {
             boolean isFirstLine = true;
             while ((line = br.readLine()) != null){
                 if (isFirstLine){
-                    if (keepPriceOrNot.equals(Menu.DONT_KEEP_CURRENT_PRICES)){
-                        String[] data = line.split(",");
-                        double pricePerKwH = Double.parseDouble(data[0]);
-                        double pricePerGJ = Double.parseDouble(data[1]);
-                        cost.setCostPerKwH(pricePerKwH);
-                        cost.setCostPerGJ(pricePerGJ);
-                    }
+                    String[] data = line.split(",");
+                    double pricePerKwH = Double.parseDouble(data[0]);
+                    double pricePerGJ = Double.parseDouble(data[1]);
+                    cost.setCostPerKwH(pricePerKwH);
+                    cost.setCostPerGJ(pricePerGJ);
                     isFirstLine = false;
                 }
                 if (line.trim().isEmpty() || line.toLowerCase().startsWith("month")){

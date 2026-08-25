@@ -152,25 +152,9 @@ public class Menu {
                 System.out.println("\n* ERROR: That file does not exist. Please check the name and try again. *");
                 continue;
             }
-            String answer = "";
-            scanner = new Scanner(System.in);
-            while (!validAnswer){
-                System.out.println();
-                viewElectricityAndNaturalGasPrices();
-                System.out.print("* Do you want to still use these current electricity/natural gas price? (Y/N): ");
-                answer = scanner.nextLine().toUpperCase();
-                if (answer.equals(KEEP_CURRENT_PRICES)){
-                    answer = KEEP_CURRENT_PRICES;
-                    validAnswer = true;
-                }
-                else if (answer.equals(DONT_KEEP_CURRENT_PRICES)){
-                    answer = DONT_KEEP_CURRENT_PRICES;
-                    validAnswer = true;
-                }
-            }
             Reader reader = new Reader();
             usage = new Usage();
-            reader.loadInfo(file, usage, cost, answer);
+            reader.loadInfo(file, usage, cost);
             validFile = true;
         }
     }
