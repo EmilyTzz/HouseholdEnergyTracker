@@ -137,10 +137,20 @@ public class MainController {
     @FXML
     private Text monthChosenOnComboBox;
 
+    @FXML
+    private ComboBox<String> monthComboBox;
+
+    @FXML
+    private RadioButton keepCurrentElectricityPrice;
+
+    @FXML
+    private RadioButton keepCurrentNaturalGasPrice;
+
 
     @FXML
     public void initialize() {
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
+        monthComboBox.getItems().addAll(validMonths);
         enterMonthlyUsageTab.setClosable(false); // Don't allow user to close the tab
         editPricesTab.setClosable(false);
         viewOverview.setClosable(false);
@@ -293,9 +303,9 @@ public class MainController {
             rightStatusUpdate.setText("Error: Please fill in your Electricity and Natural Gas Prices");
             return;
         }
-        String month = monthEntered.getText().toUpperCase();
-        if (!validMonths.contains(month)) {
-            rightStatusUpdate.setText("Error: This Month Does Not Exist");
+        String month = monthComboBox.getSelectionModel().getSelectedItem();
+        if (month == null) {
+            rightStatusUpdate.setText("Error: Please Select A Month");
             return;
         }
         if (usage.getMonths().contains(month)){ // makes sure there are no duplicate months
@@ -329,11 +339,12 @@ public class MainController {
             rightStatusUpdate.setText("Error: Please enter a valid Natural Gas amount");
             return;
         }
-        usage.addMonth(monthEntered.getText().toUpperCase());
+        usage.addMonth(month);
         usage.addElectricityUsage(Double.parseDouble(electricityEntered.getText()));
         usage.addNaturalGasUsage(Double.parseDouble(naturalGasEntered.getText()));
         rightStatusUpdate.setText("");
-        leftStatusUpdate.setText("Successfully Added Usage Data For " + monthEntered.getText().toUpperCase());
+        leftStatusUpdate.setText("Successfully Added Usage Data For " + month);
+        monthComboBox.setValue(null); // clear selection
         monthlyUSageSummaryText.setText(estimations(Double.parseDouble(electricityEntered.getText()), Double.parseDouble(naturalGasEntered.getText())));
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
         monthlySummaryComboBox.getSelectionModel().selectFirst();

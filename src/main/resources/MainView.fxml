@@ -11,6 +11,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Tab?>
@@ -56,57 +57,83 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <GridPane layoutX="26.0" layoutY="63.0" prefHeight="226.0" prefWidth="214.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
+                        <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Month:" GridPane.halignment="CENTER" />
-                              <TextField fx:id="monthEntered" prefHeight="18.0" prefWidth="202.0" GridPane.rowIndex="1" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Electricity Used (kWh):" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                              <TextField fx:id="electricityEntered" GridPane.rowIndex="4" />
-                              <TextField fx:id="naturalGasEntered" GridPane.rowIndex="7" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Natural Gas Used (GJ):" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-                              <Button mnemonicParsing="false" onAction="#onEnterMonthlyUsageClicked" text="Enter" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
+                              <VBox prefHeight="316.0" prefWidth="263.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <GridPane maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="250.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.20001220703125" minWidth="10.0" prefWidth="50.60004501342773" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.19995498657227" minWidth="10.0" prefWidth="179.19995498657227" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$/kwH: ">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$/GJ: " GridPane.rowIndex="1">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="pricePerKwH" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="pricePerGJ" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets left="15.0" right="20.0" top="10.0" />
+                                       </VBox.margin>
+                                    </GridPane>
+                                    <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="262.0" prefWidth="266.0" VBox.vgrow="ALWAYS">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Month:" GridPane.halignment="CENTER" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Electricity Used (kWh):" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                                          <TextField fx:id="electricityEntered" GridPane.rowIndex="4" />
+                                          <TextField fx:id="naturalGasEntered" GridPane.rowIndex="7" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Natural Gas Used (GJ):" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                                          <Button mnemonicParsing="false" onAction="#onEnterMonthlyUsageClicked" text="Enter" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
+                                          <ComboBox fx:id="monthComboBox" prefHeight="26.0" prefWidth="228.0" GridPane.rowIndex="1" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" />
+                                       </VBox.margin>
+                                    </GridPane>
+                                 </children>
+                              </VBox>
+                              <AnchorPane prefHeight="316.0" prefWidth="334.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <TextArea fx:id="monthlyUSageSummaryText" editable="false" layoutX="-128.8" layoutY="14.0" prefHeight="316.0" prefWidth="329.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
+                                 </children>
+                              </AnchorPane>
                            </children>
-                        </GridPane>
-                        <AnchorPane layoutX="318.0" layoutY="30.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="30.0">
-                           <children>
-                              <TextArea fx:id="monthlyUSageSummaryText" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                           </children>
-                        </AnchorPane>
-                        <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$/kwH: ">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Text>
-                        <Text layoutX="14.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$/GJ: ">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="pricePerKwH" layoutX="61.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="pricePerGJ" layoutX="48.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Text>
+                        </HBox>
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -117,26 +144,44 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <GridPane alignment="CENTER" layoutX="224.0" layoutY="61.0" prefHeight="177.0" prefWidth="152.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
+                        <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price/KwH:" GridPane.halignment="CENTER" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price/GJ:" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <TextField fx:id="electrictyPriceEntered" alignment="CENTER" GridPane.rowIndex="1" />
-                              <TextField fx:id="naturalGasPriceEntered" alignment="CENTER" GridPane.rowIndex="3" />
-                              <Button mnemonicParsing="false" onAction="#onEnterNewPricesClicked" text="Enter New Prices" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                              <GridPane alignment="CENTER" prefHeight="249.0" prefWidth="295.0" HBox.hgrow="ALWAYS">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="264.00001220703126" minWidth="0.0" prefWidth="179.6000244140625" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="244.79999999999998" minWidth="10.0" prefWidth="138.79997558593746" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price/KwH:" GridPane.halignment="CENTER" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price/GJ:" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                                    <TextField fx:id="electrictyPriceEntered" alignment="CENTER" GridPane.rowIndex="1" />
+                                    <TextField fx:id="naturalGasPriceEntered" alignment="CENTER" GridPane.rowIndex="3" />
+                                    <Button mnemonicParsing="false" onAction="#onEnterNewPricesClicked" text="Enter New Prices" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                                    <RadioButton fx:id="keepCurrentElectricityPrice" mnemonicParsing="false" text="Keep Current Price" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </RadioButton>
+                                    <RadioButton fx:id="keepCurrentNaturalGasPrice" mnemonicParsing="false" text="Keep Current Price" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </RadioButton>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets bottom="30.0" left="140.0" right="140.0" top="30.0" />
+                                 </HBox.margin>
+                              </GridPane>
                            </children>
-                        </GridPane>
+                        </HBox>
                         <Text fx:id="leftStatusUpdate2" fill="#16a600" layoutX="21.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
                      </children></AnchorPane>
             </content>
