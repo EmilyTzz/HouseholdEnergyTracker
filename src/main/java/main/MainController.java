@@ -1,5 +1,6 @@
 package main;
 
+import file.Reader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,12 +10,17 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import object.CarbonConvertor;
 import object.Cost;
 import object.Usage;
 import object.UsageSorter;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
+import java.util.logging.FileHandler;
 
 public class MainController {
 
@@ -86,8 +92,6 @@ public class MainController {
     @FXML
     private Text leftStatusUpdate;
 
-    @FXML
-    private Text leftStatusUpdate2;
 
     @FXML
     private TextField monthEntered;
@@ -109,9 +113,6 @@ public class MainController {
 
     @FXML
     private Text rightStatusUpdate;
-
-    @FXML
-    private Text rightStatusUpdate2;
 
     @FXML
     private TabPane tabPane;
@@ -293,7 +294,7 @@ public class MainController {
     void onEnterMonthlyUsageClicked(ActionEvent event) {
         if (cost.getCostPerKwH() == 0 && cost.getCostPerGJ() == 0){
             tabPane.getSelectionModel().select(1); // switch to the edit prices tab
-            rightStatusUpdate2.setText("Error: Please fill in your Electricity and Natural Gas Prices");
+            rightStatusUpdate.setText("Error: Please fill in your Electricity and Natural Gas Prices");
             return;
         }
         String month = monthEntered.getText().toUpperCase();
@@ -373,36 +374,36 @@ public class MainController {
         double naturalGasPrice;
         try{
             if (electrictyPriceEntered.getText().isBlank()){
-                rightStatusUpdate2.setText("Error: Electricity Price cannot be Empty");
+                rightStatusUpdate.setText("Error: Electricity Price cannot be Empty");
                 return;
             }
             electricityPrice = Double.parseDouble(electrictyPriceEntered.getText());
             if (electricityPrice < 0) {
-                rightStatusUpdate2.setText("Error: Electricity Price cannot be Negative");
+                rightStatusUpdate.setText("Error: Electricity Price cannot be Negative");
                 return;
             }
         }catch (NumberFormatException e){
-            rightStatusUpdate2.setText("Error: Please enter a valid Electricity Price");
+            rightStatusUpdate.setText("Error: Please enter a valid Electricity Price");
             return;
         }
         try{
             if (naturalGasPriceEntered.getText().isBlank()){
-                rightStatusUpdate2.setText("Error: Natural Gas Price cannot be Empty");
+                rightStatusUpdate.setText("Error: Natural Gas Price cannot be Empty");
                 return;
             }
             naturalGasPrice = Double.parseDouble(naturalGasPriceEntered.getText());
             if (naturalGasPrice < 0) {
-                rightStatusUpdate2.setText("Error: Natural Gas Price cannot be Negative");
+                rightStatusUpdate.setText("Error: Natural Gas Price cannot be Negative");
                 return;
             }
         }catch (NumberFormatException e){
-            rightStatusUpdate2.setText("Error: Please enter a valid Natural Gas Price");
+            rightStatusUpdate.setText("Error: Please enter a valid Natural Gas Price");
             return;
         }
         cost.setCostPerKwH(electricityPrice);
         cost.setCostPerGJ(naturalGasPrice);
-        rightStatusUpdate2.setText("");
-        leftStatusUpdate2.setText("Successfully Added Prices");
+        rightStatusUpdate.setText("");
+        leftStatusUpdate.setText("Successfully Added Prices");
         pricePerKwH.setText(Double.toString(cost.getCostPerKwH()));
         pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
 
@@ -416,7 +417,29 @@ public class MainController {
 
     @FXML
     void onLoadClicked(ActionEvent event) {
-
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Load Usage Data");
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        File file = fc.showOpenDialog(new Stage());
+        if (file == null){
+            showError("ERROR: No File Selected");
+        }
+        if (file != null){
+            Reader reader = new Reader();
+            usage = new Usage();
+            reader.loadInfo(file, usage, cost, "N");
+            if (reader.validFile){
+                leftStatusUpdate.setText("Successfully Loaded " + file);
+                pricePerKwH.setText(Double.toString(cost.getCostPerKwH()));
+                pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
+                UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
+                monthlySummaryComboBox.getSelectionModel().selectFirst();
+                monthlySummaryComboBox.getItems().setAll(usageSorter.getSortedMonths());
+            }
+            else{
+                showError("ERROR: Invalid File");
+            }
+        }
     }
 
     @FXML
@@ -434,6 +457,13 @@ public class MainController {
 
     }
 
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Input Error");
+        alert.setHeaderText("Invalid Input");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     @FXML
     void onUsageStatisticsClicked(ActionEvent event) {

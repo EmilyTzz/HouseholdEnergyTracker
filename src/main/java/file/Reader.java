@@ -8,9 +8,12 @@ import java.io.*;
 
 public class Reader {
 
+    public boolean validFile = false;
+
     public void loadInfo(File file, Usage usage, Cost cost, String keepPriceOrNot){
         try{
             BufferedReader br = new BufferedReader(new FileReader(file));
+            validFile = false;
             String line;
             boolean isFirstLine = true;
             while ((line = br.readLine()) != null){
@@ -38,11 +41,12 @@ public class Reader {
                 usage.addElectricityUsage(electricity);
                 usage.addNaturalGasUsage(naturalGas);
             }
+            validFile = true;
             System.out.println("\n* Successfully load data from " + file + "*\n");
         }catch (FileNotFoundException e) {
-            System.out.println("* Error: File was not found *");
+            System.exit(1);
         }catch (IOException e){
-            System.out.println("* Error: An issue occured while reading the file *");
+            System.exit(1);
         }
     }
 
