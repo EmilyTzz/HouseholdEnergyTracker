@@ -140,29 +140,28 @@ public class MainController {
     @FXML
     private ComboBox<String> monthComboBox;
 
-    @FXML
-    private RadioButton keepCurrentElectricityPrice;
-
-    @FXML
-    private RadioButton keepCurrentNaturalGasPrice;
-
 
     @FXML
     public void initialize() {
-        UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
-        monthComboBox.getItems().addAll(validMonths);
+        // Set All Tabs to be unclosable
         enterMonthlyUsageTab.setClosable(false); // Don't allow user to close the tab
         editPricesTab.setClosable(false);
         viewOverview.setClosable(false);
-        pricePerKwH.setText(Double.toString(cost.getCostPerKwH())); // Shows the starting prices
-        pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
+        UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
+        // Add Selections to the Combo boxes
+        monthComboBox.getItems().addAll(validMonths);
         sortOptionsComboBox.getItems().addAll(sortOptions);
         monthlySummaryComboBox.getItems().addAll(usageSorter.getSortedMonths());
+        // Set the display for the current kwH and Gj prices
+        pricePerKwH.setText(Double.toString(cost.getCostPerKwH())); // Shows the starting prices
+        pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
+        // Calls the helper methods for combo box selections
         sortSelectionHelper();
+        monthlySummarySelectionHelper();
+        // Set visibility of different selections in the Overview Tabs
         makeOverviewDisplayInvisible();
         makeSortedDisplayInvisible();
         makeMonthlySummaryInvisible();
-        monthlySummarySelectionHelper();
     }
 
     private void makeOverviewDisplayInvisible(){
@@ -413,7 +412,6 @@ public class MainController {
         leftStatusUpdate.setText("Successfully Added Prices");
         pricePerKwH.setText(Double.toString(cost.getCostPerKwH()));
         pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
-
     }
 
 
@@ -434,9 +432,9 @@ public class MainController {
         if (file != null){
             Reader reader = new Reader();
             usage = new Usage();
-            reader.loadInfo(file, usage, cost);
+            String msg = reader.loadInfo(file, usage, cost);
             if (reader.validFile){
-                leftStatusUpdate.setText("Successfully Loaded " + file.getName());
+                leftStatusUpdate.setText(msg);
                 pricePerKwH.setText(Double.toString(cost.getCostPerKwH()));
                 pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
                 UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
@@ -444,7 +442,7 @@ public class MainController {
                 monthlySummaryComboBox.getItems().setAll(usageSorter.getSortedMonths());
             }
             else{
-                showError("ERROR: Invalid File");
+                showError(msg);
             }
         }
     }
@@ -470,8 +468,12 @@ public class MainController {
         File fileToSave = fileChooser.showSaveDialog(null);
         if (fileToSave != null){
             Writer writer = new Writer();
-            writer.saveInfo(fileToSave, usageSorter, cost);
-            leftStatusUpdate.setText("Saved as: " + fileToSave.getName());
+            if (writer.validFile){
+                leftStatusUpdate.setText(writer.saveInfo(fileToSave, usageSorter, cost));
+            }
+            else{
+                showError(writer.saveInfo(fileToSave, usageSorter, cost));
+            }
         }
         else{
             showError("ERROR: File was not saved. Please select a valid file location");
@@ -540,7 +542,20 @@ public class MainController {
 
     @FXML
     void onAboutClicked(ActionEvent event) {
-
+        Alert alert = new Alert(Alert.AlertType.INFORMATION); // Information alert window
+        alert.setTitle("About My Household Tracker Application");
+        alert.setHeaderText("About My Household Tracker Application");
+        String content = "Author: Emily Trinh\n" + "Description: This is an application that allows users to enter their own " +
+                "monthly electricity, natural gas usage, as well as the current prices they have to pay per kwH and GJ. The program would then " +
+                "help users calculate their monthly usage costs, usage emission, and keep track of all their entered usage within the year. Users would" +
+                " then get to see a full summary and statistics of all their monthly usage that helps them see which month they had the highest usage, emissions, costs, etc.";
+        TextArea textArea = new TextArea(content);
+        textArea.setWrapText(true);
+        textArea.setEditable(false);
+        textArea.setPrefWidth(400);
+        textArea.setPrefHeight(250);
+        alert.getDialogPane().setContent(textArea);
+        alert.show();
     }
 
 

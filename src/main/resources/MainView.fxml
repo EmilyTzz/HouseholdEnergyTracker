@@ -11,7 +11,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Tab?>
@@ -149,7 +148,6 @@
                               <GridPane alignment="CENTER" prefHeight="249.0" prefWidth="295.0" HBox.hgrow="ALWAYS">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="264.00001220703126" minWidth="0.0" prefWidth="179.6000244140625" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="244.79999999999998" minWidth="10.0" prefWidth="138.79997558593746" />
                                 </columnConstraints>
                                 <rowConstraints>
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -165,16 +163,6 @@
                                     <TextField fx:id="electrictyPriceEntered" alignment="CENTER" GridPane.rowIndex="1" />
                                     <TextField fx:id="naturalGasPriceEntered" alignment="CENTER" GridPane.rowIndex="3" />
                                     <Button mnemonicParsing="false" onAction="#onEnterNewPricesClicked" text="Enter New Prices" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                                    <RadioButton fx:id="keepCurrentElectricityPrice" mnemonicParsing="false" text="Keep Current Price" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-                                       <GridPane.margin>
-                                          <Insets />
-                                       </GridPane.margin>
-                                    </RadioButton>
-                                    <RadioButton fx:id="keepCurrentNaturalGasPrice" mnemonicParsing="false" text="Keep Current Price" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-                                       <GridPane.margin>
-                                          <Insets />
-                                       </GridPane.margin>
-                                    </RadioButton>
                                  </children>
                                  <HBox.margin>
                                     <Insets bottom="30.0" left="140.0" right="140.0" top="30.0" />

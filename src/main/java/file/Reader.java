@@ -10,7 +10,7 @@ public class Reader {
 
     public boolean validFile = false;
 
-    public void loadInfo(File file, Usage usage, Cost cost){
+    public String loadInfo(File file, Usage usage, Cost cost){
         try{
             BufferedReader br = new BufferedReader(new FileReader(file));
             validFile = false;
@@ -40,11 +40,13 @@ public class Reader {
                 usage.addNaturalGasUsage(naturalGas);
             }
             validFile = true;
-            System.out.println("\n* Successfully load data from " + file + "*\n");
+            return "Successfully load data from " + file.getName();
         }catch (FileNotFoundException e) {
-            System.exit(1);
+            return "ERROR: Invalid File";
         }catch (IOException e){
-            System.exit(1);
+            return "ERROR: Invalid File";
+        }catch (RuntimeException e) {
+            return "ERROR: Invalid File";
         }
     }
 

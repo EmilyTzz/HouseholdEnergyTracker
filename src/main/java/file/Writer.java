@@ -10,7 +10,9 @@ import java.io.PrintWriter;
 
 public class Writer {
 
-    public void saveInfo(File file, UsageSorter usageSorter, Cost cost){
+    public boolean validFile = false;
+
+    public String saveInfo(File file, UsageSorter usageSorter, Cost cost){
         try (PrintWriter writer = new PrintWriter(new FileWriter(file))){
             writer.printf(cost.getCostPerKwH() + "," + cost.getCostPerGJ());
             writer.println("month,electricity used,natural gas used");
@@ -18,9 +20,10 @@ public class Writer {
             for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
                 writer.printf("%s,%f,%s\n", usageSorter.getSortedMonths().get(i), usageSorter.getSortedElectricityUsed().get(i), usageSorter.getSortedNaturalGasUsed().get(i));
             }
-            System.out.println("\n* Data Successfully Saved to " + file + " *\n");
+            validFile = true;
+            return ("Data Successfully Saved to " + file.getName());
         }catch (IOException e){
-            System.out.println("ERROR");
+            return ("ERROR: File was not saved. Please select a valid file location");
         }
     }
 
