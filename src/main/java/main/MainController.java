@@ -1,6 +1,7 @@
 package main;
 
 import file.Reader;
+import file.Writer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,7 +48,6 @@ public class MainController {
     private final static Cost cost = new Cost();
 
     private final static CarbonConvertor carbonConvertor = new CarbonConvertor();
-
 
     static{
         validMonths.addAll(Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY",
@@ -425,7 +425,7 @@ public class MainController {
             usage = new Usage();
             reader.loadInfo(file, usage, cost);
             if (reader.validFile){
-                leftStatusUpdate.setText("Successfully Loaded " + file);
+                leftStatusUpdate.setText("Successfully Loaded " + file.getName());
                 pricePerKwH.setText(Double.toString(cost.getCostPerKwH()));
                 pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
                 UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
@@ -444,14 +444,22 @@ public class MainController {
     }
 
     @FXML
-    void onSaveAsClicked(ActionEvent event) {
-
-    }
-
-    @FXML
     void onSaveClicked(ActionEvent event) {
-
+        UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Usage Data");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        File fileToSave = fileChooser.showSaveDialog(null);
+        if (fileToSave != null){
+            Writer writer = new Writer();
+            writer.saveInfo(fileToSave, usageSorter, cost);
+            leftStatusUpdate.setText("Saved as: " + fileToSave.getName());
+        }
+        else{
+            showError("ERROR: File was not saved. Please select a valid file location");
+        }
     }
+
 
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

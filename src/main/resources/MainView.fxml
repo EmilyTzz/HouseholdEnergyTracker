@@ -35,7 +35,6 @@
                   <MenuItem mnemonicParsing="false" onAction="#onLoadClicked" text="Load" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#onSaveClicked" text="Save" />
-                  <MenuItem mnemonicParsing="false" onAction="#onSaveAsClicked" text="Save As" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#onQuitClicked" text="Quit" />
                </items></Menu>
@@ -118,7 +117,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <GridPane layoutX="224.0" layoutY="61.0" prefHeight="177.0" prefWidth="152.0">
+                        <GridPane alignment="CENTER" layoutX="224.0" layoutY="61.0" prefHeight="177.0" prefWidth="152.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
@@ -133,8 +132,8 @@
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price/KwH:" GridPane.halignment="CENTER" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price/GJ:" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <TextField fx:id="electrictyPriceEntered" GridPane.rowIndex="1" />
-                              <TextField fx:id="naturalGasPriceEntered" GridPane.rowIndex="3" />
+                              <TextField fx:id="electrictyPriceEntered" alignment="CENTER" GridPane.rowIndex="1" />
+                              <TextField fx:id="naturalGasPriceEntered" alignment="CENTER" GridPane.rowIndex="3" />
                               <Button mnemonicParsing="false" onAction="#onEnterNewPricesClicked" text="Enter New Prices" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                            </children>
                         </GridPane>
