@@ -5,11 +5,15 @@
 }
 
 .menu-bar .menu {
-    -fx-background-color: transparent;
+    -fx-background-color: #2E3B4C;
 }
 
 .menu-bar .menu .label {
     -fx-text-fill: #FFFFFF;
+}
+
+.menu-item {
+    -fx-background-color: #2E3B4C;
 }
 
 .tab-pane .tab .tab-label {
@@ -41,10 +45,23 @@ tab:selected .tab-label {
 }
 
 .text-area {
-    -fx-control-inner-background: #2E3B4C;
+    -fx-control-inner-background: #0D1F43;
     -fx-text-fill: #ffffff;
  }
 
 .text-area {
     -fx-border-color: #000000;
+}
+
+.chart-pie-label{
+    -fx-fill:  #ffffff;
+}
+
+.chart-title {
+    -fx-text-fill: #8FA2BA;
+    -fx-font-weight: bold;
+}
+
+.chart-legend-item {
+    -fx-text-fill: #000000;
 }

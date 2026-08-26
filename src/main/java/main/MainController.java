@@ -138,7 +138,7 @@ public class MainController {
     private TextArea monthlySummaryTextArea;
 
     @FXML
-    private Text monthChosenOnComboBox;
+    private Label monthChosenOnComboBox;
 
     @FXML
     private ComboBox<String> monthComboBox;
@@ -472,12 +472,17 @@ public class MainController {
     void onUsageStatisticsClicked(ActionEvent event) {
         displayStackPane.getChildren().clear();
         displayStackPane.getChildren().add(usageStatsHbox);
-        totalCostPieChart.setTitle("Energy Costs % of All The Months");
-        totalEmissionPieChart.setTitle("Emission % of All The Months");
-        addToPieChartHelper(totalCostPieChart, TOTAL_COST);
-        addToPieChartHelper(totalEmissionPieChart, TOTAL_EMISSION);
-        textAreaTotalCost.setText(costSummaryHelper());
-        textAreaEmission.setText(emissionSummaryHelper());
+        if (usage.getMonths().isEmpty()){
+            rightStatusUpdate.setText("No Data Here Yet...");
+        }
+        else{
+            totalCostPieChart.setTitle("Energy Costs % of All The Months");
+            totalEmissionPieChart.setTitle("Emission % of All The Months");
+            addToPieChartHelper(totalCostPieChart, TOTAL_COST);
+            addToPieChartHelper(totalEmissionPieChart, TOTAL_EMISSION);
+            textAreaTotalCost.setText(costSummaryHelper());
+            textAreaEmission.setText(emissionSummaryHelper());
+        }
     }
 
     private void addToPieChartHelper(PieChart pieChart, String type){
