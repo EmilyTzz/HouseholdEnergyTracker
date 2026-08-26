@@ -7,6 +7,7 @@
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -25,234 +26,254 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2E3B4C;" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.MainController">
    <children>
-      <MenuBar>
-        <menus>
-          <Menu mnemonicParsing="false" onAction="#onFileClicked" text="File">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#onLoadClicked" text="Load" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#onSaveClicked" text="Save" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#onQuitClicked" text="Quit" />
-               </items></Menu>
-          <Menu mnemonicParsing="false" onAction="#onAboutClicked" text="About">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="About My HouseHold Energy Tracker" />
-               </items></Menu>
-        </menus>
-      </MenuBar>
-      <AnchorPane prefHeight="26.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2E3B4C; -fx-background-radius: 20; -fx-border-color: #000000; -fx-border-width: 4; -fx-border-radius: 20;" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
          <children>
-            <Text fx:id="leftStatusUpdate" fill="#16a600" layoutX="11.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
-            <Text fx:id="rightStatusUpdate" fill="#d90000" layoutX="563.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-         </children>
-      </AnchorPane>
-       <TabPane fx:id="tabPane" layoutY="24.8" prefHeight="375.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-        <tabs>
-          <Tab fx:id="enterMonthlyUsageTab" text="Enter Monthly Usage">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <MenuBar style="-fx-background-color: #2E3B4C; -fx-background-radius: 25;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <menus>
+                <Menu mnemonicParsing="false" onAction="#onFileClicked" text="File">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onLoadClicked" text="Load" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#onSaveClicked" text="Save" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#onQuitClicked" text="Quit" />
+                     </items>
+                  </Menu>
+                <Menu mnemonicParsing="false" onAction="#onAboutClicked" text="About">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="About My HouseHold Energy Tracker" />
+                     </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
+            <AnchorPane layoutX="13.600000000000001" prefHeight="18.0" prefWidth="572.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0">
+               <children>
+                  <Text fx:id="leftStatusUpdate" fill="#8bea16" layoutX="11.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
+                  <Text fx:id="rightStatusUpdate" fill="#ff0026" layoutX="563.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+               </children>
+            </AnchorPane>
+             <TabPane fx:id="tabPane" prefHeight="375.0" prefWidth="600.0" style="-fx-background-color: #0D1F43; -fx-border-color: #00000;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+              <tabs>
+                <Tab fx:id="enterMonthlyUsageTab" text="Enter Monthly Usage">
+                  <content>
+                    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <VBox prefHeight="316.0" prefWidth="263.0" HBox.hgrow="ALWAYS">
+                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-border-color: #000000; -fx-border-width: 3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <GridPane maxWidth="1.7976931348623157E308" prefHeight="51.0" prefWidth="250.0">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.20001220703125" minWidth="10.0" prefWidth="50.60004501342773" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.19995498657227" minWidth="10.0" prefWidth="179.19995498657227" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                                      </rowConstraints>
+                                    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="287.0" prefWidth="11.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$/kwH: " GridPane.hgrow="ALWAYS">
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Text>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$/GJ: " GridPane.rowIndex="1">
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Text>
-                                          <Text fx:id="pricePerKwH" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1">
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Text>
-                                          <Text fx:id="pricePerGJ" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Text>
+                                          <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="287.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="274.0" prefWidth="50.0" VBox.vgrow="ALWAYS">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                      <RowConstraints maxHeight="26.000006103515624" minHeight="10.0" percentHeight="100.0" prefHeight="26.000006103515624" vgrow="ALWAYS" />
+                                                      <RowConstraints maxHeight="41.00001831054688" minHeight="10.0" percentHeight="100.0" prefHeight="30.799993896484374" valignment="CENTER" vgrow="ALWAYS" />
+                                                      <RowConstraints maxHeight="38.60000610351562" minHeight="2.600018310546872" percentHeight="100.0" prefHeight="24.199981689453118" vgrow="ALWAYS" />
+                                                    <RowConstraints maxHeight="48.60000000000001" minHeight="10.0" percentHeight="100.0" prefHeight="29.600018310546886" vgrow="ALWAYS" />
+                                                      <RowConstraints maxHeight="28.200036621093744" minHeight="9.200000000000003" percentHeight="100.0" prefHeight="24.20000610351562" vgrow="ALWAYS" />
+                                                      <RowConstraints maxHeight="43.599999999999994" minHeight="10.0" percentHeight="100.0" prefHeight="30.399993896484375" vgrow="ALWAYS" />
+                                                      <RowConstraints maxHeight="32.400000000000006" minHeight="10.0" percentHeight="100.0" prefHeight="32.400000000000006" vgrow="ALWAYS" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <TextField fx:id="electricityEntered" prefHeight="19.0" prefWidth="201.0" style="-fx-background-color: #8BEA16;" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS" />
+                                                      <TextField fx:id="naturalGasEntered" prefHeight="19.0" prefWidth="201.0" style="-fx-background-color: #8BEA16;" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.vgrow="ALWAYS" />
+                                                      <Button mnemonicParsing="false" onAction="#onEnterMonthlyUsageClicked" style="-fx-background-color: #28395D;" text="Enter" textFill="#00e6d1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.vgrow="ALWAYS" />
+                                                      <ComboBox fx:id="monthComboBox" maxWidth="1.7976931348623157E308" prefHeight="19.0" prefWidth="192.0" style="-fx-background-color: #8BEA16;" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+                                                      <Label alignment="CENTER" prefHeight="25.0" prefWidth="202.0" style="-fx-background-color: #2E3B4C; -fx-background-radius: 5; -fx-background-size: 40; -fx-border-width: 0.5; -fx-border-color: #FFFFFF; -fx-border-radius: 5;" text="MONTH" textFill="WHITE" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+                                                      <Label alignment="CENTER" prefHeight="25.0" prefWidth="201.0" style="-fx-background-color: #2E3B4C; -fx-background-radius: 5; -fx-background-size: 40; -fx-border-width: 0.5; -fx-border-color: #FFFFFF; -fx-border-radius: 5;" text="ELECTRICITY USED (kwH)" textFill="WHITE" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
+                                                      <Label alignment="CENTER" prefHeight="25.0" prefWidth="201.0" style="-fx-background-color: #2E3B4C; -fx-background-radius: 5; -fx-background-size: 40; -fx-border-width: 0.5; -fx-border-color: #FFFFFF; -fx-border-radius: 5;" text="NATURAL GAS USED (GJ)" textFill="WHITE" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets left="10.0" right="10.0" top="20.0" />
+                                                   </padding>
+                                                </GridPane>
+                                             </children>
+                                          </VBox>
                                        </children>
-                                       <VBox.margin>
-                                          <Insets left="15.0" right="20.0" top="10.0" />
-                                       </VBox.margin>
-                                    </GridPane>
-                                    <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="262.0" prefWidth="266.0" VBox.vgrow="ALWAYS">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                      </rowConstraints>
+                                    </AnchorPane>
+                                    <AnchorPane prefHeight="278.0" prefWidth="140.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Month:" GridPane.halignment="CENTER" />
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Electricity Used (kWh):" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                                          <TextField fx:id="electricityEntered" GridPane.rowIndex="4" />
-                                          <TextField fx:id="naturalGasEntered" GridPane.rowIndex="7" />
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Natural Gas Used (GJ):" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-                                          <Button mnemonicParsing="false" onAction="#onEnterMonthlyUsageClicked" text="Enter" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
-                                          <ComboBox fx:id="monthComboBox" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="234.0" GridPane.rowIndex="1" />
+                                          <VBox layoutX="28.8" layoutY="-0.8" prefHeight="288.0" prefWidth="298.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0">
+                                             <children>
+                                                <GridPane maxWidth="1.7976931348623157E308" prefHeight="128.0" prefWidth="215.0" style="-fx-background-color: #00000;" VBox.vgrow="NEVER">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.20001220703125" minWidth="10.0" prefWidth="58.399959564208984" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.00005264282225" minWidth="10.0" prefWidth="216.800040435791" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                      <RowConstraints maxHeight="28.799983978271484" minHeight="0.0" prefHeight="27.200008392333984" vgrow="NEVER" />
+                                                    <RowConstraints maxHeight="30.4" minHeight="2.400016021728515" prefHeight="3.999991607666015" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Text fx:id="pricePerKwH" fill="#b8ff61" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1">
+                                                         <font>
+                                                            <Font size="14.0" />
+                                                         </font>
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Text>
+                                                      <Text fx:id="pricePerGJ" fill="#b8ff61" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                         <font>
+                                                            <Font size="14.0" />
+                                                         </font>
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Text>
+                                                      <Label alignment="CENTER" prefHeight="38.0" prefWidth="58.0" style="-fx-background-color: #00E6D1; -fx-background-radius: 20;" text="\$/kwH:" GridPane.halignment="LEFT">
+                                                         <font>
+                                                            <Font size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="58.0" style="-fx-background-color: #00E6D1; -fx-background-radius: 20;" text="\$/GJ:" GridPane.rowIndex="2">
+                                                         <font>
+                                                            <Font size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets left="5.0" right="20.0" top="5.0" />
+                                                   </VBox.margin>
+                                                </GridPane>
+                                                <TextArea fx:id="monthlyUSageSummaryText" editable="false" prefHeight="241.0" prefWidth="328.0" style="-fx-background-color: 0D1F43;" VBox.vgrow="ALWAYS" />
+                                             </children>
+                                          </VBox>
                                        </children>
-                                       <VBox.margin>
-                                          <Insets bottom="20.0" left="20.0" right="20.0" />
-                                       </VBox.margin>
-                                    </GridPane>
+                                    </AnchorPane>
                                  </children>
-                              </VBox>
-                              <AnchorPane prefHeight="316.0" prefWidth="334.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <TextArea fx:id="monthlyUSageSummaryText" editable="false" layoutX="-128.8" layoutY="14.0" prefHeight="316.0" prefWidth="329.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
-                                 </children>
-                              </AnchorPane>
+                              </HBox>
                            </children>
-                        </HBox>
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets></AnchorPane>
-            </content>
-          </Tab>
-          <Tab fx:id="editPricesTab" text="Edit $/KwH or $/GJ ">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab fx:id="editPricesTab" text="Edit $/KwH or $/GJ ">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <GridPane alignment="CENTER" prefHeight="249.0" prefWidth="295.0" HBox.hgrow="ALWAYS">
+                              <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <GridPane alignment="CENTER" prefHeight="249.0" prefWidth="295.0" HBox.hgrow="ALWAYS">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="264.00001220703126" minWidth="0.0" prefWidth="179.6000244140625" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price/KwH:" GridPane.halignment="CENTER" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price/GJ:" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                                          <TextField fx:id="electrictyPriceEntered" alignment="CENTER" GridPane.rowIndex="1" />
+                                          <TextField fx:id="naturalGasPriceEntered" alignment="CENTER" GridPane.rowIndex="3" />
+                                          <Button mnemonicParsing="false" onAction="#onEnterNewPricesClicked" text="Enter New Prices" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets bottom="30.0" left="140.0" right="140.0" top="30.0" />
+                                       </HBox.margin>
+                                    </GridPane>
+                                 </children>
+                              </HBox>
+                              <Text fx:id="leftStatusUpdate2" fill="#16a600" layoutX="21.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab fx:id="viewOverview" text="View Overview">
+                      <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <StackPane fx:id="displayStackPane" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+                                 <children>
+                                    <VBox fx:id="monthSummaryVbox" prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <Text fx:id="monthChosenOnComboBox" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="557.3366889953613" VBox.vgrow="ALWAYS">
+                                             <VBox.margin>
+                                                <Insets left="10.0" right="10.0" top="10.0" />
+                                             </VBox.margin>
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Text>
+                                          <TextArea fx:id="monthlySummaryTextArea" editable="false" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS">
+                                             <VBox.margin>
+                                                <Insets left="10.0" right="10.0" />
+                                             </VBox.margin>
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </TextArea>
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets top="40.0" />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <HBox fx:id="sortDisplayHbox" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <TextArea fx:id="sortedDataDisplay" editable="false" maxHeight="1.7976931348623157E308" wrapText="true" HBox.hgrow="ALWAYS" />
+                                          <BarChart fx:id="dataBarChart" maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                            <xAxis>
+                                              <CategoryAxis label="Months" fx:id="xAxis" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis fx:id="yAxis" label="Costs" />
+                                            </yAxis>
+                                          </BarChart>
+                                       </children>
+                                    </HBox>
+                                    <HBox fx:id="usageStatsHbox" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <VBox prefHeight="269.0" prefWidth="291.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <PieChart fx:id="totalCostPieChart" prefHeight="281.0" prefWidth="289.0" VBox.vgrow="ALWAYS" />
+                                                <TextArea fx:id="textAreaTotalCost" prefHeight="178.0" prefWidth="289.0" VBox.vgrow="ALWAYS" />
+                                             </children>
+                                          </VBox>
+                                          <VBox prefHeight="271.0" prefWidth="298.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <PieChart fx:id="totalEmissionPieChart" prefHeight="281.0" prefWidth="339.0" VBox.vgrow="ALWAYS" />
+                                                <TextArea fx:id="textAreaEmission" prefHeight="178.0" prefWidth="289.0" VBox.vgrow="ALWAYS" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </StackPane>
+                              <GridPane layoutX="48.0" layoutY="8.8" prefHeight="26.0" prefWidth="517.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="9.0">
                                 <columnConstraints>
-                                  <ColumnConstraints hgrow="ALWAYS" maxWidth="264.00001220703126" minWidth="0.0" prefWidth="179.6000244140625" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="263.2" minWidth="10.0" prefWidth="166.4000244140625" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.99995880126954" minWidth="0.0" prefWidth="160.59995117187503" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="274.8000122070312" minWidth="10.0" prefWidth="190.20004882812498" />
                                 </columnConstraints>
                                 <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price/KwH:" GridPane.halignment="CENTER" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price/GJ:" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                                    <TextField fx:id="electrictyPriceEntered" alignment="CENTER" GridPane.rowIndex="1" />
-                                    <TextField fx:id="naturalGasPriceEntered" alignment="CENTER" GridPane.rowIndex="3" />
-                                    <Button mnemonicParsing="false" onAction="#onEnterNewPricesClicked" text="Enter New Prices" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                                    <ComboBox fx:id="sortOptionsComboBox" prefHeight="26.0" prefWidth="156.0" promptText="Sort Options" />
+                                    <Button mnemonicParsing="false" onAction="#onUsageStatisticsClicked" prefHeight="26.0" prefWidth="153.0" text="Usage Statistics" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+                                    <ComboBox fx:id="monthlySummaryComboBox" prefWidth="150.0" promptText="Monthly Summary" GridPane.columnIndex="1" />
                                  </children>
-                                 <HBox.margin>
-                                    <Insets bottom="30.0" left="140.0" right="140.0" top="30.0" />
-                                 </HBox.margin>
                               </GridPane>
                            </children>
-                        </HBox>
-                        <Text fx:id="leftStatusUpdate2" fill="#16a600" layoutX="21.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
-                     </children></AnchorPane>
-            </content>
-          </Tab>
-            <Tab fx:id="viewOverview" text="View Overview">
-                <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <StackPane fx:id="displayStackPane" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
-                           <children>
-                              <VBox fx:id="monthSummaryVbox" prefHeight="200.0" prefWidth="100.0">
-                                 <children>
-                                    <Text fx:id="monthChosenOnComboBox" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="557.3366889953613" VBox.vgrow="ALWAYS">
-                                       <VBox.margin>
-                                          <Insets left="10.0" right="10.0" top="10.0" />
-                                       </VBox.margin>
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </Text>
-                                    <TextArea fx:id="monthlySummaryTextArea" editable="false" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS">
-                                       <VBox.margin>
-                                          <Insets left="10.0" right="10.0" />
-                                       </VBox.margin>
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </TextArea>
-                                 </children>
-                                 <opaqueInsets>
-                                    <Insets top="40.0" />
-                                 </opaqueInsets>
-                              </VBox>
-                              <HBox fx:id="sortDisplayHbox" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <TextArea fx:id="sortedDataDisplay" editable="false" maxHeight="1.7976931348623157E308" wrapText="true" HBox.hgrow="ALWAYS" />
-                                    <BarChart fx:id="dataBarChart" maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
-                                      <xAxis>
-                                        <CategoryAxis label="Months" fx:id="xAxis" />
-                                      </xAxis>
-                                      <yAxis>
-                                        <NumberAxis fx:id="yAxis" label="Costs" />
-                                      </yAxis>
-                                    </BarChart>
-                                 </children>
-                              </HBox>
-                              <HBox fx:id="usageStatsHbox" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <VBox prefHeight="269.0" prefWidth="291.0" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <PieChart fx:id="totalCostPieChart" prefHeight="281.0" prefWidth="289.0" VBox.vgrow="ALWAYS" />
-                                          <TextArea fx:id="textAreaTotalCost" prefHeight="178.0" prefWidth="289.0" VBox.vgrow="ALWAYS" />
-                                       </children>
-                                    </VBox>
-                                    <VBox prefHeight="271.0" prefWidth="298.0" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <PieChart fx:id="totalEmissionPieChart" prefHeight="281.0" prefWidth="339.0" VBox.vgrow="ALWAYS" />
-                                          <TextArea fx:id="textAreaEmission" prefHeight="178.0" prefWidth="289.0" VBox.vgrow="ALWAYS" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </StackPane>
-                        <GridPane layoutX="48.0" layoutY="8.8" prefHeight="26.0" prefWidth="517.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="9.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="263.2" minWidth="10.0" prefWidth="166.4000244140625" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.99995880126954" minWidth="0.0" prefWidth="160.59995117187503" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="274.8000122070312" minWidth="10.0" prefWidth="190.20004882812498" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <ComboBox fx:id="sortOptionsComboBox" prefHeight="26.0" prefWidth="156.0" promptText="Sort Options" />
-                              <Button mnemonicParsing="false" onAction="#onUsageStatisticsClicked" prefHeight="26.0" prefWidth="153.0" text="Usage Statistics" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
-                              <ComboBox fx:id="monthlySummaryComboBox" prefWidth="150.0" promptText="Monthly Summary" GridPane.columnIndex="1" />
-                           </children>
-                        </GridPane>
-                     </children></AnchorPane>
-                </content>
-            </Tab>
-        </tabs>
-      </TabPane>
-      <Text fx:id="rightStatusUpdate2" fill="#d90000" layoutX="573.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                        </AnchorPane>
+                      </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
