@@ -10,6 +10,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -149,6 +150,18 @@ public class MainController {
     @FXML
     private StackPane displayStackPane;
 
+    @FXML
+    private ImageView happyLogo;
+
+    @FXML
+    private ImageView sadLogo;
+
+    @FXML
+    private ImageView normalLogo;
+
+    @FXML
+    private StackPane logoStackPane;
+
 
     /**
      * Initializes the starting points of the nodes that are not static
@@ -172,6 +185,8 @@ public class MainController {
         monthlySummarySelectionHelper();
         // Set visibility of different selections in the Overview Tabs
         displayStackPane.getChildren().clear();
+        logoStackPane.getChildren().clear();
+        logoStackPane.getChildren().add(normalLogo); // set default logo at beginning
     }
 
     /**
@@ -333,6 +348,10 @@ public class MainController {
             rightStatusUpdate.setText("Error: Please enter a valid Natural Gas amount");
             return;
         }
+        if (!usage.getNaturalGasUsed().isEmpty()){
+            double currentAverageEmission = carbonConvertor.getAverageEmission(usage.getElectricityUsed(), usage.getNaturalGasUsed());
+            changeLogo(carbonConvertor.getTotalCarbonEmission(Double.parseDouble(electricityEntered.getText()), Double.parseDouble(naturalGasEntered.getText())), currentAverageEmission);
+        }
         usage.addMonth(month);
         usage.addElectricityUsage(Double.parseDouble(electricityEntered.getText()));
         usage.addNaturalGasUsage(Double.parseDouble(naturalGasEntered.getText()));
@@ -344,6 +363,23 @@ public class MainController {
         monthlySummaryComboBox.getSelectionModel().selectFirst();
         monthlySummaryComboBox.getItems().setAll(usageSorter.getSortedMonths());
     }
+
+
+    private void changeLogo(double emission, double currentAverageEmission){
+        if (emission > currentAverageEmission){
+            logoStackPane.getChildren().clear();
+            logoStackPane.getChildren().add(sadLogo); // set logo to a sad earth face if user used more natural gas than their current average
+        }
+        else if (emission == currentAverageEmission){
+            logoStackPane.getChildren().clear();
+            logoStackPane.getChildren().add(normalLogo); // set logo to a normal face if user used equal natural gas to their current average
+        }
+        else if (emission < currentAverageEmission){
+            logoStackPane.getChildren().clear();
+            logoStackPane.getChildren().add(happyLogo); // set logo to a happy face if user used less natural gas than their current average
+        }
+    }
+
 
     private String sortedDataDisplayHelper(UsageSorter usageSorter){
         StringBuilder sb = new StringBuilder();
@@ -411,7 +447,6 @@ public class MainController {
         pricePerKwH.setText(Double.toString(cost.getCostPerKwH()));
         pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
     }
-
 
     @FXML
     void onFileClicked(ActionEvent event) {
