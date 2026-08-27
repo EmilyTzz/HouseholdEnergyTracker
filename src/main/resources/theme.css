@@ -80,5 +80,17 @@ tab:selected .tab-label {
 }
 
 .chart-plot-background {
-    -fx-background-color: #1C294A
+    -fx-background-color: #1C294A;
+}
+
+.scroll-bar {
+    -fx-background-color:  #00E6D1;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #1F3766;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #1F3766;
 }

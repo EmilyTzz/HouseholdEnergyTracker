@@ -46,11 +46,11 @@ public class MainController {
 
     private static final ArrayList<String> sortOptions = new ArrayList<>(); // stores all the sort options
 
-    private static Usage usage = new Usage();
+    private static Usage usage = new Usage(); // create new usage object
 
-    private final static Cost cost = new Cost();
+    private final static Cost cost = new Cost(); // create new cost object
 
-    private final static CarbonConvertor carbonConvertor = new CarbonConvertor();
+    private final static CarbonConvertor carbonConvertor = new CarbonConvertor(); // create new carbon convertor object
 
     static{
         validMonths.addAll(Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY",
@@ -70,8 +70,6 @@ public class MainController {
     @FXML
     private Tab editPricesTab;
 
-    @FXML
-    private ScrollPane scrollPane;
 
     @FXML
     private TextArea textAreaEmission;
@@ -90,10 +88,6 @@ public class MainController {
 
     @FXML
     private Text leftStatusUpdate;
-
-
-    @FXML
-    private TextField monthEntered;
 
     @FXML
     private TextArea monthlyUSageSummaryText;
@@ -156,13 +150,16 @@ public class MainController {
     private StackPane displayStackPane;
 
 
+    /**
+     * Initializes the starting points of the nodes that are not static
+     */
     @FXML
     public void initialize() {
         // Set All Tabs to be unclosable
         enterMonthlyUsageTab.setClosable(false); // Don't allow user to close the tab
         editPricesTab.setClosable(false);
         viewOverview.setClosable(false);
-        UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
+        UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed()); // create a usage sorter to add to the months combo box
         // Add Selections to the Combo boxes
         monthComboBox.getItems().addAll(validMonths);
         sortOptionsComboBox.getItems().addAll(sortOptions);
@@ -177,51 +174,61 @@ public class MainController {
         displayStackPane.getChildren().clear();
     }
 
-
+    /**
+     * This method helps to detect the month selections made by the user from the monthly summary combo box
+     */
     private void monthlySummarySelectionHelper(){
         monthlySummaryComboBox.setOnAction(event -> {
-            String month = monthlySummaryComboBox.getSelectionModel().getSelectedItem();
-            monthChosenOnComboBox.setText("");
+            String month = monthlySummaryComboBox.getSelectionModel().getSelectedItem(); // stores the user's selection
+            monthChosenOnComboBox.setText(""); // clear the month selected previously
             monthlySummaryTextArea.setText("");
             displayStackPane.getChildren().clear();
-            displayStackPane.getChildren().add(monthSummaryVbox);
+            displayStackPane.getChildren().add(monthSummaryVbox); // have only the monthly summary GUI show on the overview tab
             monthChosenOnComboBox.setText(month);
-            int indexOfCurrMonth = usage.getMonths().indexOf(month);
+            int indexOfCurrMonth = usage.getMonths().indexOf(month); // get the index of current month chosen to find its electricity and natural gas usage
             monthlySummaryTextArea.setText(estimations(usage.getElectricityUsed().get(indexOfCurrMonth), usage.getNaturalGasUsed().get(indexOfCurrMonth)));
             monthlySummaryTextArea.appendText(compareCarbonEmissionFromLastMonth(month));
         });
     }
 
+    /**
+     * This method helps to return the string with the carbon emission comparision between the current month and the previous month
+     * @param monthEntered month chosen by the user to see its summary
+     * @return String ith the carbon emission comparisons
+     */
     private String compareCarbonEmissionFromLastMonth(String monthEntered){
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
-        usageSorter.sortInfoAccordingToMonths();
+        usageSorter.sortInfoAccordingToMonths(); // sort the months in the traditional monthly order
         StringBuilder sb = new StringBuilder();
-        if (!usageSorter.getSortedMonths().getFirst().equals(monthEntered)){
-            int indexOfMonthBefore = usageSorter.getSortedMonths().indexOf(monthEntered)-1;
+        if (!usageSorter.getSortedMonths().getFirst().equals(monthEntered)){ // proceed if the month chosen is not the first month on the list
+            int indexOfMonthBefore = usageSorter.getSortedMonths().indexOf(monthEntered)-1; // get index of the month chosen
             double carbonDiff = carbonConvertor.getPercentageDiffInCarbonFromLastMonth(monthEntered, usageSorter.getSortedMonths().get(indexOfMonthBefore), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed());
             if (carbonDiff < 0){
-                sb.append("\nThe carbon emission for this month decreased by " + carbonDiff*(-1) + "% compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore)+ "\n");
+                sb.append("\n✨ The carbon emission for this month decreased by " + carbonDiff*(-1) + "% compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore)+ "\n");
             }
             else if (carbonDiff > 0){
-                sb.append("\nThe carbon emission for this month increased by " + carbonDiff + "% compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore)+ "\n");
+                sb.append("\n✨ The carbon emission for this month increased by " + carbonDiff + "% compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore)+ "\n");
             }
             else{
-                sb.append("\nThe carbon emission for this month has not changed compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore) + "\n");
+                sb.append("\n✨ The carbon emission for this month has not changed compared to " + usageSorter.getSortedMonths().get(indexOfMonthBefore) + "\n");
             }
         }
         return sb.toString();
     }
 
+    /**
+     * This method helps to detect any sort selections made by the user on the sort options combo box
+     */
     private void sortSelectionHelper(){
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
         sortOptionsComboBox.setOnAction(event -> {
             displayStackPane.getChildren().clear();
-            displayStackPane.getChildren().add(sortDisplayHbox);
-            String sortOption = sortOptionsComboBox.getSelectionModel().getSelectedItem();
+            displayStackPane.getChildren().add(sortDisplayHbox); // have the sort display be the only GUI shown on the overview tab
+            String sortOption = sortOptionsComboBox.getSelectionModel().getSelectedItem(); // store the user's selection
             switch (sortOption) {
                 case "Highest to Lowest Total Cost":
                     usageSorter.sortFromHighestToLowest(TOTAL_COST, cost, null);
-                    sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter));
+                    sortedDataDisplay.setText(sortedDataDisplayHelper(usageSorter)); // set the text area to display all the months' usage summary in the chosen sorting option
                     barChartDisplayHelper("Highest to Lowest Total Cost", usageSorter.getSortedMonths(), usageSorter.getSortedTotalCost());
                     break;
                 case "Lowest to Highest Total Cost":
@@ -263,19 +270,29 @@ public class MainController {
         });
     }
 
+    /**
+     * This method helps to add the sorted variables into a bar chart
+     * @param sortOption sort option that the user chose
+     * @param months list of all the months the user have entered
+     * @param variablesBeingCompared variable that user is sorting the data by
+     */
     private void barChartDisplayHelper(String sortOption, List<String> months, List<Double> variablesBeingCompared){
         dataBarChart.getData().clear();
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName(sortOption);
-        for (int i = 0; i < months.size(); i ++){
-            series.getData().add(new XYChart.Data<>(months.get(i), variablesBeingCompared.get(i)));
+        XYChart.Series<String, Number> series = new XYChart.Series<>(); // create a category-value object
+        series.setName(sortOption); // set name of bar chart to the sorting option
+        for (int i = 0; i < months.size(); i ++){ // interate through all the months and the list of the variables being compared by
+            series.getData().add(new XYChart.Data<>(months.get(i), variablesBeingCompared.get(i))); // add the month as the category and the variables as the values to the chart
         }
-        dataBarChart.getData().add(series);
+        dataBarChart.getData().add(series); // add the data to the bar chart
     }
 
+    /**
+     * This method helps to keep track of the month, electricity and natural gas usage entered by the user
+     * and store them to their inidividual lists
+     */
     @FXML
     void onEnterMonthlyUsageClicked(ActionEvent event) {
-        if (cost.getCostPerKwH() == 0 && cost.getCostPerGJ() == 0){
+        if (cost.getCostPerKwH() == 0 && cost.getCostPerGJ() == 0){ // switch user to the edit prices tab if the prices are not entered yet
             tabPane.getSelectionModel().select(1); // switch to the edit prices tab
             rightStatusUpdate.setText("Error: Please fill in your Electricity and Natural Gas Prices");
             return;
@@ -348,6 +365,9 @@ public class MainController {
         sb.append("Total cost: $" + (cost.getTotalCost(electricity, naturalGas))+ "\n");
         double totalEmission = (carbonConvertor.getElectricityCarbonFootprint(electricity) + carbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
         sb.append("Total CO2 Emission: " + totalEmission + " kg\n");
+        sb.append("\n------------Analysis------------\n");
+        sb.append("\n💡 That is the same amount of energy required to power " + carbonConvertor.getEquivalentOfCO2Emission(totalEmission) + " homes for a day!");
+        sb.append("\n...");
         return sb.toString();
     }
 
