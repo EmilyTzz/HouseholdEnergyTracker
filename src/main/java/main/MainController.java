@@ -17,10 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import object.CarbonConvertor;
-import object.Cost;
-import object.Usage;
-import object.UsageSorter;
+import object.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +47,8 @@ public class MainController {
     private static Usage usage = new Usage(); // create new usage object
 
     private final static Cost cost = new Cost(); // create new cost object
+
+    private double currentAverageEmission;
 
     private final static CarbonConvertor carbonConvertor = new CarbonConvertor(); // create new carbon convertor object
 
@@ -307,6 +306,8 @@ public class MainController {
      */
     @FXML
     void onEnterMonthlyUsageClicked(ActionEvent event) {
+        double electricity;
+        double naturalGas;
         if (cost.getCostPerKwH() == 0 && cost.getCostPerGJ() == 0){ // switch user to the edit prices tab if the prices are not entered yet
             tabPane.getSelectionModel().select(1); // switch to the edit prices tab
             rightStatusUpdate.setText("Error: Please fill in your Electricity and Natural Gas Prices");
@@ -323,11 +324,12 @@ public class MainController {
         }
 
         try{
+            electricity = Double.parseDouble(electricityEntered.getText());
             if (electricityEntered.getText().isBlank()) {
                 rightStatusUpdate.setText("Error: Electricity Amount cannot be Empty");
                 return;
             }
-            if (Double.parseDouble(electricityEntered.getText()) < 0){
+            if (electricity < 0){
                 rightStatusUpdate.setText("Error: Electricity Amount cannot be Negative");
                 return;
             }
@@ -336,11 +338,12 @@ public class MainController {
             return;
         }
         try{
+            naturalGas = Double.parseDouble(naturalGasEntered.getText());
             if (naturalGasEntered.getText().isBlank()) {
                 rightStatusUpdate.setText("Error: Natural Gas Amount cannot be Empty");
                 return;
             }
-            if (Double.parseDouble(naturalGasEntered.getText()) < 0){
+            if (naturalGas< 0){
                 rightStatusUpdate.setText("Error: Natural Gas Amount cannot be Negative");
                 return;
             }
@@ -348,24 +351,29 @@ public class MainController {
             rightStatusUpdate.setText("Error: Please enter a valid Natural Gas amount");
             return;
         }
-        if (!usage.getNaturalGasUsed().isEmpty()){
-            double currentAverageEmission = carbonConvertor.getAverageEmission(usage.getElectricityUsed(), usage.getNaturalGasUsed());
-            changeLogo(carbonConvertor.getTotalCarbonEmission(Double.parseDouble(electricityEntered.getText()), Double.parseDouble(naturalGasEntered.getText())), currentAverageEmission);
+        if (!usage.getMonths().isEmpty()){
+            currentAverageEmission = carbonConvertor.getAverageEmission(usage.getElectricityUsed(), usage.getNaturalGasUsed());
+            changeLogo(carbonConvertor.getTotalCarbonEmission(electricity, naturalGas));
         }
         usage.addMonth(month);
-        usage.addElectricityUsage(Double.parseDouble(electricityEntered.getText()));
-        usage.addNaturalGasUsage(Double.parseDouble(naturalGasEntered.getText()));
+        usage.addElectricityUsage(electricity);
+        usage.addNaturalGasUsage(naturalGas);
         rightStatusUpdate.setText("");
         leftStatusUpdate.setText("Successfully Added Usage Data For " + month);
         monthComboBox.setValue(null); // clear selection
-        monthlyUSageSummaryText.setText(estimations(Double.parseDouble(electricityEntered.getText()), Double.parseDouble(naturalGasEntered.getText())));
+        // set text area
+        monthlyUSageSummaryText.setText(estimations(electricity, naturalGas));
+        double newAverageEmission = carbonConvertor.getAverageEmission(usage.getElectricityUsed(), usage.getNaturalGasUsed());
+        monthlyUSageSummaryText.appendText(compareAverageEmission(electricity, naturalGas, newAverageEmission));
+        monthlyUSageSummaryText.appendText(compareCarbonEmissionFromLastMonth(month));
+        monthlyUSageSummaryText.selectRange(0,0); // Have scrollbar start at the top of the text area
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
         monthlySummaryComboBox.getSelectionModel().selectFirst();
         monthlySummaryComboBox.getItems().setAll(usageSorter.getSortedMonths());
     }
 
 
-    private void changeLogo(double emission, double currentAverageEmission){
+    private void changeLogo(double emission){
         if (emission > currentAverageEmission){
             logoStackPane.getChildren().clear();
             logoStackPane.getChildren().add(sadLogo); // set logo to a sad earth face if user used more natural gas than their current average
@@ -399,10 +407,27 @@ public class MainController {
         sb.append("Estimated Natural Gas Cost: $" + cost.getNaturalGasCost(naturalGas) + "\n");
         sb.append("Estimated CO2 Emission from Natural Gas used: " + carbonConvertor.getNaturalGasCarbonFootprint(naturalGas) + "kg\n");
         sb.append("Total cost: $" + (cost.getTotalCost(electricity, naturalGas))+ "\n");
-        double totalEmission = (carbonConvertor.getElectricityCarbonFootprint(electricity) + carbonConvertor.getNaturalGasCarbonFootprint(naturalGas));
+        double totalEmission = (carbonConvertor.getTotalCarbonEmission(electricity, naturalGas));
         sb.append("Total CO2 Emission: " + totalEmission + " kg\n");
         sb.append("\n------------Analysis------------\n");
         sb.append("\n💡 That is the same amount of energy required to power " + carbonConvertor.getEquivalentOfCO2Emission(totalEmission) + " homes for a day!");
+        sb.append("\n...");
+        return sb.toString();
+    }
+
+    private String compareAverageEmission(double electricity, double naturalGas, double newAverageEmission){
+        StringBuilder sb = new StringBuilder();
+        double emission = (carbonConvertor.getTotalCarbonEmission(electricity, naturalGas));
+        if (!usage.getMonths().isEmpty()){
+            if (emission > currentAverageEmission){
+                sb.append("\n💡 Your total emission for this month exceeded your average emission by " + RoundingHelper.roundingHelper(emission-currentAverageEmission) + " kg");
+                sb.append("\n❗ Your average emission has increased by " + RoundingHelper.roundingHelper(newAverageEmission-currentAverageEmission) + " kg");
+            }
+            else if (emission < currentAverageEmission){
+                sb.append("\n💡 Your total emission for this month is less than your average emission by " + RoundingHelper.roundingHelper(currentAverageEmission-emission) + " kg");
+                sb.append("\n😊 Your average emission has decreased by " + RoundingHelper.roundingHelper(currentAverageEmission-newAverageEmission) + " kg");
+            }
+        }
         sb.append("\n...");
         return sb.toString();
     }
