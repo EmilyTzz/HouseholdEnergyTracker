@@ -14,10 +14,8 @@ public class Main extends Application{
         Scene scene = new Scene(mainViewLoader.load());
         stage.setTitle("Household Energy Tracker");
         stage.setScene(scene);
+        stage.setResizable(false); // Don't allow user to resize screen
         stage.show();
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 }

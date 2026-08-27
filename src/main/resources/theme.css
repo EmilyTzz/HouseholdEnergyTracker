@@ -65,3 +65,20 @@ tab:selected .tab-label {
 .chart-legend-item {
     -fx-text-fill: #000000;
 }
+
+.axis-label {
+    -fx-text-fill: #E8EEF5;
+    -fx-font-weight: bold;
+}
+
+.axis{
+    -fx-tick-label-fill: #E8EEF5;
+}
+
+.chart{
+    -fx-background-color: #1C294A;
+}
+
+.chart-plot-background {
+    -fx-background-color: #1C294A
+}

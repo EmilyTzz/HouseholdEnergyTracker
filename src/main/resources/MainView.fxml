@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -16,6 +17,8 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -30,7 +33,7 @@
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2E3B4C; -fx-background-radius: 20; -fx-border-color: #000000; -fx-border-width: 4; -fx-border-radius: 20;" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
          <children>
-            <MenuBar style="-fx-background-color: #2E3B4C; -fx-background-radius: 25;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <MenuBar style="-fx-background-color: #2E3B4C; -fx-background-radius: 25;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <menus>
                 <Menu mnemonicParsing="false" onAction="#onFileClicked" text="File">
                      <items>
@@ -48,7 +51,7 @@
                   </Menu>
               </menus>
             </MenuBar>
-            <AnchorPane layoutX="13.600000000000001" prefHeight="18.0" prefWidth="572.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0">
+            <AnchorPane layoutX="13.600000000000001" prefHeight="18.0" prefWidth="572.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <Text fx:id="leftStatusUpdate" fill="#8bea16" layoutX="11.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
                   <Text fx:id="rightStatusUpdate" fill="#ff0026" layoutX="563.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
@@ -60,7 +63,7 @@
                   <content>
                     <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-border-color: #000000; -fx-border-width: 3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-border-color: #000000; -fx-border-width: 2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="287.0" prefWidth="11.0" HBox.hgrow="ALWAYS">
                                        <children>
@@ -80,10 +83,10 @@
                                                       <RowConstraints maxHeight="32.400000000000006" minHeight="10.0" percentHeight="100.0" prefHeight="32.400000000000006" vgrow="NEVER" />
                                                   </rowConstraints>
                                                    <children>
-                                                      <TextField fx:id="electricityEntered" prefHeight="19.0" prefWidth="201.0" style="-fx-background-color: #00E6D1; -fx-border-width: 1; -fx-border-color: #53FFEF; -fx-background-radius: 20; -fx-border-radius: 20;" GridPane.rowIndex="3" />
-                                                      <TextField fx:id="naturalGasEntered" prefHeight="19.0" prefWidth="201.0" style="-fx-background-color: #00E6D1; -fx-border-width: 1; -fx-border-color: #53FFEF; -fx-background-radius: 20; -fx-border-radius: 20;" GridPane.rowIndex="5" />
+                                                      <TextField fx:id="electricityEntered" prefHeight="19.0" prefWidth="201.0" style="-fx-background-color: #00E6D1; -fx-border-width: 1; -fx-border-color: #53FFEF; -fx-background-radius: 20; -fx-border-radius: 20;" text="Enter here" GridPane.rowIndex="3" />
+                                                      <TextField fx:id="naturalGasEntered" prefHeight="19.0" prefWidth="201.0" style="-fx-background-color: #00E6D1; -fx-border-width: 1; -fx-border-color: #53FFEF; -fx-background-radius: 20; -fx-border-radius: 20;" text="Enter here" GridPane.rowIndex="5" />
                                                       <Button mnemonicParsing="false" onAction="#onEnterMonthlyUsageClicked" style="-fx-background-color: #28395D; -fx-background-radius: 20;" text="Enter" textFill="#00e6d1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.vgrow="ALWAYS" />
-                                                      <ComboBox fx:id="monthComboBox" maxWidth="1.7976931348623157E308" prefHeight="19.0" prefWidth="192.0" style="-fx-background-color: #00E6D1; -fx-background-size: 1; -fx-border-image-width: 3; -fx-border-color: #53FFEF; -fx-background-radius: 20; -fx-border-radius: 20;" GridPane.rowIndex="1" />
+                                                      <ComboBox fx:id="monthComboBox" maxWidth="1.7976931348623157E308" prefHeight="19.0" prefWidth="192.0" promptText="Select Month" style="-fx-background-color: #00E6D1; -fx-background-size: 1; -fx-border-image-width: 3; -fx-border-color: #53FFEF; -fx-background-radius: 20; -fx-border-radius: 20;" GridPane.rowIndex="1" />
                                                       <Label alignment="CENTER" prefHeight="26.0" prefWidth="179.0" style="-fx-background-color: #2E3B4C; -fx-background-radius: 20; -fx-background-size: 40; -fx-border-width: 0.5; -fx-border-color: #FFFFFF; -fx-border-radius: 20;" text="MONTH" textFill="WHITE" GridPane.halignment="CENTER" />
                                                       <Label alignment="CENTER" prefHeight="25.0" prefWidth="179.0" style="-fx-background-color: #2E3B4C; -fx-background-radius: 20; -fx-background-size: 40; -fx-border-width: 0.5; -fx-border-color: #FFFFFF; -fx-border-radius: 20;" text="ELECTRICITY USED (kwH)" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                                                       <Label alignment="CENTER" prefHeight="25.0" prefWidth="179.0" style="-fx-background-color: #2E3B4C; -fx-background-radius: 20; -fx-background-size: 40; -fx-border-width: 0.5; -fx-border-color: #FFFFFF; -fx-border-radius: 20;" text="NATURAL GAS USED (GJ)" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
@@ -91,6 +94,9 @@
                                                    <padding>
                                                       <Insets left="20.0" right="20.0" />
                                                    </padding>
+                                                   <VBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </VBox.margin>
                                                 </GridPane>
                                              </children>
                                           </VBox>
@@ -116,7 +122,7 @@
                                                             <Font size="14.0" />
                                                          </font>
                                                          <GridPane.margin>
-                                                            <Insets left="5.0" />
+                                                            <Insets left="2.0" />
                                                          </GridPane.margin>
                                                       </Text>
                                                       <Text fx:id="pricePerGJ" fill="#b8ff61" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -124,7 +130,7 @@
                                                             <Font size="14.0" />
                                                          </font>
                                                          <GridPane.margin>
-                                                            <Insets left="5.0" />
+                                                            <Insets left="2.0" />
                                                          </GridPane.margin>
                                                       </Text>
                                                       <Label alignment="CENTER" prefHeight="38.0" prefWidth="58.0" style="-fx-background-color: #00E6D1; -fx-background-radius: 20;" text="\$/kwH:" GridPane.halignment="LEFT">
@@ -176,8 +182,8 @@
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                                       </rowConstraints>
                                        <children>
-                                          <TextField fx:id="electrictyPriceEntered" alignment="CENTER" style="-fx-background-color: #00E6D1; -fx-border-color: #2FFFEC; -fx-background-radius: 20; -fx-border-radius: 20;" GridPane.rowIndex="1" />
-                                          <TextField fx:id="naturalGasPriceEntered" alignment="CENTER" style="-fx-background-color: #00E6D1; -fx-border-color: #2FFFEC; -fx-background-radius: 20; -fx-border-radius: 20;" GridPane.rowIndex="4" />
+                                          <TextField fx:id="electrictyPriceEntered" alignment="CENTER" style="-fx-background-color: #00E6D1; -fx-border-color: #2FFFEC; -fx-background-radius: 20; -fx-border-radius: 20;" text="Enter here" GridPane.rowIndex="1" />
+                                          <TextField fx:id="naturalGasPriceEntered" alignment="CENTER" style="-fx-background-color: #00E6D1; -fx-border-color: #2FFFEC; -fx-background-radius: 20; -fx-border-radius: 20;" text="Enter here" GridPane.rowIndex="4" />
                                           <Button mnemonicParsing="false" onAction="#onEnterNewPricesClicked" prefHeight="34.0" prefWidth="121.0" style="-fx-background-color: #28395D; -fx-background-radius: 20;" text="Enter New Prices" textFill="#00e6d1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
                                           <Label alignment="CENTER" prefHeight="25.0" prefWidth="202.0" style="-fx-background-color: #2E3B4C; -fx-background-radius: 20; -fx-background-size: 40; -fx-border-width: 0.5; -fx-border-color: #FFFFFF; -fx-border-radius: 20;" text="Price/GJ" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
                                           <Label alignment="CENTER" prefHeight="25.0" prefWidth="202.0" style="-fx-background-color: #2E3B4C; -fx-background-radius: 20; -fx-background-size: 40; -fx-border-width: 0.5; -fx-border-color: #FFFFFF; -fx-border-radius: 20;" text="Price/kwH" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
@@ -274,6 +280,18 @@
                   </Tab>
               </tabs>
             </TabPane>
+            <HBox alignment="CENTER" layoutX="542.0" layoutY="20.8" prefHeight="34.0" prefWidth="236.0" style="-fx-background-color: #2E3B4C; -fx-background-radius: 20;" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="8.0">
+               <children>
+                  <ImageView fitHeight="41.0" fitWidth="203.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/logo.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                  </ImageView>
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
    </children>
