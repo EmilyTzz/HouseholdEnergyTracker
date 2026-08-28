@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.FileHandler;
 
+/**
+ * This class is the controller for the primary stage of the household energy tracker
+ */
 public class MainController {
 
     // Constants
@@ -302,7 +305,7 @@ public class MainController {
 
     /**
      * This method helps to keep track of the month, electricity and natural gas usage entered by the user
-     * and store them to their inidividual lists
+     * and store them to their individual lists
      */
     @FXML
     void onEnterMonthlyUsageClicked(ActionEvent event) {
@@ -313,8 +316,8 @@ public class MainController {
             rightStatusUpdate.setText("Error: Please fill in your Electricity and Natural Gas Prices");
             return;
         }
-        String month = monthComboBox.getSelectionModel().getSelectedItem();
-        if (month == null) {
+        String month = monthComboBox.getSelectionModel().getSelectedItem(); // store the selected month
+        if (month == null) { // makes sure user selected a month
             rightStatusUpdate.setText("Error: Please Select A Month");
             return;
         }
@@ -351,10 +354,11 @@ public class MainController {
             rightStatusUpdate.setText("Error: Please enter a valid Natural Gas amount");
             return;
         }
-        if (!usage.getMonths().isEmpty()){
+        if (!usage.getMonths().isEmpty()){ // if this is not the first month the user enters, then proceed to compare their average emissions
             currentAverageEmission = carbonConvertor.getAverageEmission(usage.getElectricityUsed(), usage.getNaturalGasUsed());
             changeLogo(carbonConvertor.getTotalCarbonEmission(electricity, naturalGas));
         }
+        // add the new data
         usage.addMonth(month);
         usage.addElectricityUsage(electricity);
         usage.addNaturalGasUsage(naturalGas);
@@ -368,11 +372,15 @@ public class MainController {
         monthlyUSageSummaryText.appendText(compareCarbonEmissionFromLastMonth(month));
         monthlyUSageSummaryText.selectRange(0,0); // Have scrollbar start at the top of the text area
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
+        // add the new month on to the monthly summary combo box
         monthlySummaryComboBox.getSelectionModel().selectFirst();
         monthlySummaryComboBox.getItems().setAll(usageSorter.getSortedMonths());
     }
 
-
+    /**
+     * This method helps to change the face of the Earth logo, depending on how the user's monthly total emission is, compared to their average emission
+     * @param emission the total emission the user produced this month
+     */
     private void changeLogo(double emission){
         if (emission > currentAverageEmission){
             logoStackPane.getChildren().clear();
@@ -388,7 +396,11 @@ public class MainController {
         }
     }
 
-
+    /**
+     * This method helps to display the monthly summaries in the sort order that the user chose
+     * @param usageSorter sort order user chose
+     * @return String of the summaries in the sorted order
+     */
     private String sortedDataDisplayHelper(UsageSorter usageSorter){
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
@@ -400,8 +412,14 @@ public class MainController {
         return sb.toString();
     }
 
+    /**
+     * This method helps to create the monthly summary and analysis of each month
+     * @param electricity electricity used in the month that just got entered
+     * @param naturalGas natural gas used in the month that just got entered
+     * @return String of the summary and analysis
+     */
     private String estimations(double electricity, double naturalGas){
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(); // stores all the following strings
         sb.append("\nEstimated Electricity Cost: $" + cost.getElectricityCost(electricity) + "\n");
         sb.append("Estimated CO2 Emission from Electricity used: " + carbonConvertor.getElectricityCarbonFootprint(electricity) + "kg\n");
         sb.append("Estimated Natural Gas Cost: $" + cost.getNaturalGasCost(naturalGas) + "\n");
@@ -415,10 +433,18 @@ public class MainController {
         return sb.toString();
     }
 
+    /**
+     * This method helps to create an analysis of the user's new average emission, old average emission, and total emission
+     * from the month that just got entered
+     * @param electricity electricity used in the month that just got entered
+     * @param naturalGas natural gas used in the month that just got entered
+     * @param newAverageEmission new average emission
+     * @return String of the analysis
+     */
     private String compareAverageEmission(double electricity, double naturalGas, double newAverageEmission){
         StringBuilder sb = new StringBuilder();
-        double emission = (carbonConvertor.getTotalCarbonEmission(electricity, naturalGas));
-        if (!usage.getMonths().isEmpty()){
+        double emission = (carbonConvertor.getTotalCarbonEmission(electricity, naturalGas)); // emission of the month that just got entered
+        if (!usage.getMonths().isEmpty()){ // makes sure this is not the 1st month the user entered
             if (emission > currentAverageEmission){
                 sb.append("\n💡 Your total emission for this month exceeded your average emission by " + RoundingHelper.roundingHelper(emission-currentAverageEmission) + " kg");
                 sb.append("\n❗ Your average emission has increased by " + RoundingHelper.roundingHelper(newAverageEmission-currentAverageEmission) + " kg");
@@ -433,12 +459,15 @@ public class MainController {
     }
 
 
+    /**
+     * This method helps to track the electricity and natural gas prices that the user set
+     */
     @FXML
     void onEnterNewPricesClicked(ActionEvent event) {
         double electricityPrice;
         double naturalGasPrice;
         try{
-            if (electrictyPriceEntered.getText().isBlank()){
+            if (electrictyPriceEntered.getText().isBlank()){ // make sure the text area is not blank
                 rightStatusUpdate.setText("Error: Electricity Price cannot be Empty");
                 return;
             }
@@ -447,7 +476,7 @@ public class MainController {
                 rightStatusUpdate.setText("Error: Electricity Price cannot be Negative");
                 return;
             }
-        }catch (NumberFormatException e){
+        }catch (NumberFormatException e){ // make sure the price is a numeric value
             rightStatusUpdate.setText("Error: Please enter a valid Electricity Price");
             return;
         }
@@ -469,36 +498,35 @@ public class MainController {
         cost.setCostPerGJ(naturalGasPrice);
         rightStatusUpdate.setText("");
         leftStatusUpdate.setText("Successfully Added Prices");
+        // set the price text areas to display the new prices entered
         pricePerKwH.setText(Double.toString(cost.getCostPerKwH()));
         pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
     }
 
-    @FXML
-    void onFileClicked(ActionEvent event) {
-
-    }
-
+    /**
+     * This method helps to load the .csv usage files that the user selected
+     */
     @FXML
     void onLoadClicked(ActionEvent event) {
         FileChooser fc = new FileChooser();
         fc.setTitle("Load Usage Data");
-        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-        File file = fc.showOpenDialog(new Stage());
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv")); // makes sure the file entered is a .csv file
+        File file = fc.showOpenDialog(new Stage()); // allow user to pick the files from file explorer
         if (file == null){
             showError("ERROR: No File Selected");
         }
         if (file != null){
             Reader reader = new Reader();
             usage = new Usage();
-            String msg = reader.loadInfo(file, usage, cost);
+            String msg = reader.loadInfo(file, usage, cost); // load the file, and its data
             if (reader.validFile){
                 leftStatusUpdate.setText(msg);
+                // set the price texts to display the prices in the file
                 pricePerKwH.setText(Double.toString(cost.getCostPerKwH()));
                 pricePerGJ.setText(Double.toString(cost.getCostPerGJ()));
                 UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
                 monthlySummaryComboBox.getSelectionModel().selectFirst();
-                monthlySummaryComboBox.getItems().setAll(usageSorter.getSortedMonths());
-                //monthlyUSageSummaryText.setText(sortedDataDisplayHelper(usageSorter));
+                monthlySummaryComboBox.getItems().setAll(usageSorter.getSortedMonths()); // have the monthly summary combo box include all months from the file
             }
             else{
                 showError(msg);
@@ -506,6 +534,9 @@ public class MainController {
         }
     }
 
+    /**
+     * This method helps to handle the event where the user quits the application
+     */
     @FXML
     void onQuitClicked(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -513,13 +544,17 @@ public class MainController {
         alert.setHeaderText("Are you sure you want to Quit?");
         alert.setContentText("Unsaved Changes will be lost");
         Optional<ButtonType> answer = alert.showAndWait();
-        if (answer.isPresent() && answer.get() == ButtonType.OK){
+        if (answer.isPresent() && answer.get() == ButtonType.OK){ // allow the user to confirm if they want to quit
             System.exit(1);
         }
     }
 
+    /**
+     * This method helps to save the current data into a file
+     */
     @FXML
     void onSaveClicked(ActionEvent event) {
+        // create a usage sorter so that the months and its data would be in order
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Usage Data");
@@ -539,7 +574,10 @@ public class MainController {
         }
     }
 
-
+    /**
+     * This method helps to show an alert pop-up window to display any error messages
+     * @param message error message triggered
+     */
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
@@ -548,14 +586,18 @@ public class MainController {
         alert.showAndWait();
     }
 
+    /**
+     * This method helps to display the total costs and emissions statistics of all the months
+     */
     @FXML
     void onUsageStatisticsClicked(ActionEvent event) {
         displayStackPane.getChildren().clear();
-        displayStackPane.getChildren().add(usageStatsHbox);
+        displayStackPane.getChildren().add(usageStatsHbox); // have the usage statistics display be the only display shown on the stack pane
         if (usage.getMonths().isEmpty()){
             rightStatusUpdate.setText("No Data Here Yet...");
         }
         else{
+            // Display the pie charts of the data
             totalCostPieChart.setTitle("Energy Costs % of All The Months");
             totalEmissionPieChart.setTitle("Emission % of All The Months");
             addToPieChartHelper(totalCostPieChart, TOTAL_COST);
@@ -565,8 +607,13 @@ public class MainController {
         }
     }
 
+    /**
+     * This method helps to add each month's % total cost or emission on to the pie chart
+     * @param pieChart pie chart that the data is being added to
+     * @param type total cost or total emission
+     */
     private void addToPieChartHelper(PieChart pieChart, String type){
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(); // stores each "pie slice" data
         if (type.equals(TOTAL_COST)){
             for (int i = 0; i < usage.getMonths().size(); i ++){ // Add data to the list
                 pieChartData.add(new PieChart.Data(usage.getMonths().get(i), cost.getMonthlyCostPercentage(usage.getMonths().get(i), usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed())));
@@ -577,32 +624,42 @@ public class MainController {
                 pieChartData.add(new PieChart.Data(usage.getMonths().get(i), carbonConvertor.getMonthlyEmissionPercentage(usage.getMonths().get(i), usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed())));
             }
         }
-        pieChart.setData(pieChartData);
+        pieChart.setData(pieChartData); // add all the data to the pie chart
     }
 
+    /**
+     * This method helps to display each of the months' % total cost
+     * @return String with the display
+     */
     private String costSummaryHelper(){
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
         StringBuilder sb = new StringBuilder();
-        sb.append("Average Usage Cost : $" + cost.getAverageCost(usage.getElectricityUsed(), usage.getNaturalGasUsed()) + "\n");
-        usageSorter.sortFromHighestToLowest(TOTAL_COST, cost, null); // months with highest to lowest costs
+        sb.append("Average Usage Cost : $" + cost.getAverageCost(usage.getElectricityUsed(), usage.getNaturalGasUsed()) + "\n"); // get the average usage cost
+        usageSorter.sortFromHighestToLowest(TOTAL_COST, cost, null); //sort in the order of months with highest to lowest costs
         for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
             sb.append(usageSorter.getSortedMonths().get(i) + ": " + cost.getMonthlyCostPercentage(usageSorter.getSortedMonths().get(i), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed()) + " %\n");
         }
         return sb.toString();
     }
 
+    /**
+     * This method helps to display each of the months' % emission
+     * @return String with the display
+     */
     private String emissionSummaryHelper() {
         UsageSorter usageSorter = new UsageSorter(usage.getMonths(), usage.getElectricityUsed(), usage.getNaturalGasUsed());
         StringBuilder sb = new StringBuilder();
         sb.append("Average Usage Emissions : " + carbonConvertor.getAverageEmission(usage.getElectricityUsed(), usage.getNaturalGasUsed()) + " kg\n");
-        usageSorter.sortFromHighestToLowest(TOTAL_EMISSION, cost, carbonConvertor); // months with highest to lowest emission
+        usageSorter.sortFromHighestToLowest(TOTAL_EMISSION, cost, carbonConvertor); // sort in the order of months with highest to lowest emission
         for (int i = 0; i < usageSorter.getSortedMonths().size(); i ++){
             sb.append(usageSorter.getSortedMonths().get(i) + ": " + carbonConvertor.getMonthlyEmissionPercentage(usageSorter.getSortedMonths().get(i), usageSorter.getSortedMonths(), usageSorter.getSortedElectricityUsed(), usageSorter.getSortedNaturalGasUsed()) + " %\n");
         }
         return sb.toString();
     }
 
-
+    /**
+     * This method helps to display the information about the application through a pop-up window
+     */
     @FXML
     void onAboutClicked(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION); // Information alert window
